@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#080a0f">
+<title>MOP·ICT·QUANT — Signal View</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+/* ── TOKENS ─────────────────────────────────────────────── */
+:root {
+  --bg:         #080a0f;
+  --bg2:        #0d1117;
+  --bg3:        #141920;
+  --bg4:        #1a2230;
+  --border:     #1e2d3d;
+  --border2:    #263547;
+  --long:       #00e87a;
+  --long-dim:   #003d21;
+  --long-glow:  rgba(0,232,122,0.18);
+  --short:      #ff3358;
+  --short-dim:  #3d0014;
+  --short-glow: rgba(255,51,88,0.18);
+  --amber:      #ffaa00;
+  --amber-dim:  #3d2800;
+  --blue:       #4d9fff;
+  --blue-dim:   #0d2040;
+  --text:       #c8d8e8;
+  --text2:      #7a96b0;
+  --text3:      #4a6070;
+  --white:      #e8f2ff;
+  --mono:       'JetBrains Mono', monospace;
+  --sans:       'Space Grotesk', sans-serif;
+  --radius:     8px;
+  --radius2:    12px;
+}
+
+/* ── RESET ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── SCROLLBAR ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ── LAYOUT ─────────────────────────────────────────────── */
+#app { max-width: 480px; margin: 0 auto; padding: 0 0 80px 0; }
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg);
+  backdrop-filter: blur(12px);
+}
+.hdr-logo {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  color: var(--text3); letter-spacing: 0.08em;
+}
+.hdr-ver {
+  font-family: var(--mono); font-size: 9px; color: var(--text3);
+  background: var(--bg3); padding: 2px 6px; border-radius: 4px;
+  border: 1px solid var(--border);
+}
+.hdr-ts {
+  font-family: var(--mono); font-size: 9px; color: var(--text3);
+}
+
+/* ── HERO CARD ──────────────────────────────────────────── */
+.hero {
+  margin: 12px 12px 0;
+  border-radius: var(--radius2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+}
+.hero-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  border-radius: var(--radius2);
+  opacity: 0.06;
+}
+.hero.long .hero-glow  { background: radial-gradient(ellipse at 30% 50%, var(--long) 0%, transparent 70%); opacity: 0.12; }
+.hero.short .hero-glow { background: radial-gradient(ellipse at 30% 50%, var(--short) 0%, transparent 70%); opacity: 0.12; }
+
+.hero-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px 10px;
+  background: var(--bg2);
+}
+.hero-dir {
+  display: flex; align-items: center; gap: 8px;
+}
+.dir-badge {
+  font-family: var(--mono); font-weight: 700; font-size: 11px;
+  padding: 4px 10px; border-radius: 5px; letter-spacing: 0.1em;
+}
+.long  .dir-badge { background: var(--long-dim);  color: var(--long);  border: 1px solid var(--long); }
+.short .dir-badge { background: var(--short-dim); color: var(--short); border: 1px solid var(--short); }
+
+.hero-symbol {
+  font-family: var(--mono); font-size: 18px; font-weight: 700;
+  color: var(--white); letter-spacing: -0.01em;
+}
+.hero-price {
+  font-family: var(--mono); font-size: 20px; font-weight: 700;
+  color: var(--white); text-align: right; line-height: 1;
+}
+.hero-price-sub {
+  font-family: var(--mono); font-size: 9px; color: var(--text3);
+  text-align: right; margin-top: 2px;
+}
+
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  padding: 10px 12px 12px; gap: 6px;
+  background: var(--bg2); border-top: 1px solid var(--border);
+}
+.stat-box {
+  background: var(--bg3); border-radius: 6px; padding: 7px 8px;
+  text-align: center;
+}
+.stat-label {
+  font-family: var(--mono); font-size: 8px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.06em; display: block;
+}
+.stat-val {
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: var(--white); display: block; margin-top: 2px;
+}
+.stat-val.green { color: var(--long); }
+.stat-val.red   { color: var(--short); }
+.stat-val.amber { color: var(--amber); }
+
+/* ── SIGNAL STATE BANNER ────────────────────────────────── */
+.state-banner {
+  margin: 8px 12px 0;
+  padding: 9px 14px;
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: space-between;
+  border: 1px solid;
+}
+.state-banner.active  { background: rgba(0,232,122,0.08);  border-color: rgba(0,232,122,0.3); }
+.state-banner.deferred{ background: rgba(255,170,0,0.08);  border-color: rgba(255,170,0,0.3); }
+.state-banner.blocked { background: rgba(255,51,88,0.08);  border-color: rgba(255,51,88,0.3); }
+
+.state-dot {
+  width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 7px;
+  animation: pulse 2s ease-in-out infinite;
+}
+.active  .state-dot { background: var(--long); }
+.deferred .state-dot{ background: var(--amber); animation: none; }
+.blocked .state-dot { background: var(--short); animation: none; }
+@keyframes pulse {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,232,122,0.5); }
+  50%      { opacity: 0.7; box-shadow: 0 0 0 4px rgba(0,232,122,0); }
+}
+.state-label {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.active   .state-label  { color: var(--long); }
+.deferred .state-label  { color: var(--amber); }
+.blocked  .state-label  { color: var(--short); }
+.state-eval {
+  font-family: var(--mono); font-size: 9px; color: var(--text3);
+}
+
+/* ── SECTION HEADER ─────────────────────────────────────── */
+.sec-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px 8px;
+}
+.sec-title {
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em;
+}
+.sec-badge {
+  font-family: var(--mono); font-size: 9px; padding: 2px 6px;
+  border-radius: 4px; background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text3);
+}
+
+/* ── RISK LADDER ────────────────────────────────────────── */
+.risk-card {
+  margin: 0 12px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius2); overflow: hidden;
+}
+.risk-ladder {
+  display: flex; gap: 0;
+  padding: 10px 12px; position: relative;
+}
+.rl-scale {
+  width: 6px; position: relative; flex-shrink: 0; margin-right: 12px;
+}
+.rl-bar {
+  position: absolute; left: 0; right: 0; border-radius: 3px;
+  transition: all 0.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+.rl-levels { flex: 1; display: flex; flex-direction: column; gap: 0; }
+.rl-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 5px 0; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.15s; padding-left: 6px; padding-right: 4px;
+  border-radius: 4px; margin-bottom: 1px;
+}
+.rl-item:last-child { border-bottom: none; }
+.rl-item:hover { background: var(--bg3); }
+.rl-item:active { background: var(--bg4); transform: scale(0.99); }
+.rl-tag {
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  min-width: 38px; letter-spacing: 0.04em;
+}
+.rl-tag.tp3 { color: var(--long); }
+.rl-tag.tp2 { color: #00c860; }
+.rl-tag.tp1 { color: #00a850; }
+.rl-tag.entry { color: var(--amber); }
+.rl-tag.sl  { color: #ff8833; }
+.rl-tag.inv { color: var(--short); }
+.rl-price {
+  font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--white);
+  flex: 1; text-align: right; padding-right: 8px;
+}
+.rl-copy {
+  font-size: 10px; opacity: 0; transition: opacity 0.2s;
+  color: var(--text3); padding: 2px 4px;
+}
+.rl-item:hover .rl-copy { opacity: 1; }
+.rl-pct {
+  font-family: var(--mono); font-size: 9px; min-width: 46px;
+  text-align: right; padding-right: 2px;
+}
+
+.risk-footer {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--border);
+}
+.rf-item {
+  padding: 10px 14px; display: flex; flex-direction: column; gap: 2px;
+}
+.rf-item:first-child { border-right: 1px solid var(--border); }
+.rf-label {
+  font-family: var(--mono); font-size: 8px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.rf-val {
+  font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--white);
+}
+.rf-val.good { color: var(--long); }
+.rr-bar-wrap { margin-top: 4px; }
+.rr-bar-bg {
+  height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden;
+}
+.rr-bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--amber), var(--long));
+  border-radius: 2px; width: 0%;
+  transition: width 1s cubic-bezier(0.34,1.56,0.64,1) 0.3s;
+}
+
+/* ── GATE GRID ──────────────────────────────────────────── */
+.gate-card {
+  margin: 0 12px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius2); padding: 12px;
+}
+.gate-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;
+}
+.gate-cell {
+  aspect-ratio: 1; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  position: relative; cursor: pointer;
+  transition: transform 0.15s;
+}
+.gate-cell:active { transform: scale(0.9); }
+.gate-cell.pass {
+  background: rgba(0,232,122,0.12); border: 1px solid rgba(0,232,122,0.3);
+  color: var(--long);
+}
+.gate-cell.fail {
+  background: rgba(255,51,88,0.08); border: 1px solid rgba(255,51,88,0.2);
+  color: var(--short);
+}
+.gate-num {
+  position: absolute; top: 2px; left: 4px;
+  font-size: 7px; opacity: 0.5; font-weight: 400;
+}
+
+/* ── OCE PIPELINE ───────────────────────────────────────── */
+.pipeline-card {
+  margin: 0 12px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius2); overflow: hidden;
+}
+.pipe-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.15s;
+}
+.pipe-row:last-child { border-bottom: none; }
+.pipe-row:hover { background: var(--bg3); }
+.pipe-row:active { background: var(--bg4); }
+.pipe-left { display: flex; align-items: center; gap: 8px; }
+.pipe-stage {
+  font-family: var(--mono); font-size: 8px; color: var(--text3);
+  background: var(--bg3); padding: 2px 5px; border-radius: 3px;
+  border: 1px solid var(--border); min-width: 44px; text-align: center;
+}
+.pipe-label { font-family: var(--mono); font-size: 11px; color: var(--text); }
+.pipe-right { display: flex; align-items: center; gap: 6px; }
+.pipe-badge {
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  padding: 2px 7px; border-radius: 4px;
+}
+.pipe-badge.pass  { background: rgba(0,232,122,0.1); color: var(--long);  border: 1px solid rgba(0,232,122,0.25); }
+.pipe-badge.warn  { background: rgba(255,170,0,0.1); color: var(--amber); border: 1px solid rgba(255,170,0,0.25); }
+.pipe-badge.fail  { background: rgba(255,51,88,0.1); color: var(--short); border: 1px solid rgba(255,51,88,0.25); }
+.pipe-badge.info  { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+.pipe-chevron { color: var(--text3); font-size: 10px; transition: transform 0.2s; }
+.pipe-row.expanded .pipe-chevron { transform: rotate(90deg); }
+
+.pipe-detail {
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 14px; display: none;
+}
+.pipe-detail.open { display: block; }
+.pipe-detail-line {
+  font-family: var(--mono); font-size: 10px; color: var(--text2);
+  line-height: 1.6; white-space: pre-wrap;
+  overflow-wrap: break-word; word-break: break-word;
+}
+
+/* ── HMM CARD ───────────────────────────────────────────── */
+.hmm-card {
+  margin: 0 12px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius2); padding: 12px 14px;
+}
+.hmm-top {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+}
+.hmm-state {
+  font-family: var(--mono); font-size: 16px; font-weight: 700;
+}
+.hmm-state.bull  { color: var(--long); }
+.hmm-state.bear  { color: var(--short); }
+.hmm-state.range { color: var(--amber); }
+.hmm-conf-row { display: flex; align-items: center; gap: 8px; flex: 1; margin-left: 16px; }
+.hmm-conf-bar-bg {
+  flex: 1; height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden;
+}
+.hmm-conf-fill {
+  height: 100%; border-radius: 3px; width: 0%;
+  transition: width 1s cubic-bezier(0.34,1.56,0.64,1) 0.5s;
+}
+.hmm-conf-fill.bull  { background: linear-gradient(90deg, #00a850, var(--long)); }
+.hmm-conf-fill.bear  { background: linear-gradient(90deg, #c02040, var(--short)); }
+.hmm-conf-fill.range { background: linear-gradient(90deg, #c07000, var(--amber)); }
+.hmm-pct { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text2); }
+
+.hmm-path {
+  display: flex; gap: 3px; align-items: center; flex-wrap: wrap;
+}
+.path-node {
+  font-family: var(--mono); font-size: 8px; font-weight: 600;
+  padding: 2px 5px; border-radius: 3px;
+}
+.path-node.BULL  { background: rgba(0,232,122,0.12); color: var(--long); }
+.path-node.BEAR  { background: rgba(255,51,88,0.1);  color: var(--short); }
+.path-node.RANGE { background: rgba(255,170,0,0.1);  color: var(--amber); }
+.path-node.curr  { box-shadow: 0 0 0 1px currentColor; }
+.path-arrow { color: var(--text3); font-size: 8px; }
+
+/* ── GAP AUDIT ──────────────────────────────────────────── */
+.gap-card {
+  margin: 0 12px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius2); overflow: hidden;
+}
+.gap-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; border-bottom: 1px solid var(--border);
+}
+.gap-row:last-child { border-bottom: none; }
+.gap-src { font-family: var(--mono); font-size: 10px; color: var(--text2); flex: 1; }
+.gap-note { font-family: var(--mono); font-size: 9px; color: var(--text3); flex: 2; padding: 0 8px; }
+.gap-qual {
+  font-family: var(--mono); font-size: 9px; font-weight: 600;
+  padding: 2px 6px; border-radius: 4px; min-width: 52px; text-align: center;
+}
+.gap-qual.FULL    { background: rgba(0,232,122,0.1); color: var(--long);  border: 1px solid rgba(0,232,122,0.2); }
+.gap-qual.PARTIAL { background: rgba(255,170,0,0.1); color: var(--amber); border: 1px solid rgba(255,170,0,0.2); }
+.gap-qual.PROXY   { background: rgba(77,159,255,0.1); color: var(--blue); border: 1px solid rgba(77,159,255,0.2); }
+.gap-qual.MISSING { background: rgba(255,51,88,0.1); color: var(--short); border: 1px solid rgba(255,51,88,0.2); }
+
+/* ── MTF CARD ───────────────────────────────────────────── */
+.mtf-card {
+  margin: 0 12px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius2); padding: 10px 14px;
+}
+.mtf-row { display: flex; align-items: center; gap: 6px; }
+.mtf-tf {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 5px; background: var(--bg3);
+  border: 1px solid var(--border); color: var(--text);
+}
+.mtf-tf.bias-tf  { border-color: rgba(77,159,255,0.4); color: var(--blue); }
+.mtf-tf.ref-tf   { border-color: rgba(255,170,0,0.4);  color: var(--amber); }
+.mtf-tf.exec-tf  { border-color: rgba(0,232,122,0.4);  color: var(--long); }
+.mtf-arrow { color: var(--text3); font-size: 11px; }
+.mtf-type {
+  margin-left: auto; font-family: var(--mono); font-size: 9px;
+  color: var(--text3); background: var(--bg3);
+  padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);
+}
+
+/* ── TOAST ──────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 88px; left: 50%; transform: translateX(-50%) translateY(12px);
+  background: var(--bg4); border: 1px solid var(--border2); color: var(--long);
+  font-family: var(--mono); font-size: 11px; padding: 7px 14px; border-radius: 20px;
+  pointer-events: none; opacity: 0; transition: opacity 0.2s, transform 0.2s;
+  white-space: nowrap; z-index: 999;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── BOTTOM BAR ─────────────────────────────────────────── */
+.bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 10px 16px 16px; display: flex; gap: 8px;
+  backdrop-filter: blur(12px); z-index: 200;
+  max-width: 480px; margin: 0 auto;
+  right: max(0px, calc((100vw - 480px) / 2));
+  left: max(0px, calc((100vw - 480px) / 2));
+}
+.btn-close {
+  flex: 1; padding: 11px; border-radius: var(--radius);
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--text2); font-family: var(--sans); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-close:active { transform: scale(0.97); background: var(--bg4); }
+.btn-refresh {
+  flex: 1; padding: 11px; border-radius: var(--radius);
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--text2); font-family: var(--sans); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-refresh:active { transform: scale(0.97); }
+
+/* ── LOADING ────────────────────────────────────────────── */
+#loader {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 80vh; gap: 14px;
+}
+.loader-ring {
+  width: 36px; height: 36px; border: 2px solid var(--border2);
+  border-top-color: var(--long); border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader-text {
+  font-family: var(--mono); font-size: 10px; color: var(--text3);
+  letter-spacing: 0.1em;
+}
+
+/* ── EMPTY STATE ────────────────────────────────────────── */
+#empty {
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 70vh; gap: 10px; padding: 24px;
+}
+.empty-icon { font-size: 32px; opacity: 0.5; }
+.empty-title { font-family: var(--mono); font-size: 13px; color: var(--text2); }
+.empty-sub { font-family: var(--mono); font-size: 10px; color: var(--text3); text-align: center; line-height: 1.6; }
+
+/* ── ANIM ───────────────────────────────────────────────── */
+.fade-in { animation: fadeIn 0.3s ease both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in-1 { animation-delay: 0.05s; }
+.fade-in-2 { animation-delay: 0.10s; }
+.fade-in-3 { animation-delay: 0.15s; }
+.fade-in-4 { animation-delay: 0.20s; }
+.fade-in-5 { animation-delay: 0.25s; }
+.fade-in-6 { animation-delay: 0.30s; }
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Loading state -->
+  <div id="loader">
+    <div class="loader-ring"></div>
+    <div class="loader-text">LOADING SIGNAL DATA...</div>
+  </div>
+  <!-- Empty state -->
+  <div id="empty">
+    <div class="empty-icon">📡</div>
+    <div class="empty-title">NO SIGNAL DATA</div>
+    <div class="empty-sub">Run /analyze in the bot to generate a signal, then tap the View Signal button.</div>
+  </div>
+  <!-- Main content (hidden until data loads) -->
+  <div id="content" style="display:none"></div>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<div class="bottom-bar">
+  <button class="btn-close" onclick="closeApp()">✕ Close</button>
+  <button class="btn-refresh" onclick="shareSignal()">⬆ Share</button>
+</div>
+
+<script>
+/* ── TELEGRAM WEBAPP INIT ───────────────────────────────── */
+const tg = window.Telegram?.WebApp;
+if (tg) {
+  tg.ready();
+  tg.expand();
+  tg.setHeaderColor('#080a0f');
+  tg.setBackgroundColor('#080a0f');
+}
+
+/* ── PARSE SIGNAL DATA ──────────────────────────────────── */
+function getSignalData() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get('d');
+    if (!raw) return null;
+
+    // Decode base64 → raw JSON string
+    let jsonStr = atob(decodeURIComponent(raw));
+
+    // SANITIZE: strip ALL control characters (\x00-\x1F, \x7F, C1 \x80-\x9F)
+    // before JSON.parse. TA fields (hmm_path_str, epistemic_label, brvf_status,
+    // audit_result, gap notes) can embed \n \r \t \x00 that make JSON.parse throw
+    // "Bad control character in string literal" — this one line fixes it permanently.
+    // Real Unicode (→ arrows, emoji) is preserved unchanged.
+    jsonStr = jsonStr.replace(/[\u0000-\u001F\u007F\u0080-\u009F]/g, '');
+
+    return JSON.parse(jsonStr);
+  } catch(e) {
+    // Surface the actual error so the user can report it
+    const sub = document.querySelector('.empty-sub');
+    if (sub) sub.textContent = 'Decode error: ' + e.message;
+    console.error('[getSignalData]', e);
+    return null;
+  }
+}
+
+/* ── FORMAT PRICE ───────────────────────────────────────── */
+function fmtPrice(v) {
+  if (!v && v !== 0) return '--';
+  const f = parseFloat(v);
+  if (isNaN(f)) return '--';
+  if (f >= 10000)  return '$' + f.toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2});
+  if (f >= 100)    return '$' + f.toFixed(4);
+  if (f >= 1)      return '$' + f.toFixed(5);
+  return '$' + f.toFixed(8);
+}
+
+function fmtPct(v, ref, dir) {
+  if (!v || !ref) return '';
+  const diff = ((parseFloat(v) - parseFloat(ref)) / parseFloat(ref)) * 100;
+  const sign = diff >= 0 ? '+' : '';
+  const cls = dir === 'long'
+    ? (diff >= 0 ? 'color:var(--long)' : 'color:var(--short)')
+    : (diff <= 0 ? 'color:var(--long)' : 'color:var(--short)');
+  return `<span style="${cls}">${sign}${diff.toFixed(2)}%</span>`;
+}
+
+/* ── CLIPBOARD ──────────────────────────────────────────── */
+function copyPrice(val, el) {
+  navigator.clipboard?.writeText(val).catch(() => {});
+  if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+  showToast('Copied: ' + val);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+/* ── CLOSE / SHARE ──────────────────────────────────────── */
+function closeApp() {
+  if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+  if (tg) tg.close();
+}
+function shareSignal() {
+  if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+  showToast('Link copied to clipboard');
+  navigator.clipboard?.writeText(window.location.href).catch(() => {});
+}
+
+/* ── EXPAND PIPELINE ROW ────────────────────────────────── */
+function togglePipe(id) {
+  const detail = document.getElementById('pd-' + id);
+  const row    = document.getElementById('pr-' + id);
+  if (!detail) return;
+  if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+  const isOpen = detail.classList.contains('open');
+  detail.classList.toggle('open', !isOpen);
+  row.classList.toggle('expanded', !isOpen);
+}
+
+/* ── BUILD HTML ─────────────────────────────────────────── */
+function buildUI(d) {
+  const isLong    = (d.bias || '').toUpperCase().includes('BULL') || (d.bias || '').toUpperCase() === 'LONG';
+  const dirClass  = isLong ? 'long' : 'short';
+  const dirLabel  = isLong ? 'LONG ▲' : 'SHORT ▼';
+  const symbol    = (d.symbol || 'UNKNOWN').replace('USDT', '') + '/USDT';
+  const price     = fmtPrice(d.price);
+  const grade     = d.grade || '?';
+  const conf      = Math.round(d.conf || 0);
+  const winProb   = parseFloat(d.win_prob || 0).toFixed(1);
+  const rr        = parseFloat(d.rr || 0).toFixed(2);
+  const state     = (d.signal_state || 'UNKNOWN').toLowerCase();
+  const probPct   = (d.signal_probability_data?.signal_probability_pct) || winProb + '%';
+  const probTier  = (d.signal_probability_data?.probability_tier || 'LOW').toLowerCase();
+  const gatePass  = d.gate_pass || [];
+  const gateCount = gatePass.filter(Boolean).length;
+
+  // OCE data
+  const hmm       = d.hmm_data || {};
+  const hmmState  = (hmm.hmm_state || 'RANGE').toLowerCase();
+  const hmmConf   = parseFloat(hmm.hmm_confidence || 0.5) * 100;
+  const hmmPath   = hmm.hmm_path || [];
+  const gaps      = d.oce_gaps || [];
+  const evalG     = d.oce_eval || {};
+  const audit     = d.oce_audit || {};
+  const brvf      = d.oce_brvf || {};
+
+  // Entry / Levels
+  const entry     = fmtPrice(d.ote_entry || ((d.entry_low + d.entry_high) / 2));
+  const entryMid  = parseFloat(d.ote_entry || ((parseFloat(d.entry_low||0) + parseFloat(d.entry_high||0)) / 2));
+  const tp1 = d.tp1, tp2 = d.tp2, tp3 = d.tp3;
+  const sl1 = d.sl1 || d.inv_sl, inv = d.inv_sl;
+
+  // MTF
+  const biasTF = d.bias_tf || '', refTF = d.ref_tf || '', execTF = d.exec_tf || '';
+  const traderType = d.trader_type || '';
+
+  // State class
+  const stateClass = state === 'active' ? 'active' : state === 'deferred' ? 'deferred' : 'blocked';
+  const stateLabel = state === 'active' ? '● SIGNAL ACTIVE' : state === 'deferred' ? '◐ DEFERRED' : '✕ BLOCKED';
+  const evalLabel  = evalG.epistemic_label || '—';
+
+  // Grade color
+  const gradeColor = {S:'var(--long)',A:'var(--long)',B:'var(--amber)',C:'var(--text2)',D:'var(--short)',F:'var(--short)'}[grade] || 'var(--text2)';
+
+  // RR bar pct (cap at 100%, 3.0 RR = full)
+  const rrBarPct = Math.min(100, (parseFloat(rr) / 3.0) * 100);
+
+  // Build gate cells
+  const gateCells = gatePass.map((p, i) =>
+    `<div class="gate-cell ${p ? 'pass' : 'fail'}" onclick="showGateInfo(${i+1})" title="Gate ${i+1}">
+      <span class="gate-num">${i+1}</span>
+      ${p ? '✓' : '✕'}
+    </div>`
+  ).join('');
+
+  // Build HMM path
+  const pathNodes = hmmPath.slice(-8).map((s, i, arr) => {
+    const isCurr = i === arr.length - 1;
+    return `<span class="path-node ${s}${isCurr?' curr':''}">
+      ${s}
+    </span>${i < arr.length-1 ? '<span class="path-arrow">›</span>' : ''}`;
+  }).join('');
+
+  // Build gap rows
+  const gapRows = gaps.map(g =>
+    `<div class="gap-row">
+      <span class="gap-src">${g.source || '—'}</span>
+      <span class="gap-note">${(g.note || '').slice(0,28)}</span>
+      <span class="gap-qual ${g.quality}">${g.quality}</span>
+    </div>`
+  ).join('');
+
+  // Pipeline rows
+  const pipeData = [
+    { id:'hmm',   stage:'ST.1', label:'HMM Regime', val: hmm.hmm_state || '—', cls: hmmState==='bull'?'pass':hmmState==='bear'?'fail':'warn',
+      detail: `State   : ${hmm.hmm_state || '—'}\nConf    : ${hmm.hmm_confidence_pct || '—'}\nPath    : ${hmm.hmm_path_str || '—'}\nNote    : ${(hmm.hmm_note || '').slice(0,60)}` },
+    { id:'eval',  stage:'ST.4.8', label:'Eval Gate', val: evalG.eval_gate || '—', cls: evalG.eval_gate==='PASS'?'pass':'fail',
+      detail: `Result  : ${evalG.eval_gate || '—'}\nScore   : ${evalG.eval_score || '—'}\nLabel   : ${evalG.epistemic_label || '—'}\n${(evalG.eval_failures||[]).slice(0,3).map(f=>'FAIL  : '+f).join('\n')}` },
+    { id:'audit', stage:'ST.4.9', label:'Code Audit', val: audit.audit_result || '—', cls: audit.audit_result==='PASS'?'pass':audit.audit_result?.includes('NOTES')?'warn':'fail',
+      detail: `D1 Func : ${audit.d1_functional || '—'}\nD2 UX   : ${audit.d2_ux || '—'}\nD3 QA   : ${audit.d3_qa || '—'}\nD4 Sec  : ${audit.d4_security || '—'}\nD5 Comp : ${audit.d5_compliance || '—'}` },
+    { id:'brvf',  stage:'BRVF', label:'BRVF Loop', val: brvf.brvf_status || '—', cls: brvf.brvf_status?.includes('PASS')?'pass':brvf.brvf_status==='ERROR'?'fail':'warn',
+      detail: `Status  : ${brvf.brvf_status || '—'}\nQA      : ${(brvf.brvf_qa?.qa_status) || '—'}\nFixes   : ${(brvf.brvf_fixes||[]).join(', ') || 'none'}` },
+  ];
+
+  const pipeRows = pipeData.map(p =>
+    `<div>
+      <div class="pipe-row" id="pr-${p.id}" onclick="togglePipe('${p.id}')">
+        <div class="pipe-left">
+          <span class="pipe-stage">${p.stage}</span>
+          <span class="pipe-label">${p.label}</span>
+        </div>
+        <div class="pipe-right">
+          <span class="pipe-badge ${p.cls}">${p.val}</span>
+          <span class="pipe-chevron">›</span>
+        </div>
+      </div>
+      <div class="pipe-detail" id="pd-${p.id}">
+        <div class="pipe-detail-line">${p.detail}</div>
+      </div>
+    </div>`
+  ).join('');
+
+  // RL level items
+  function lvlItem(tag, tagClass, price, pct) {
+    const raw = parseFloat(price) || 0;
+    return raw > 0 ? `<div class="rl-item" onclick="copyPrice('${fmtPrice(raw)}', this)">
+      <span class="rl-tag ${tagClass}">${tag}</span>
+      <span class="rl-price">${fmtPrice(raw)}</span>
+      ${pct ? `<span class="rl-pct" style="color:var(--long)">${pct}</span>` : '<span class="rl-pct"></span>'}
+      <span class="rl-copy">⎘</span>
+    </div>` : '';
+  }
+
+  const tp3Pct = tp3 && entryMid ? `+${(((tp3-entryMid)/entryMid)*100).toFixed(2)}%` : '';
+  const tp2Pct = tp2 && entryMid ? `+${(((tp2-entryMid)/entryMid)*100).toFixed(2)}%` : '';
+  const tp1Pct = tp1 && entryMid ? `+${(((tp1-entryMid)/entryMid)*100).toFixed(2)}%` : '';
+  const slPct  = sl1 && entryMid ? `-${Math.abs(((sl1-entryMid)/entryMid)*100).toFixed(2)}%` : '';
+
+  const now = new Date();
+  const ts  = now.toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+
+  return `
+  <!-- HEADER -->
+  <div class="hdr fade-in">
+    <span class="hdr-logo">MOP·ICT·QUANT</span>
+    <span class="hdr-ts">${ts}</span>
+    <span class="hdr-ver">OCE v10.3</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero ${dirClass} fade-in fade-in-1">
+    <div class="hero-glow"></div>
+    <div class="hero-top">
+      <div class="hero-dir">
+        <span class="dir-badge">${dirLabel}</span>
+        <span class="hero-symbol">${symbol}</span>
+      </div>
+      <div>
+        <div class="hero-price">${price}</div>
+        <div class="hero-price-sub">CURRENT PRICE</div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-box">
+        <span class="stat-label">GRADE</span>
+        <span class="stat-val" style="color:${gradeColor}">${grade}</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">GATES</span>
+        <span class="stat-val ${gateCount===10?'green':gateCount>=7?'amber':'red'}">${gateCount}/10</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">PROB</span>
+        <span class="stat-val ${probTier==='high'?'green':probTier==='moderate'?'amber':'red'}">${probPct}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATE BANNER -->
+  <div class="state-banner ${stateClass} fade-in fade-in-2">
+    <div style="display:flex;align-items:center">
+      <span class="state-dot"></span>
+      <span class="state-label">${stateLabel}</span>
+    </div>
+    <span class="state-eval">${evalLabel}</span>
+  </div>
+
+  <!-- MTF -->
+  ${biasTF || refTF || execTF ? `
+  <div class="sec-hdr fade-in fade-in-2">
+    <span class="sec-title">MULTI-TIMEFRAME</span>
+    ${traderType ? `<span class="sec-badge">${traderType}</span>` : ''}
+  </div>
+  <div class="mtf-card fade-in fade-in-2">
+    <div class="mtf-row">
+      ${biasTF ? `<span class="mtf-tf bias-tf">${biasTF}</span><span class="mtf-arrow">→</span>` : ''}
+      ${refTF  ? `<span class="mtf-tf ref-tf">${refTF}</span><span class="mtf-arrow">→</span>` : ''}
+      ${execTF ? `<span class="mtf-tf exec-tf">${execTF}</span>` : ''}
+    </div>
+  </div>` : ''}
+
+  <!-- RISK LADDER -->
+  <div class="sec-hdr fade-in fade-in-3">
+    <span class="sec-title">TRADE LEVELS</span>
+    <span class="sec-badge">TAP TO COPY</span>
+  </div>
+  <div class="risk-card fade-in fade-in-3">
+    <div class="rl-levels" style="padding:8px 12px">
+      ${lvlItem('TP3', 'tp3', tp3, tp3Pct)}
+      ${lvlItem('TP2', 'tp2', tp2, tp2Pct)}
+      ${lvlItem('TP1', 'tp1', tp1, tp1Pct)}
+      ${lvlItem('ENTRY', 'entry', entryMid, '')}
+      ${lvlItem('SL', 'sl', sl1, slPct)}
+      ${lvlItem('INVAL', 'inv', inv, '')}
+    </div>
+    <div class="risk-footer">
+      <div class="rf-item">
+        <span class="rf-label">R:R RATIO</span>
+        <span class="rf-val ${parseFloat(rr)>=2?'good':''}">${rr}</span>
+        <div class="rr-bar-wrap">
+          <div class="rr-bar-bg">
+            <div class="rr-bar-fill" id="rrBar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rf-item">
+        <span class="rf-label">CONFIDENCE</span>
+        <span class="rf-val">${conf}<span style="font-size:10px;color:var(--text3)">/100</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GATE GRID -->
+  <div class="sec-hdr fade-in fade-in-3">
+    <span class="sec-title">10-GATE DASHBOARD</span>
+    <span class="sec-badge">${gateCount}/10 PASS</span>
+  </div>
+  <div class="gate-card fade-in fade-in-3">
+    <div class="gate-grid">${gateCells}</div>
+  </div>
+
+  <!-- HMM REGIME -->
+  <div class="sec-hdr fade-in fade-in-4">
+    <span class="sec-title">HMM REGIME — VITERBI</span>
+    <span class="sec-badge">${hmmPath.length} bars</span>
+  </div>
+  <div class="hmm-card fade-in fade-in-4">
+    <div class="hmm-top">
+      <span class="hmm-state ${hmmState}">${hmm.hmm_state || 'RANGE'}</span>
+      <div class="hmm-conf-row">
+        <div class="hmm-conf-bar-bg">
+          <div class="hmm-conf-fill ${hmmState}" id="hmmBar" style="width:0%"></div>
+        </div>
+        <span class="hmm-pct" id="hmmPct">${Math.round(hmmConf)}%</span>
+      </div>
+    </div>
+    <div class="hmm-path" id="hmmPath">${pathNodes}</div>
+  </div>
+
+  <!-- GAP DETECTION -->
+  ${gaps.length > 0 ? `
+  <div class="sec-hdr fade-in fade-in-4">
+    <span class="sec-title">GAP DETECTION AUDIT</span>
+    <span class="sec-badge">${gaps.filter(g=>g.quality==='FULL').length}/8 FULL</span>
+  </div>
+  <div class="gap-card fade-in fade-in-4">${gapRows}</div>` : ''}
+
+  <!-- OCE PIPELINE -->
+  <div class="sec-hdr fade-in fade-in-5">
+    <span class="sec-title">OCE PIPELINE</span>
+    <span class="sec-badge">STAGE 4.9</span>
+  </div>
+  <div class="pipeline-card fade-in fade-in-5">${pipeRows}</div>
+
+  <!-- SPACER -->
+  <div style="height:8px"></div>
+  `;
+}
+
+/* ── GATE INFO TOOLTIP ──────────────────────────────────── */
+const GATE_NAMES = [
+  'Structure Bias','Imbalance/FVG','Order Block Entry','Liquidity Sweep',
+  'Kill Zone Timing','HTF Alignment','Market Structure','Volume Profile',
+  'Risk:Reward','Macro Clear'
+];
+function showGateInfo(num) {
+  if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+  showToast(`G${num}: ${GATE_NAMES[num-1] || 'Gate '+num}`);
+}
+
+/* ── ANIMATE AFTER RENDER ───────────────────────────────── */
+function runAnimations(d) {
+  const rr = parseFloat(d.rr || 0);
+  const rrPct = Math.min(100, (rr / 3.0) * 100);
+  setTimeout(() => {
+    const bar = document.getElementById('rrBar');
+    if (bar) bar.style.width = rrPct + '%';
+  }, 400);
+
+  const hmm = d.hmm_data || {};
+  const hmmConf = parseFloat(hmm.hmm_confidence || 0.5) * 100;
+  setTimeout(() => {
+    const hb = document.getElementById('hmmBar');
+    if (hb) hb.style.width = hmmConf + '%';
+  }, 600);
+}
+
+/* ── MAIN ───────────────────────────────────────────────── */
+function init() {
+  const data = getSignalData();
+  const loader  = document.getElementById('loader');
+  const empty   = document.getElementById('empty');
+  const content = document.getElementById('content');
+
+  setTimeout(() => {
+    loader.style.display = 'none';
+    if (!data) {
+      empty.style.display = 'flex';
+      return;
+    }
+    content.innerHTML = buildUI(data);
+    content.style.display = 'block';
+    runAnimations(data);
+  }, 400);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<title>MOP·ICT·QUANT — Live Signal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{
+  /* Modernized Light Theme */
+  --bg: #ffffff; --bg2: #f8fafc; --bg3: #f1f5f9; --bg4: #e2e8f0;
+  --border: #e2e8f0; --border2: #cbd5e1;
+  --long: #10b981; --long2: #d1fae5; --short: #ef4444; --short2: #fee2e2;
+  --amber: #f59e0b; --amberBg: #fef3c7; --blue: #3b82f6; --cyan: #06b6d4;
+  --text: #0f172a; --text1: #1e293b; --text2: #64748b; --text3: #94a3b8;
+  --card: #ffffff;
+  --mono: 'JetBrains Mono', monospace; --sans: 'Inter', sans-serif;
+  --r: 12px; --r2: 20px;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+#app{max-width:480px;margin:0 auto;padding-bottom:86px}
+
+/* HEADER */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(16px)}
+.hdr-left{display:flex;align-items:center;gap:8px}
+.hdr-logo{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.08em}
+.ldot{width:8px;height:8px;border-radius:50%;background:var(--long);animation:lp 2s ease-in-out infinite}
+.ldot.off{background:var(--text3);animation:none}
+@keyframes lp{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(16,185,129,.5)}50%{opacity:.7;box-shadow:0 0 0 5px rgba(16,185,129,0)}}
+.hdr-px{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--text)}
+.hdr-chg{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:2px}
+.hdr-ver{font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--bg3);padding:3px 6px;border-radius:6px;border:1px solid var(--border)}
+
+/* AGE BADGE */
+.age-badge{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid;margin-left:6px;transition:all .3s;font-weight:600}
+.age-fresh{background:var(--long2);color:var(--long);border-color:rgba(16,185,129,.3)}
+.age-warn{background:var(--amberBg);color:var(--amber);border-color:rgba(245,158,11,.3)}
+.age-stale{background:var(--short2);color:var(--short);border-color:rgba(239,68,68,.3);animation:pulse-red 1.5s infinite}
+@keyframes pulse-red{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* HERO */
+.hero{margin:14px 14px 0;border-radius:var(--r2);border:1px solid var(--border);overflow:hidden;position:relative;background:var(--bg2);box-shadow:var(--shadow);transition:border-color .3s,box-shadow .3s}
+.hero.inv-breach{border-color:var(--short)!important;box-shadow:0 0 0 3px rgba(239,68,68,.25),var(--shadow)!important;animation:inv-flash 1s ease-in-out 3}
+@keyframes inv-flash{0%,100%{border-color:var(--short)}50%{border-color:rgba(239,68,68,.3)}}
+.hero-glow{position:absolute;inset:0;pointer-events:none;border-radius:var(--r2);opacity:.08}
+.hero.long .hero-glow{background:radial-gradient(ellipse at 20% 50%,var(--long) 0%,transparent 65%)}
+.hero.short .hero-glow{background:radial-gradient(ellipse at 20% 50%,var(--short) 0%,transparent 65%)}
+.hero-top{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px}
+.dchip{font-family:var(--mono);font-size:11px;font-weight:700;padding:5px 12px;border-radius:8px;letter-spacing:.08em}
+.long .dchip{background:var(--long2);color:var(--long);border:1px solid rgba(16,185,129,.3)}
+.short .dchip{background:var(--short2);color:var(--short);border:1px solid rgba(239,68,68,.3)}
+.hsym{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text);margin-left:12px}
+.hm{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 16px}
+.mc{background:var(--bg);border-radius:10px;padding:10px;text-align:center;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,0.02)}
+.ml{font-family:var(--mono);font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;display:block}
+.mv{font-family:var(--mono);font-size:15px;font-weight:700;display:block;margin-top:4px}
+.mv.g{color:var(--long)}.mv.r{color:var(--short)}.mv.a{color:var(--amber)}
+
+/* STATE */
+.state{margin:10px 14px 0;padding:12px 16px;border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;border:1px solid}
+.state.active{background:var(--long2);border-color:rgba(16,185,129,.3)}
+.state.blocked{background:var(--short2);border-color:rgba(239,68,68,.25)}
+.state.deferred{background:var(--amberBg);border-color:rgba(245,158,11,.25)}
+.sdot{width:8px;height:8px;border-radius:50%;margin-right:8px;display:inline-block}
+.active .sdot{background:var(--long);animation:lp 2s infinite}
+.blocked .sdot{background:var(--short)}.deferred .sdot{background:var(--amber)}
+.slbl{font-family:var(--mono);font-size:12px;font-weight:700}
+.active .slbl{color:var(--long)}.blocked .slbl{color:var(--short)}.deferred .slbl{color:var(--amber)}
+.sev{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--text2)}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin:14px 14px 0;border-radius:var(--r) var(--r) 0 0;overflow:hidden;background:var(--bg2)}
+.tab{flex:1;padding:14px 6px;text-align:center;cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--text2);border:none;background:none;outline:none;transition:all .2s;border-bottom:2px solid transparent}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--bg);color:var(--text1)}
+.tab:active{transform:scale(.98)}
+.cpanel{margin:0 14px;background:var(--bg2);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r2) var(--r2);overflow:hidden;display:none}
+.cpanel.vis{display:block}
+
+/* DASHBOARD TAB */
+.db-wrap{padding:14px;display:flex;flex-direction:column;gap:12px}
+.db-section{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.db-sec-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:10px}
+.db-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border);font-family:var(--mono);font-size:11px}
+.db-row:last-child{border-bottom:none}
+.db-lbl{color:var(--text2);font-weight:500}
+.db-val{font-weight:700;color:var(--text)}
+.db-val.up{color:var(--long)}.db-val.dn{color:var(--short)}.db-val.am{color:var(--amber)}
+.db-bar-wrap{margin-top:10px}
+.db-bar-lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--text2);margin-bottom:6px;font-weight:600}
+.db-bar-track{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+.db-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.db-bar-fill.pass{background:var(--long)}.db-bar-fill.warn{background:var(--amber)}.db-bar-fill.fail{background:var(--short)}
+.db-log{background:#0f172a;border-radius:10px;padding:12px;font-family:var(--mono);font-size:10px;height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.db-log-row{display:flex;gap:8px;align-items:flex-start}
+.db-log-ts{color:#64748b;flex-shrink:0}
+.db-log-tag{flex-shrink:0;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:700}
+.db-log-tag.ok{background:rgba(16,185,129,.2);color:#34d399}.db-log-tag.blk{background:rgba(239,68,68,.2);color:#f87171}.db-log-tag.inf{background:rgba(59,130,246,.2);color:#60a5fa}.db-log-tag.wrn{background:rgba(245,158,11,.2);color:#fbbf24}
+.db-log-msg{color:#cbd5e1;flex:1;line-height:1.5}
+.db-gate-grid{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;margin-top:10px}
+.db-g{display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--mono);font-size:9px}
+.db-g-dot{width:10px;height:10px;border-radius:50%}
+.db-g-dot.pass{background:var(--long);box-shadow:0 0 4px rgba(16,185,129,.4)}.db-g-dot.fail{background:var(--short);box-shadow:0 0 4px rgba(239,68,68,.4)}
+.db-g-num{color:var(--text3);font-weight:600}
+.db-mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.db-callout{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.db-callout-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--text3);text-transform:uppercase;margin-bottom:8px}
+.db-callout-body{font-family:var(--sans);font-size:12px;line-height:1.6;color:var(--text1)}
+.db-callout-body strong{color:var(--text);font-weight:600}
+.db-kv{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-top:1px dashed var(--border)}
+.db-kv:first-of-type{border-top:none;padding-top:0}
+.db-kv-k{font-family:var(--mono);font-size:10px;color:var(--text2);font-weight:500}
+.db-kv-v{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text)}
+.db-kv-v.up{color:var(--long)}.db-kv-v.dn{color:var(--short)}.db-kv-v.am{color:var(--amber)}
+.db-note{margin-top:10px;font-family:var(--sans);font-size:11px;color:var(--text2);line-height:1.6;background:var(--bg3);padding:8px 12px;border-radius:8px}
+.db-live-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--long2);color:var(--long);border:1px solid rgba(16,185,129,.24);font-family:var(--mono);font-size:10px;font-weight:700}
+.db-live-pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:lp 2s infinite}
+#tv-container{width:100%;height:100%}
+
+/* ICT BAR */
+.ict-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg)}
+.tfbtns{display:flex;gap:4px}
+.tfb{font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text2);font-weight:600;cursor:pointer;transition:all .2s}
+.tfb.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 2px 4px rgba(59,130,246,.3)}
+.cst{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--text2);font-weight:500}
+.cdot{width:8px;height:8px;border-radius:50%;background:var(--border2)}
+.cdot.live{background:var(--long);animation:lp 2s infinite}
+#ict-wrap{position:relative;width:100%;height:420px;background:#f8fafc}
+#ict-cv{display:block;width:100%;height:100%}
+.lgrow{display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px;border-top:1px solid var(--border);background:var(--bg)}
+.lgi{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--text2);font-weight:500}
+.lgd{width:10px;height:4px;border-radius:2px;flex-shrink:0}
+
+/* SECTIONS */
+.sec{display:flex;align-items:center;justify-content:space-between;padding:20px 18px 10px}
+.sect{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em}
+.secb{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-weight:600}
+
+/* TRADE LEVELS */
+.rc{margin:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow)}
+.rw{padding:8px 12px}
+.ri{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-bottom:1px dashed var(--border);cursor:pointer;transition:all .2s;border-radius:8px;margin-bottom:2px}
+.ri:last-child{border-bottom:none}
+.ri:hover{background:var(--bg3);transform:translateX(2px)}
+.ri:active{background:var(--bg4);transform:scale(.98)}
+.rt{font-family:var(--mono);font-size:11px;font-weight:700;min-width:44px}
+.rt.tp3,.rt.tp2,.rt.tp1{color:var(--long)}.rt.entry{color:var(--amber)}.rt.sl,.rt.inv{color:var(--short)}
+.rp{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text);flex:1;text-align:right;padding-right:10px}
+.rpct{font-family:var(--mono);font-size:11px;font-weight:600;min-width:60px;text-align:right}
+.rcpy{font-size:12px;opacity:0;color:var(--text3);padding:2px 6px;transition:opacity .2s}
+.ri:hover .rcpy{opacity:1}
+.rftr{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--border);background:var(--bg2)}
+.rfi{padding:14px 18px;display:flex;flex-direction:column;gap:4px}
+.rfi:first-child{border-right:1px solid var(--border)}
+.rfl{font-family:var(--mono);font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.rfv{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text)}
+.rfv.good{color:var(--long)}
+.rrbg{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px}
+.rrfill{height:100%;background:linear-gradient(90deg,var(--amber),var(--long));width:0%;border-radius:3px;transition:width 1s cubic-bezier(.34,1.56,.64,1) .3s}
+
+/* POSITION SIZE CALCULATOR */
+.calc-drawer{margin:10px 14px;border-radius:var(--r2);border:1px solid var(--border);background:var(--bg);overflow:hidden;box-shadow:var(--shadow)}
+.calc-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;background:var(--bg2);border-bottom:1px solid var(--border);transition:background .2s}
+.calc-hdr:hover{background:var(--bg3)}
+.calc-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.05em;text-transform:uppercase}
+.calc-toggle{font-family:var(--mono);font-size:11px;color:var(--blue);font-weight:700}
+.calc-body{display:none;padding:16px 18px}
+.calc-body.open{display:block}
+.calc-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.calc-field{display:flex;flex-direction:column;gap:6px}
+.calc-label{font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.calc-input{font-family:var(--mono);font-size:14px;font-weight:600;padding:8px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--bg);color:var(--text);outline:none;width:100%;transition:border-color .2s,box-shadow .2s}
+.calc-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.calc-mode{display:flex;gap:6px;margin-bottom:14px;background:var(--bg3);padding:4px;border-radius:8px}
+.calc-mode-btn{flex:1;padding:8px;border-radius:6px;background:transparent;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text2);cursor:pointer;text-align:center;transition:all .2s;border:none}
+.calc-mode-btn.active{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.calc-results{background:var(--bg2);border-radius:10px;padding:14px 16px;margin-top:6px;border:1px solid var(--border)}
+.calc-result-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px dashed var(--border)}
+.calc-result-row:last-child{border-bottom:none}
+.calc-result-label{font-family:var(--mono);font-size:10px;color:var(--text2);font-weight:500}
+.calc-result-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text)}
+.calc-result-val.ok{color:var(--long)}.calc-result-val.warn{color:var(--amber)}.calc-result-val.bad{color:var(--short)}
+
+/* GATES */
+.gc{margin:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:14px;box-shadow:var(--shadow)}
+.gg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.gce{aspect-ratio:1;min-width:48px;min-height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;position:relative;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.gce:active{transform:scale(.92)}
+.gce.pass{background:var(--long2);border:1px solid rgba(16,185,129,.25);color:var(--long);box-shadow:0 2px 4px rgba(16,185,129,.1)}
+.gce.fail{background:var(--short2);border:1px solid rgba(239,68,68,.2);color:var(--short);box-shadow:0 2px 4px rgba(239,68,68,.1)}
+.gn{position:absolute;top:4px;left:6px;font-size:9px;opacity:.5;font-weight:600}
+
+/* HMM */
+.hc{margin:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;box-shadow:var(--shadow)}
+.ht{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.hs{font-family:var(--mono);font-size:16px;font-weight:700}
+.hs.bull,.hs.trending{color:var(--long)}.hs.bear,.hs.volatile{color:var(--short)}.hs.range,.hs.choppy{color:var(--amber)}
+.hbw{flex:1;margin-left:16px;display:flex;align-items:center;gap:10px}
+.hbb{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.hbf{height:100%;border-radius:3px;width:0%;transition:width 1s cubic-bezier(.34,1.56,.64,1) .5s}
+.hbf.bull,.hbf.trending{background:linear-gradient(90deg,#047857,var(--long))}
+.hbf.bear,.hbf.volatile{background:linear-gradient(90deg,#b91c1c,var(--short))}
+.hbf.range,.hbf.choppy{background:linear-gradient(90deg,#d97706,var(--amber))}
+.hpct{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text2)}
+.hp{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.pn{font-family:var(--mono);font-size:9px;font-weight:700;padding:4px 8px;border-radius:6px}
+.pn.BULL,.pn.TRENDING{background:var(--long2);color:var(--long);border:1px solid rgba(16,185,129,.2)}
+.pn.BEAR,.pn.VOLATILE{background:var(--short2);color:var(--short);border:1px solid rgba(239,68,68,.2)}
+.pn.RANGE,.pn.CHOPPY{background:var(--amberBg);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.pn.curr{box-shadow:0 0 0 2px currentColor}
+
+/* MARKOV / INTELLIGENCE PANELS */
+.mkc{margin:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;box-shadow:var(--shadow)}
+.mk-verdict{font-size:13px;font-weight:700;padding:8px 10px;border-radius:8px;margin-bottom:12px;line-height:1.5;font-family:var(--sans)}
+.mk-confirmed{background:rgba(16,185,129,.12);color:var(--long);border:1px solid rgba(16,185,129,.25)}
+.mk-vetoed{background:rgba(239,68,68,.12);color:var(--short);border:1px solid rgba(239,68,68,.25)}
+.mk-caution{background:var(--amberBg);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
+.mk-neutral{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.mk-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px dashed var(--border)}
+.mk-row:last-child{border-bottom:none}
+.mk-lbl{font-size:11px;color:var(--text2);font-weight:500}
+.mk-val{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text1)}
+.mk-mod{color:var(--amber)}
+.mk-chain{letter-spacing:1px;font-size:11px}
+.mk-vel{margin-top:10px;font-size:11px;color:var(--amber);background:var(--amberBg);padding:8px 10px;border-radius:8px;font-weight:500}
+.pa{color:var(--text3);font-size:10px}
+
+/* GAPS */
+.gapc{margin:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow)}
+.gapr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border)}
+.gapr:last-child{border-bottom:none}
+.gapsrc{font-family:var(--mono);font-size:11px;color:var(--text);flex:1;font-weight:600}
+.gapnt{font-family:var(--sans);font-size:10px;color:var(--text2);flex:2;padding:0 8px;line-height:1.4}
+.gapq{font-family:var(--mono);font-size:10px;font-weight:700;padding:4px 8px;border-radius:6px;min-width:60px;text-align:center}
+.gapq.FULL{background:var(--long2);color:var(--long);border:1px solid rgba(16,185,129,.2)}
+.gapq.PARTIAL{background:var(--amberBg);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.gapq.PROXY{background:#eff6ff;color:var(--blue);border:1px solid rgba(59,130,246,.2)}
+.gapq.MISSING{background:var(--short2);color:var(--short);border:1px solid rgba(239,68,68,.2)}
+
+/* OCE PIPELINE */
+.pc{margin:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow)}
+.pr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s}
+.pr:last-child{border-bottom:none}.pr:hover{background:var(--bg2)}.pr:active{background:var(--bg3)}
+.prl{display:flex;align-items:center;gap:10px}
+.pst{font-family:var(--mono);font-size:9px;color:var(--text2);background:var(--bg3);padding:3px 6px;border-radius:4px;border:1px solid var(--border);min-width:48px;text-align:center;font-weight:600}
+.plbl{font-family:var(--mono);font-size:12px;color:var(--text);font-weight:600}
+.prr{display:flex;align-items:center;gap:8px}
+.pb{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px}
+.pb.pass{background:var(--long2);color:var(--long);border:1px solid rgba(16,185,129,.22)}
+.pb.warn{background:var(--amberBg);color:var(--amber);border:1px solid rgba(245,158,11,.22)}
+.pb.fail{background:var(--short2);color:var(--short);border:1px solid rgba(239,68,68,.22)}
+.pb.info{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.pch{color:var(--text3);font-size:14px;transition:transform .3s;font-weight:700}
+.pr.expanded .pch{transform:rotate(90deg)}
+.pd{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:none;box-shadow:inset 0 2px 4px rgba(0,0,0,.02)}
+.pd.open{display:block}
+.pdl{font-family:var(--mono);font-size:11px;color:var(--text2);line-height:1.7;white-space:pre-wrap;overflow-wrap:break-word;word-break:break-word}
+
+/* MTF */
+.mtfc{margin:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:12px 16px;box-shadow:var(--shadow)}
+.mtfr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mtft{font-family:var(--mono);font-size:11px;font-weight:700;padding:5px 10px;border-radius:8px;background:var(--bg2);border:1px solid var(--border)}
+.mtft.b{border-color:rgba(59,130,246,.4);color:var(--blue);background:#eff6ff}
+.mtft.r{border-color:rgba(245,158,11,.4);color:var(--amber);background:#fffbeb}
+.mtft.e{border-color:rgba(16,185,129,.4);color:var(--long);background:#ecfdf5}
+.mtfa{color:var(--text3);font-size:12px;font-weight:700}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--text1);color:#fff;font-family:var(--sans);font-size:12px;font-weight:500;padding:8px 16px;border-radius:24px;pointer-events:none;opacity:0;transition:opacity .3s,transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);white-space:normal;max-width:calc(100vw - 40px);text-align:center;word-break:break-all;z-index:999;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* BOTTOM BAR */
+.bbar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);border-top:1px solid var(--border);padding:12px 18px;display:flex;gap:12px;backdrop-filter:blur(16px);z-index:200;box-shadow:0 -4px 15px rgba(0,0,0,.04);max-width:480px;margin:0 auto;right:max(0px,calc((100vw - 480px)/2));left:max(0px,calc((100vw - 480px)/2))}
+.bc{flex:1;padding:12px;border-radius:12px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.bc:active{transform:scale(.96);background:var(--bg4)}
+.bc.primary{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 4px 6px rgba(59,130,246,.25)}
+.bc.primary:active{background:#2563eb;box-shadow:0 2px 4px rgba(59,130,246,.25)}
+.bbar{padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));}
+.bc{min-height:48px}
+
+/* LOADER / EMPTY */
+#loader{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:16px}
+.ring{width:40px;height:40px;border:3px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lt{font-family:var(--mono);font-size:11px;color:var(--text2);letter-spacing:.1em;font-weight:600}
+#empty{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;gap:12px;padding:30px}
+#empty.show{display:flex}
+
+/* ANIMATIONS */
+.fi{animation:fi .4s cubic-bezier(0.16, 1, 0.3, 1) both}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fi1{animation-delay:.05s}.fi2{animation-delay:.10s}.fi3{animation-delay:.15s}
+.fi4{animation-delay:.20s}.fi5{animation-delay:.25s}.fi6{animation-delay:.30s}
+
+/* DEVIL'S ADVOCATE */
+.g11-panel{margin:0 14px 10px;background:var(--short2);border:1px solid rgba(239,68,68,.2);border-radius:var(--r);padding:12px 16px;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.g11-panel.pass{background:var(--long2);border-color:rgba(16,185,129,.2)}
+.g11-row{display:flex;justify-content:space-between;align-items:center}
+.g11-lbl{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
+.g11-val{font-family:var(--mono);font-size:14px;font-weight:700}
+.g11-val.pass{color:var(--long)}.g11-val.fail{color:var(--short)}
+.g11-note{font-family:var(--sans);font-size:11px;color:var(--text2);margin-top:6px;line-height:1.5}
+
+/* FINGERPRINT MEMORY */
+.fp-row{margin:0 14px 6px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}
+.fp-lbl{font-family:var(--mono);font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;flex:1;font-weight:600}
+.fp-val{font-family:var(--mono);font-size:13px;font-weight:700}
+.fp-val.high{color:var(--long)}.fp-val.low{color:var(--short)}.fp-val.mid{color:var(--amber)}
+.fp-n{font-family:var(--mono);font-size:10px;color:var(--text3);font-weight:500}
+
+/* CROWD SOCIAL PROOF */
+.crowd-row{margin:0 14px 6px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+.crowd-lbl{font-family:var(--mono);font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.crowd-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.crowd-fill{height:100%;background:var(--long);border-radius:3px;transition:width .8s cubic-bezier(.34,1.56,.64,1) .2s}
+.crowd-pct{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--long)}
+
+/* TRADE JOURNAL */
+.jrnl-drawer{margin:10px 14px;border-radius:var(--r2);border:1px solid var(--border);background:var(--bg);overflow:hidden;box-shadow:var(--shadow)}
+.jrnl-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;background:var(--bg2);border-bottom:1px solid var(--border);transition:background .2s}
+.jrnl-hdr:hover{background:var(--bg3)}
+.jrnl-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.05em;text-transform:uppercase}
+.jrnl-toggle{font-family:var(--mono);font-size:11px;color:var(--blue);font-weight:700}
+.jrnl-body{display:none;padding:16px 18px}
+.jrnl-body.open{display:block}
+.jrnl-btns{display:flex;gap:8px;margin-bottom:12px}
+.jb{flex:1;padding:10px 6px;border-radius:8px;border:1px solid var(--border2);background:var(--bg);font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;text-align:center;transition:all .2s;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.jb.active-took{background:var(--long2);color:var(--long);border-color:rgba(16,185,129,.4);box-shadow:inset 0 1px 3px rgba(16,185,129,.1)}
+.jb.active-skip{background:var(--bg3);color:var(--text2);border-color:var(--border2);box-shadow:inset 0 1px 3px rgba(0,0,0,.05)}
+.jrnl-outcomes{display:none;flex-direction:column;gap:8px}
+.jrnl-outcomes.show{display:flex}
+.job{padding:10px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--bg);font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s}
+.job:hover{background:var(--bg3);transform:translateY(-1px);box-shadow:0 2px 4px rgba(0,0,0,.05)}
+.jrnl-sent{display:none;padding:10px;background:var(--long2);border-radius:8px;font-family:var(--sans);font-size:12px;color:var(--long);text-align:center;font-weight:600;margin-top:10px}
+.jrnl-sent.show{display:block;animation:fi .3s ease}
+
+/* PCA SCATTER */
+.pca-wrap{margin:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow);padding:14px}
+#pca-cv{display:block;width:100%;height:180px;border-radius:8px;border:1px solid var(--border)}
+.pca-legend{display:flex;gap:14px;padding:10px 0 0;flex-wrap:wrap;justify-content:center}
+.pca-li{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--text2);font-weight:500}
+.pca-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* DARK MODE OVERRIDES */
+body.dark-mode {
+  --bg: #0f172a; --bg2: #1e293b; --bg3: #334155; --bg4: #475569;
+  --border: #334155; --border2: #475569;
+  --long: #10b981; --long2: rgba(16,185,129,0.15); --short: #ef4444; --short2: rgba(239,68,68,0.15);
+  --amber: #f59e0b; --amberBg: rgba(245,158,11,0.15); --blue: #3b82f6; --cyan: #06b6d4;
+  --text: #f8fafc; --text1: #f1f5f9; --text2: #94a3b8; --text3: #64748b;
+  --card: #1e293b;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+}
+body.dark-mode .hdr{background:rgba(15,23,42,.92)}
+body.dark-mode .bbar{background:rgba(15,23,42,.95);border-top-color:var(--border)}
+body.dark-mode .toast{background:var(--text1);color:#0f172a}
+body.dark-mode .calc-input{background:var(--bg3);color:var(--text);border-color:var(--border2)}
+body.dark-mode .jb, body.dark-mode .job{background:var(--bg3);color:var(--text2);border-color:var(--border)}
+body.dark-mode #ict-wrap{background:#0b1120}
+body.dark-mode .db-log{background:#0b1120}
+body.dark-mode .mc{background:var(--bg2)}
+
+/* MARKOV INTELLIGENCE (V3) PANEL */
+.mi-panel{padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);margin:0 14px 10px;box-shadow:var(--shadow)}
+.mi-chain-wrap{margin-bottom:12px}
+.mi-chain-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.mi-chain-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;min-width:28px;font-weight:600;font-family:var(--mono)}
+.mi-chip{display:inline-block;font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;color:#fff;letter-spacing:.02em;font-family:var(--mono);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.mi-arrow{color:var(--text3);font-size:14px;padding:0 4px;font-weight:700}
+.mi-cwr{font-size:12px;margin-left:8px;font-weight:700;font-family:var(--sans)}
+.mi-sc-wrap{display:flex;align-items:center;gap:8px;margin:10px 0;background:var(--bg2);padding:8px 12px;border-radius:8px;border:1px solid var(--border)}
+.mi-sc-lbl{font-size:10px;color:var(--text2);min-width:60px;text-transform:uppercase;letter-spacing:.05em;font-weight:600;font-family:var(--mono)}
+.mi-sc-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.mi-sc-fill{height:100%;border-radius:4px;transition:width .5s}
+.mi-sc-val{font-size:12px;font-weight:700;min-width:44px;text-align:right;font-family:var(--mono)}
+.mi-rg{font-size:11px;color:var(--amber);background:var(--amberBg);border-radius:8px;padding:8px 12px;margin:8px 0;font-family:var(--sans);font-weight:500;line-height:1.4}
+.mi-wr-title{font-size:11px;text-transform:uppercase;color:var(--text2);letter-spacing:.05em;margin:12px 0 6px;font-weight:700;font-family:var(--mono)}
+.mi-wr-grid{display:flex;flex-direction:column;gap:5px}
+.mi-wr-row{display:flex;align-items:center;gap:8px}
+.mi-wr-lbl{font-size:11px;color:var(--text1);min-width:85px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--mono);font-weight:500}
+.mi-wr-bar-wrap{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.mi-wr-bar{height:100%;border-radius:3px;transition:width .4s}
+.mi-wr-pct{font-size:11px;font-weight:700;min-width:32px;text-align:right;font-family:var(--mono)}
+.mi-wr-n{font-size:10px;color:var(--text3);min-width:24px;text-align:right;font-family:var(--mono)}
+.mi-empty{font-size:12px;color:var(--text3);padding:6px 0;font-style:italic}
+.mi-sess-wrap{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.mi-sess-cell{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:90px;flex:1}
+.mi-sess-name{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);font-family:var(--mono);font-weight:600}
+.mi-sess-state{display:block;font-size:11px;font-weight:700;margin:3px 0;font-family:var(--mono)}
+.mi-sess-wr{font-size:13px;font-weight:800;font-family:var(--mono)}
+.mi-be{font-size:12px;background:var(--amberBg);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:10px 12px;margin-top:10px;line-height:1.6;font-family:var(--sans)}
+.mi-be-active{background:var(--long2);border-color:rgba(16,185,129,.3)}
+.mi-be-tag{font-size:9px;background:var(--amber);color:#fff;border-radius:4px;padding:2px 6px;font-weight:700;margin-left:6px;font-family:var(--mono)}
+.mi-be-active .mi-be-tag{background:var(--long)}
+.mi-trail{font-size:11px;color:var(--text2);display:block;margin-top:4px}
+.mi-fib{font-size:12px;margin-top:10px;line-height:1.7;font-family:var(--sans);background:var(--bg2);padding:10px 12px;border-radius:8px;border:1px solid var(--border)}
+.mi-fib-tp{font-weight:700;color:var(--long);font-family:var(--mono)}
+.mi-fib-lbl{font-size:10px;color:var(--text2);font-family:var(--mono);background:var(--bg3);padding:2px 4px;border-radius:4px}
+.mi-fib-atr{font-size:10px;color:var(--text3);margin-left:6px;font-family:var(--mono)}
+.mi-ce{font-size:12px;margin-top:8px;color:var(--blue);background:#eff6ff;border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:10px 12px;font-family:var(--sans)}
+body.dark-mode .mi-ce{background:rgba(59,130,246,.1);color:#60a5fa}
+
+/* SUPER MARKOV 5-BRAIN */
+.sm-panel{margin:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;box-shadow:var(--shadow)}
+.sm-verdict{font-family:var(--sans);font-size:13px;font-weight:700;padding:8px 12px;border-radius:8px;margin-bottom:12px;line-height:1.5}
+.sm-confirmed{background:var(--long2);color:var(--long);border:1px solid rgba(16,185,129,.3)}
+.sm-vetoed{background:var(--short2);color:var(--short);border:1px solid rgba(239,68,68,.3)}
+.sm-positive{background:rgba(6,182,212,.1);color:var(--cyan);border:1px solid rgba(6,182,212,.3)}
+.sm-weak{background:var(--amberBg);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.sm-neutral{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.sm-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border)}
+.sm-row:last-child{border-bottom:none}
+.sm-lbl{font-family:var(--mono);font-size:11px;color:var(--text2);font-weight:500}
+.sm-brain{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.sm-b{font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-weight:600}
+.sm-b.up{background:var(--long2);color:var(--long);border-color:rgba(16,185,129,.3)}
+.sm-b.dn{background:var(--short2);color:var(--short);border-color:rgba(239,68,68,.3)}
+.sm-b.mid{background:var(--amberBg);color:var(--amber);border-color:rgba(245,158,11,.3)}
+
+/* LEVEL LEARNER */
+.ll-panel{margin:0 14px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}
+.ll-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ll-lbl{font-family:var(--mono);font-size:10px;color:var(--text2);flex-shrink:0;font-weight:600;text-transform:uppercase}
+.ll-val{font-family:var(--mono);font-size:13px;font-weight:700}
+.ll-val.none{color:var(--text3)}.ll-val.low{color:var(--amber)}.ll-val.medium{color:var(--cyan)}.ll-val.high{color:var(--long)}
+.ll-note{font-family:var(--sans);font-size:11px;color:var(--text2);margin-top:6px;line-height:1.4}
+.ll-bar{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin:0 10px}
+.ll-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--long));border-radius:2px;transition:width .8s cubic-bezier(.34,1.56,.64,1) .2s}
+
+/* FLASH WARNING */
+.flash-warn{margin:6px 14px;padding:10px 14px;background:var(--amberBg);border:1px solid rgba(245,158,11,.4);border-radius:var(--r);font-family:var(--sans);font-size:12px;color:var(--amber);font-weight:700;display:flex;align-items:center;gap:8px}
+
+/* MARKOV ADJ PROB */
+.map-badge{margin:0 14px 8px;padding:10px 16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
+.map-lbl{font-family:var(--mono);font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.map-val{font-family:var(--mono);font-size:15px;font-weight:700}
+.map-val.high{color:var(--long)}.map-val.moderate{color:var(--amber)}.map-val.low{color:var(--short)}
+
+/* LIQUIDATION HEATMAP */
+.lhp{padding:14px 16px;display:flex;flex-direction:column;gap:8px;background:var(--bg);margin:0 14px;border:1px solid var(--border);border-radius:var(--r2);box-shadow:var(--shadow)}
+.lh-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-family:var(--mono);font-weight:700;letter-spacing:.05em;padding:4px 10px;border-radius:12px;background:var(--bg3);color:var(--text2);margin-bottom:6px;align-self:flex-start}
+.lh-badge.real{background:var(--long2);color:var(--long);border:1px solid rgba(16,185,129,.2)}
+.lh-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px dashed var(--border)}
+.lh-row:last-child{border-bottom:none}
+.lh-tag{font-size:10px;font-weight:700;letter-spacing:.05em;min-width:76px;padding:4px 8px;border-radius:6px;text-align:center;font-family:var(--mono)}
+.lh-tag.ls{background:var(--short2);color:var(--short);border:1px solid rgba(239,68,68,.2)}
+.lh-tag.ll{background:var(--long2);color:var(--long);border:1px solid rgba(16,185,129,.2)}
+.lh-price{font-size:14px;font-weight:700;font-family:var(--mono);color:var(--text1);cursor:pointer;flex:1;transition:color .2s}
+.lh-price:hover{color:var(--blue)}
+.lh-note{font-size:11px;font-family:var(--sans);color:var(--text3);padding:8px 0 2px;border-top:1px solid var(--border);line-height:1.5;margin-top:4px}
+body.dark-mode .lh-tag.ls{background:rgba(239,68,68,0.1)}
+body.dark-mode .lh-tag.ll{background:rgba(16,185,129,0.1)}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="loader"><div class="ring"></div><div class="lt">LOADING SIGNAL...</div></div>
+  <div id="empty">
+    <div style="font-size:36px;opacity:.4">📡</div>
+    <div style="font-family:var(--sans);font-size:16px;font-weight:600;color:var(--text1)">No Signal Data</div>
+    <div style="font-family:var(--sans);font-size:13px;color:var(--text2);text-align:center;line-height:1.6">Run /analyze in the bot to generate a signal first.</div>
+  </div>
+  <div id="content" style="display:none"></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="bbar">
+  <button class="bc" type="button" onclick="closeApp()">✕ Close</button>
+  <button class="bc" type="button" onclick="refreshView()">↻ Refresh</button>
+  <button class="bc primary" type="button" onclick="shareLevels()">⎘ Copy Levels</button>
+</div>
+<script>
+function escapeHTML(s) {
+  if (s === null || s === undefined) return '';
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+function esc(s) { return escapeHTML(s); } 
+
+const tg = window.Telegram?.WebApp;
+if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#ffffff'); tg.setBackgroundColor('#ffffff'); }
+(function() {
+  function _applyTheme(scheme) {
+    if (!document.body) return;
+    if (scheme === 'dark') document.body.classList.add('dark-mode');
+    else document.body.classList.remove('dark-mode');
+  }
+  _applyTheme(window.Telegram?.WebApp?.colorScheme || 'light');
+  window.Telegram?.WebApp?.onEvent('themeChanged', () =>
+    _applyTheme(window.Telegram?.WebApp?.colorScheme || 'light')
+  );
+})();
+
+const _LS_KEY = 'miq_last_signal';
+const _LS_TTL_MS = 4 * 3600 * 1000; 
+const _TAB_KEY = 'miq_last_tab';
+const _CALC_KEY = 'miq_calc_state';
+const _JRNL_KEY = 'miq_local_journal';
+
+function _readStore(key, fallback=null) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch(_) { return fallback; } }
+function _writeStore(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch(_) {} }
+function _num(v, fb=0) { const n = Number(v); return Number.isFinite(n) ? n : fb; }
+function _clipText(v, max=600) { return String(v ?? '').replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max); }
+function _normSym(v) { return String(v ?? 'BTCUSDT').toUpperCase().replace(/[^A-Z0-9/_-]/g, '') || 'BTCUSDT'; }
+
+function _normalizeSignalPayload(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const d = { ...raw };
+  d.symbol = _normSym(d.symbol);
+  d.bias = _clipText(d.bias, 32);
+  d.grade = _clipText(d.grade, 4) || '?';
+  d.signal_state = _clipText(d.signal_state, 16) || 'BLOCKED';
+  ['conf','price','rr','ote_entry','entry_low','entry_high','tp1','tp2','tp3','sl1','sl2','sl3','inv_sl','inv','ote_zone_high','ote_zone_low','ob_high','ob_low','fvg_high','fvg_low','bos_price','atr_pct','signal_ts'].forEach(k => { if (k in d) d[k] = _num(d[k], 0); });
+  d.gate_pass = Array.isArray(d.gate_pass) ? d.gate_pass.slice(0, 20).map(Boolean) : [];
+  d.hmm_data = (d.hmm_data && typeof d.hmm_data === 'object') ? d.hmm_data : {};
+  d.hmm_data.hmm_state = _clipText(d.hmm_data.hmm_state || 'RANGE', 24);
+  d.hmm_data.hmm_confidence_pct = _clipText(d.hmm_data.hmm_confidence_pct || '50%', 16);
+  d.hmm_data.hmm_path = Array.isArray(d.hmm_data.hmm_path) ? d.hmm_data.hmm_path.map(x => _clipText(x, 24)).slice(-12) : [];
+  d.hmm_data.hmm_path_str = _clipText(d.hmm_data.hmm_path_str || '', 500);
+  d.signal_probability_data = (d.signal_probability_data && typeof d.signal_probability_data === 'object') ? d.signal_probability_data : {};
+  d.signal_probability_data.signal_probability_pct = _clipText(d.signal_probability_data.signal_probability_pct || '--', 16);
+  d.signal_probability_data.probability_tier = _clipText(d.signal_probability_data.probability_tier || 'LOW', 16);
+  d.oce_eval = (d.oce_eval && typeof d.oce_eval === 'object') ? d.oce_eval : {};
+  d.oce_eval.eval_gate = _clipText(d.oce_eval.eval_gate || '', 120);
+  d.oce_eval.eval_score = _clipText(d.oce_eval.eval_score || '', 120);
+  d.oce_eval.epistemic_label = _clipText(d.oce_eval.epistemic_label || '', 200);
+  d.oce_audit = (d.oce_audit && typeof d.oce_audit === 'object') ? d.oce_audit : {};
+  d.oce_brvf = (d.oce_brvf && typeof d.oce_brvf === 'object') ? d.oce_brvf : {};
+  d.oce_gaps = Array.isArray(d.oce_gaps) ? d.oce_gaps.slice(0, 12).map(g => ({ source: _clipText(g?.source || '', 40), quality: _clipText(g?.quality || '', 16), note: _clipText(g?.note || '', 180) })) : [];
+  d.markov_data = (d.markov_data && typeof d.markov_data === 'object') ? d.markov_data : {};
+  d.markov_validation = (d.markov_validation && typeof d.markov_validation === 'object') ? d.markov_validation : {};
+  return d;
+}
+
+function _saveSignalCache(raw) { try { const data = _normalizeSignalPayload(raw); if (!data) return; localStorage.setItem(_LS_KEY, JSON.stringify({ data, saved_at: Date.now() })); } catch(e) {} }
+function _loadSignalCache() { try { const s = localStorage.getItem(_LS_KEY); if (!s) return null; const wrapper = JSON.parse(s); if (wrapper && wrapper.saved_at && (Date.now() - wrapper.saved_at) > _LS_TTL_MS) { localStorage.removeItem(_LS_KEY); return null; } return _normalizeSignalPayload((wrapper && wrapper.data) ? wrapper.data : wrapper); } catch(e) { return null; } }
+
+function getSignal() {
+  try {
+    const r = new URLSearchParams(location.search).get('d');
+    if (!r) return _loadSignalCache();
+    let b64 = decodeURIComponent(r).replace(/-/g, '+').replace(/_/g, '/');
+    const pad = b64.length % 4;
+    if (pad === 2) b64 += '=='; else if (pad === 3) b64 += '=';
+    let jsonStr;
+    try { jsonStr = atob(b64); } catch(_b64e) { const note = document.querySelector('#empty div:last-child'); if (note) note.textContent = 'Decode error: ' + _b64e.message; return null; }
+    jsonStr = jsonStr.replace(/[\u0000-\u001F\u007F\u0080-\u009F]/g, '');
+    const raw = JSON.parse(jsonStr);
+    const isSlim = ('state' in raw) || ('gp' in raw) || ('hmm' in raw);
+    if (!isSlim) { const normalized = _normalizeSignalPayload(raw); _saveSignalCache(normalized); return normalized; }
+    const h = raw.hmm || {}, sp = raw.sp || {}, ev = raw.ev || {}, au = raw.au || {}, bv = raw.bv || {}, gaps = (raw.gaps || []).map(g => ({ source: g.s || '', quality: g.q || '', note: g.n || '' }));
+    const decoded = {
+      symbol: raw.symbol, bias: raw.bias, grade: raw.grade, conf: raw.conf, price: raw.price, signal_state: raw.state, rr: raw.rr, ote_entry: raw.oe, entry_low: raw.el, entry_high: raw.eh, tp1: raw.tp1, tp2: raw.tp2, tp3: raw.tp3, sl1: raw.sl1, inv_sl: raw.inv, sl2: raw.sl2, sl3: raw.sl3, ote_zone_high: raw.ozh, ote_zone_low: raw.ozl, ob_high: raw.obh, ob_low: raw.obl, fvg_high: raw.fvh, fvg_low: raw.fvl, bos_price: raw.bos, choch: raw.choch, bias_tf: raw.btf, ref_tf: raw.rtf, exec_tf: raw.etf, trader_type: raw.tt, chart_tf: raw.ctf, gate_pass: raw.gp || [], signal_probability_data: { signal_probability_pct: sp.pct || '--', probability_tier: sp.tier || 'LOW' }, hmm_data: { hmm_state: h.st || 'RANGE', hmm_confidence: 0.5, hmm_confidence_pct: h.cp || '50%', hmm_path: h.p || [], hmm_path_str: h.ps || '' }, oce_eval: { eval_gate: ev.g || '', eval_score: ev.sc || '', epistemic_label: ev.el || '' }, oce_audit: { audit_result: au.r || '', d1_functional: au.d1 || '', d2_ux: au.d2 || '', d3_qa: au.d3 || '' }, oce_brvf: { brvf_status: bv.s || '', brvf_fixes: bv.f || [] }, oce_gaps: gaps, signal_ts: raw.signal_ts || null, markov_data: raw.markov_data || {}, markov_validation: raw.markov_validation || {}, markov_state: raw.markov_state || '', markov_effective_n: raw.markov_effective_n || 0,
+    };
+    const normalized = _normalizeSignalPayload(decoded);
+    _saveSignalCache(normalized); return normalized;
+  } catch(e) { const note = document.querySelector('#empty div:last-child'); if (note) note.textContent = 'Decode error: ' + e.message; return null; }
+}
+
+function fp(v) {
+  if (v === null || v === undefined || v === '') return '--';
+  const f = parseFloat(v); if (isNaN(f) || f === 0) return '--';
+  if (f >= 10000) return '$' + f.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  if (f >= 100) return '$' + f.toFixed(2);
+  if (f >= 1) return '$' + f.toFixed(4);
+  if (f >= 0.01) return '$' + f.toFixed(5);
+  return '$' + f.toFixed(8);
+}
+
+function cpy(v) {
+  navigator.clipboard?.writeText(v).catch(()=>{});
+  if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+  toast('Copied: ' + v);
+}
+function toast(m, dur=1800) {
+  const el = document.getElementById('toast'); if (!el) return;
+  el.textContent = m; el.classList.add('show');
+  clearTimeout(el._t); el._t = setTimeout(()=>el.classList.remove('show'), dur);
+}
+function closeApp() { if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); if (tg) tg.close(); else window.history.back(); }
+function togglePipe(id) {
+  const d=document.getElementById('pd-'+id), r=document.getElementById('pr-'+id); if (!d||!r) return;
+  if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+  d.classList.toggle('open'); r.classList.toggle('expanded');
+}
+
+async function shareLevels() {
+  const s = window._sig; if (!s) return;
+  const sym = (s.symbol||'BTC').replace('USDT','') + '/USDT';
+  const dir = s.isLong ? 'LONG' : 'SHORT';
+  const now = new Date();
+  const phtStr = now.toLocaleString('en-US', { timeZone: 'Asia/Manila', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) + ' PHT';
+  const lines = [
+    `${sym} ${dir}`, `Grade ${s.grade}`, `Entry : ${fp(s.entry_mid)}`, `OTE: ${fp(s.ote_zone_low)}-${fp(s.ote_zone_high)}`,
+    `TP1   : ${fp(s.tp1)}`, `TP2   : ${fp(s.tp2)}`, `TP3   : ${fp(s.tp3)}`, `SL1   : ${fp(s.sl1||s.inv)}`, s.sl2 ? `SL2   : ${fp(s.sl2)}` : null, `R:R   : 1:${parseFloat(s.rr||0).toFixed(2)}`, `SPECIFIC PHILIPPINE TIME ENTRY: ${phtStr}`,
+  ].filter(Boolean).join('\n');
+  const ok = await navigator.clipboard?.writeText(lines).catch(()=>{});
+  if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+  toast('All levels copied!', 2200);
+}
+
+function _startAgeBadge(signalTs) {
+  const el = document.getElementById('age-badge'); if (!el) return;
+  function update() {
+    if (!signalTs) { el.textContent='—'; el.className='age-badge age-fresh'; return; }
+    const mins = Math.floor((Date.now()-signalTs)/60000);
+    if (mins<1) { el.textContent='Just now'; el.className='age-badge age-fresh'; }
+    else if (mins<15) { el.textContent=mins+'m ago'; el.className='age-badge age-fresh'; }
+    else if (mins<30) { el.textContent='⚠ '+mins+'m ago'; el.className='age-badge age-warn'; }
+    else { el.textContent='🔴 STALE '+mins+'m'; el.className='age-badge age-stale'; }
+  }
+  update(); setInterval(update, 60000);
+}
+
+let _invFired = false;
+function _checkInv(px) {
+  const s = window._sig; if (!s || _invFired) return;
+  const inv = s.sl1||s.inv; if (!inv) return;
+  const breached = s.isLong ? px < inv : px > inv;
+  if (breached) {
+    _invFired = true; const h = document.getElementById('hero-card'); if (h) h.classList.add('inv-breach');
+    toast('PRICE CROSSED INVALIDATION - Signal may be void', 4000);
+    if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+  }
+}
+
+let _calcMode = 'risk';
+function _saveCalcPrefs() { _writeStore(_CALC_KEY, { mode: _calcMode, acct: _num(document.getElementById('calc-acct')?.value, 1000), risk: Math.min(100, Math.max(0.1, _num(document.getElementById('calc-risk')?.value, 1))), fixed: Math.max(1, _num(document.getElementById('calc-fixed')?.value, 10)) }); }
+function _loadCalcPrefs() {
+  const prefs = _readStore(_CALC_KEY, {}); if (!prefs || typeof prefs !== 'object') return;
+  if (prefs.mode === 'fixed' || prefs.mode === 'risk') _calcMode = prefs.mode;
+  const acct = document.getElementById('calc-acct'), risk = document.getElementById('calc-risk'), fixed = document.getElementById('calc-fixed');
+  if (acct && prefs.acct) acct.value = String(Math.max(1, _num(prefs.acct, 1000)));
+  if (risk && prefs.risk) risk.value = String(Math.min(100, Math.max(0.1, _num(prefs.risk, 1))));
+  if (fixed && prefs.fixed) fixed.value = String(Math.max(1, _num(prefs.fixed, 10)));
+}
+function initCalc() {
+  _loadCalcPrefs();
+  document.getElementById('calc-mode-risk')?.addEventListener('click',()=>{ _calcMode='risk'; _syncCalcMode(); _saveCalcPrefs(); updateCalc(); });
+  document.getElementById('calc-mode-fixed')?.addEventListener('click',()=>{ _calcMode='fixed'; _syncCalcMode(); _saveCalcPrefs(); updateCalc(); });
+  ['calc-acct','calc-risk','calc-fixed'].forEach(id => { document.getElementById(id)?.addEventListener('input', () => { _saveCalcPrefs(); updateCalc(); }); });
+  _syncCalcMode(); updateCalc();
+}
+function _syncCalcMode() {
+  document.getElementById('calc-mode-risk')?.classList.toggle('active',_calcMode==='risk');
+  document.getElementById('calc-mode-fixed')?.classList.toggle('active',_calcMode==='fixed');
+  const rr=document.getElementById('calc-risk-row'), fr=document.getElementById('calc-fixed-row');
+  if(rr) rr.style.display=_calcMode==='risk'?'':'none'; if(fr) fr.style.display=_calcMode==='fixed'?'':'none';
+}
+function updateCalc() {
+  const s=window._sig; if(!s) return; const entry=s.entry_mid||0, sl=s.sl1||s.inv||0;
+  if(!entry||!sl) { ['calc-r-pos','calc-r-qty','calc-r-risk','calc-r-dist'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.textContent='—'; el.className='calc-result-val'; } }); return; }
+  const dist=Math.abs(entry-sl), distPct=(dist/entry)*100;
+  if(dist < entry * 0.0001) { const el=document.getElementById('calc-r-dist'); if(el){ el.textContent='SL too close to entry'; el.className='calc-result-val warn'; } return; }
+  const acct=parseFloat(document.getElementById('calc-acct')?.value)||1000;
+  const riskUSD=_calcMode==='risk' ? acct*(parseFloat(document.getElementById('calc-risk')?.value)||1)/100 : parseFloat(document.getElementById('calc-fixed')?.value)||10;
+  const posUSD=dist>0?(riskUSD/dist)*entry:0, qty=dist>0?riskUSD/dist:0, rPct=(riskUSD/acct)*100, sym=(s.symbol||'BTC').replace('USDT','');
+  function set(id,val,cls='') { const el=document.getElementById(id); if(el){ el.textContent=val; el.className='calc-result-val'+(cls?' '+cls:''); } }
+  set('calc-r-pos','$'+posUSD.toLocaleString('en-US',{maximumFractionDigits:0}),posUSD>acct?'warn':'ok');
+  set('calc-r-qty',qty.toFixed(qty>=1?3:6)+' '+sym);
+  set('calc-r-risk','$'+riskUSD.toFixed(2),rPct>3?'bad':rPct>1.5?'warn':'ok');
+  set('calc-r-dist','$'+dist.toLocaleString('en-US',{maximumFractionDigits:2})+' ('+distPct.toFixed(2)+'%)');
+}
+function toggleCalc() {
+  const b=document.getElementById('calc-body'), t=document.getElementById('calc-tgl'); if(!b) return;
+  const open=b.classList.toggle('open'); if(t) t.textContent=open?'Hide':'Show'; if(open) updateCalc();
+  if(tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+}
+
+function _ictZoomIn(){ _ictZoom = Math.max(10, Math.round(_ictZoom * 0.75)); if(!_raf)_raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); }
+function _ictZoomOut(){ _ictZoom = Math.min(_cds.length||200, Math.round(_ictZoom * 1.33)); if(!_raf)_raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); }
+function _ictZoomReset(){ _ictZoom=60; _ictZoomOffset=0; if(!_raf)_raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); }
+function _saveTF(tf){ try{ sessionStorage.setItem('miq_tf',tf); }catch(e){} }
+function _loadTF(){ try{ return sessionStorage.getItem('miq_tf')||'4h'; }catch(e){ return '4h'; } }
+
+function switchTab(which) {
+  if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+  try { sessionStorage.setItem(_TAB_KEY, which); } catch(_) {}
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+which)?.classList.add('active');
+  document.querySelectorAll('.cpanel').forEach(p=>p.classList.remove('vis'));
+  document.getElementById(which+'-panel')?.classList.add('vis');
+  if (which==='dash' && window._sig) _ensureDashLive(window._sig, 'tab-open');
+  if (which==='ict' && window._sig) { if (!window._ictInited) initICT(window._sig); else if (!_raf) _raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); }
+  if (which==='tv') { if (window._sig) { const c = document.getElementById('tv-container'); if (c && !c.dataset.loading && !_tvOk) { c.dataset.loading = '1'; c.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:420px;flex-direction:column;gap:10px;font-family:var(--mono);font-size:12px;color:var(--text2)"><div class="ring"></div><div>Loading TradingView…</div></div>'; } initTV(); } else { setTimeout(()=>{ if(window._sig) initTV(); }, 450); } }
+}
+
+function _dashIsLong(d) { return (d.bias||'').toUpperCase().includes('BULL') || (d.bias||'').toUpperCase()==='LONG'; }
+function _dashDistanceLabel(price, level) { const p = Number(price||0), l = Number(level||0); if (!p || !l) return '—'; const pct = ((l - p) / p) * 100; return `${pct > 0 ? '↑' : pct < 0 ? '↓' : '•'} ${Math.abs(pct).toFixed(2)}%`; }
+function _dashInferNextLevel(d) {
+  const px = Number(d.price||0); if (!px) return { label: 'Awaiting live price', value: '—', cls: '' };
+  const isLong = _dashIsLong(d);
+  const levels = [['ENTRY', Number(d.entry_mid || (((+d.entry_low||0) + (+d.entry_high||0)) / 2))],['TP1', Number(d.tp1||0)],['TP2', Number(d.tp2||0)],['TP3', Number(d.tp3||0)],['TP4', Number(d.tp4||0)],['SL', Number(d.sl1 || d.inv_sl || 0)],['INVAL', Number(d.inv_sl || 0)]].filter(([,v]) => v > 0);
+  const candidates = levels.filter(([name, v]) => isLong ? v >= px : v <= px);
+  const picked = candidates.sort((a,b) => Math.abs(a[1]-px) - Math.abs(b[1]-px))[0] || levels.sort((a,b) => Math.abs(a[1]-px) - Math.abs(b[1]-px))[0];
+  if (!picked) return { label: 'Awaiting levels', value: '—', cls: '' };
+  const cls = /^TP/.test(picked[0]) ? 'up' : picked[0].includes('SL') || picked[0]==='INVAL' ? 'dn' : 'am';
+  return { label: picked[0], value: fp(picked[1]) + ' · ' + _dashDistanceLabel(px, picked[1]), cls };
+}
+
+function _dashPredictionData(d) {
+  const raw = d.v96_pred || d.msg1 || d.msg1_text || '';
+  if (raw && typeof raw === 'object') return { scenario: raw.scenario || raw.mode || '', narrative: raw.narrative || raw.text || '', watchPrice: Number(raw.watch_price || raw.watchPrice || 0), watchLabel: raw.watch_label || raw.watchLabel || 'Watch level', target: Number(raw.tp4 || raw.target || raw.htf_tp4_draw || 0), targetLabel: raw.target_label || raw.targetLabel || 'HTF draw', signal: raw.signal || raw.bias || '' };
+  const isLong = _dashIsLong(d), bias = isLong ? 'BULLISH' : 'BEARISH', htf = (d.bias_tf || d.chart_tf || 'HTF').toUpperCase(), exec = (d.exec_tf || d.chart_tf || 'EXEC').toUpperCase();
+  const watchPrice = Number(d.ce_price || d.entry_mid || d.ote_entry || d.entry_low || 0), target = Number(d.tp4 || d.tp3 || 0), hmm = ((d.hmm_data||{}).hmm_state || '').toUpperCase(), choch = d.choch ? 'CHoCH recovery is active.' : 'Watch for confirmation before continuation.';
+  const narrative = typeof raw === 'string' && raw ? raw : `${htf} stays ${bias} while ${exec} handles execution timing. ${hmm ? `Regime is ${hmm}. ` : ''}${watchPrice ? `Primary watch level is ${fp(watchPrice)} for re-entry acceptance. ` : ''}${target ? `Runner draw extends toward ${fp(target)}. ` : ''}${choch}`;
+  return { scenario: htf === exec ? 'ALIGNED' : 'HTF CONTEXT', narrative, watchPrice, watchLabel: 'Watch level', target, targetLabel: 'HTF draw', signal: bias };
+}
+
+function _dashEnhancedData(d) {
+  const raw = d.v96_tpsl || d.msg5 || d.msg5_text || '', entryRaw = d.v96_entry || {};
+  const cePrice = Number((entryRaw && typeof entryRaw === 'object' ? (entryRaw.ce_price || entryRaw.limit || entryRaw.mid || 0) : 0) || d.ce_price || ((d.enh_fvg_ce||{}).ce_price) || 0);
+  const zoneLow = Number((entryRaw && typeof entryRaw === 'object' ? (entryRaw.zone_low || entryRaw.entry_low || 0) : 0) || d.entry_low || ((d.enh_fvg_ce||{}).entry_low_ce) || 0);
+  const zoneHigh = Number((entryRaw && typeof entryRaw === 'object' ? (entryRaw.zone_high || entryRaw.entry_high || 0) : 0) || d.entry_high || ((d.enh_fvg_ce||{}).entry_high_ce) || 0);
+  const slPrice = Number((raw && typeof raw === 'object' ? (raw.enhanced_sl || raw.sl || raw.final_sl || 0) : 0) || ((d.enh_be_sl||{}).be_sl_price) || d.sl1 || d.inv_sl || 0);
+  const tp4 = Number((raw && typeof raw === 'object' ? (raw.tp4 || raw.target || 0) : 0) || d.tp4 || 0);
+  const slRule = (raw && typeof raw === 'object' ? (raw.rule || raw.sl_rule || '') : '') || (((d.enh_be_sl||{}).be_sl_valid) ? 'Adaptive BE anchor' : 'Primary invalidation');
+  const note = typeof raw === 'string' && raw ? raw : `${cePrice ? `Precision entry centers on ${fp(cePrice)}. ` : ''}${zoneLow && zoneHigh ? `Active zone is ${fp(zoneLow)} to ${fp(zoneHigh)}. ` : ''}${tp4 ? `Runner target extends to ${fp(tp4)}. ` : ''}${slPrice ? `Risk stays anchored at ${fp(slPrice)}.` : ''}`.trim();
+  return { cePrice, zoneLow, zoneHigh, slPrice, tp4, slRule, note };
+}
+
+function buildPredictionPanel(d) {
+  const pred = _dashPredictionData(d);
+  return `<div class="db-section">
+    <div class="db-sec-title">🔮 HTF Prediction & Context</div>
+    <div class="db-live-pill"><span class="dot"></span><span>${esc(pred.scenario || 'LIVE CONTEXT')} · ${esc(pred.signal || 'BIAS')}</span></div>
+    <div class="db-callout" style="margin-top:12px">
+      <div class="db-callout-title">Narrative</div>
+      <div class="db-callout-body">${esc(pred.narrative || 'No forward context available yet.')}</div>
+    </div>
+    <div class="db-mini-grid">
+      <div class="db-callout"><div class="db-callout-title">${esc(pred.watchLabel || 'Watch level')}</div><div class="db-kv"><span class="db-kv-k">Level</span><span class="db-kv-v am">${pred.watchPrice ? fp(pred.watchPrice) : '—'}</span></div></div>
+      <div class="db-callout"><div class="db-callout-title">${esc(pred.targetLabel || 'HTF draw')}</div><div class="db-kv"><span class="db-kv-k">Target</span><span class="db-kv-v up">${pred.target ? fp(pred.target) : '—'}</span></div></div>
+    </div>
+  </div>`;
+}
+
+function buildEnhancedLevelsPanel(d) {
+  const x = _dashEnhancedData(d);
+  return `<div class="db-section">
+    <div class="db-sec-title">🎯 Enhanced Levels</div>
+    <div class="db-mini-grid">
+      <div class="db-callout"><div class="db-callout-title">Precision Entry</div><div class="db-kv"><span class="db-kv-k">Limit</span><span class="db-kv-v am">${x.cePrice ? fp(x.cePrice) : '—'}</span></div><div class="db-kv"><span class="db-kv-k">Zone</span><span class="db-kv-v">${x.zoneLow && x.zoneHigh ? `${fp(x.zoneLow)} → ${fp(x.zoneHigh)}` : '—'}</span></div></div>
+      <div class="db-callout"><div class="db-callout-title">Risk & Runner</div><div class="db-kv"><span class="db-kv-k">TP4</span><span class="db-kv-v up">${x.tp4 ? fp(x.tp4) : '—'}</span></div><div class="db-kv"><span class="db-kv-k">Enhanced SL</span><span class="db-kv-v dn">${x.slPrice ? fp(x.slPrice) : '—'}</span></div></div>
+    </div>
+    <div class="db-note"><strong>Rule:</strong> ${esc(x.slRule || 'Primary invalidation')}<br>${esc(x.note || '')}</div>
+  </div>`;
+}
+
+function _ensureDashLive(d, reason='sync') {
+  const el = document.getElementById('dash-inner'); if (!el) return;
+  if (!el.dataset.built) { el.innerHTML = buildDashboard(d); el.dataset.built = '1'; }
+  updateDashboard(d, reason);
+  if (!_dashBooted) { _dashBooted = true; _startDashLog(d); }
+}
+
+function _setText(id, text, cls='') { const el = document.getElementById(id); if (el) { el.textContent = text; if (cls !== null) el.className = ('db-val ' + cls).trim(); } }
+
+function updateDashboard(d, reason='tick') {
+  if (!d) return;
+  const isLong = _dashIsLong(d), conf = Math.round(Number(d.conf||0)), rr = Number(d.rr||0), gp = Array.isArray(d.gate_pass) ? d.gate_pass : [], gc = gp.filter(Boolean).length;
+  const state = (d.signal_state||'BLOCKED').toUpperCase(), stateIcon = {ACTIVE:'🟢',DEFERRED:'🟡',BLOCKED:'🔴',INVALIDATED:'⛔'}[state]||'⚪', grade = d.grade || '?', atr = Number(d.atr_pct||0), price = Number(d.price||0);
+  const sym = ((d.symbol||'').replace('USDT','') || 'BTC') + '/USDT', next = _dashInferNextLevel(d);
+  _setText('dash-symbol', sym); _setText('dash-direction', isLong ? 'LONG ▲' : 'SHORT ▼', isLong ? 'up' : 'dn'); _setText('dash-state', `${stateIcon} ${state}`);
+  _setText('dash-grade', grade, ({S:'up',A:'up',B:'am',C:'',D:'dn',F:'dn'}[grade]||'')); _setText('dash-prob', `${(d.signal_probability_data||{}).signal_probability_pct||'--'} · ${((d.signal_probability_data||{}).probability_tier||'LOW').toUpperCase()}`);
+  _setText('dash-atr', `${atr.toFixed(2)}% · ${atr > 3 ? '🔴 HIGH' : atr > 1.5 ? '🟡 MOD' : '🟢 LOW'}`); _setText('dash-live', price ? fp(price) : '—', isLong ? 'up' : 'dn');
+  _setText('dash-live-age', new Date().toLocaleTimeString('en-US', {hour12:false}), ''); _setText('dash-next-label', next.label, null); _setText('dash-next-value', next.value, next.cls || '');
+  const confBar = document.getElementById('dash-conf-fill'); if (confBar) { confBar.style.width = `${Math.min(100, conf)}%`; confBar.className = `db-bar-fill ${conf >= 60 ? 'pass' : conf >= 42 ? 'warn' : 'fail'}`; }
+  const rrBar = document.getElementById('dash-rr-fill'); if (rrBar) { rrBar.style.width = `${Math.min(100, (rr/5)*100)}%`; rrBar.className = `db-bar-fill ${rr >= 2 ? 'pass' : rr >= 1.5 ? 'warn' : 'fail'}`; }
+  const gateBar = document.getElementById('dash-gate-fill'); if (gateBar) { gateBar.style.width = `${Math.round((gc/11)*100)}%`; gateBar.className = `db-bar-fill ${gc >= 8 ? 'pass' : gc >= 6 ? 'warn' : 'fail'}`; }
+  const confNow = document.getElementById('dash-conf-now'); if (confNow) confNow.textContent = `CONF ${conf}%`;
+  const rrNow = document.getElementById('dash-rr-now'); if (rrNow) rrNow.textContent = `R:R ${rr.toFixed(2)}`;
+  const gateNow = document.getElementById('dash-gate-now'); if (gateNow) gateNow.textContent = `GATES ${gc}/11`;
+  const gateGrid = document.getElementById('dash-gate-grid'); if (gateGrid) gateGrid.innerHTML = gp.map((p,i)=>`<div class="db-g"><div class="db-g-dot ${p?'pass':'fail'}"></div><div class="db-g-num">${i+1}</div></div>`).join('');
+  if (reason !== 'tick') { const predWrap = document.getElementById('dash-prediction'); if (predWrap) predWrap.innerHTML = buildPredictionPanel(d); const enhWrap = document.getElementById('dash-enhanced'); if (enhWrap) enhWrap.innerHTML = buildEnhancedLevelsPanel(d); }
+  if (reason === 'tick') { const now = Date.now(); if (!_dashLastTickLogAt || (now - _dashLastTickLogAt) > 12000) { _dashLastTickLogAt = now; _dashLog('LIVE', `Price ${price ? fp(price) : '—'} · ${next.label} ${next.value}`, next.cls === 'dn' ? 'wrn' : 'inf'); } }
+}
+
+let _dashBooted = false, _dashLastTickLogAt = 0, _dashTickRaf = 0, _dashLastDomSyncAt = 0;
+
+function buildDashboard(d) {
+  const isLong = _dashIsLong(d), conf = Math.round(d.conf||0), req = 60, rr = parseFloat(d.rr||0), gp = d.gate_pass||[], gc = gp.filter(Boolean).length;
+  const state = (d.signal_state||'BLOCKED').toUpperCase(), grade = d.grade||'?', bias = isLong ? 'LONG ▲' : 'SHORT ▼', biasC = isLong ? 'up' : 'dn';
+  const sp = d.signal_probability_data||{}, prob = sp.signal_probability_pct||'--', tier = (sp.probability_tier||'LOW').toUpperCase();
+  const ev = d.oce_eval||{}, au = d.oce_audit||{}, br = d.oce_brvf||{}, vl = d.markov_validation||{}, atr = parseFloat(d.atr_pct||0), price = parseFloat(d.price||0);
+  const sym = (d.symbol||'').replace('USDT','') + '/USDT', stateIcon = {ACTIVE:'🟢',DEFERRED:'🟡',BLOCKED:'🔴',INVALIDATED:'⛔'}[state]||'⚪', gradeC = {S:'up',A:'up',B:'am',C:'',D:'dn',F:'dn'}[grade]||'';
+  const confPct = Math.min(100, conf), confCls = conf >= req ? 'pass' : conf >= req*0.7 ? 'warn' : 'fail', rrPct = Math.min(100, (rr/5)*100), rrCls = rr >= 2 ? 'pass' : rr >= 1.5 ? 'warn' : 'fail', gatePct = Math.round((gc/11)*100), gateCls = gc >= 8 ? 'pass' : gc >= 6 ? 'warn' : 'fail';
+  const speedLabel = atr > 3 ? '🔴 HIGH' : atr > 1.5 ? '🟡 MOD' : '🟢 LOW', gateDots = gp.map((p,i)=>`<div class="db-g"><div class="db-g-dot ${p?'pass':'fail'}"></div><div class="db-g-num">${i+1}</div></div>`).join('');
+  const pipeRows = [['Eval Gate', ev.eval_gate||'—', ev.eval_gate==='PASS'?'up':'dn'],['Eval Score', (ev.eval_score||0)+'/100', ev.eval_score>=75?'up':ev.eval_score>=50?'am':'dn'],['Epistemic', ev.epistemic_label||'—', ev.epistemic_label==='VERIFIED'?'up':ev.epistemic_label==='PLAUSIBLE'?'am':'dn'],['Audit', au.audit_result||'—', au.audit_result==='PASS'?'up':String(au.audit_result||'').includes('NOTE')?'am':'dn'],['BRVF', br.brvf_status||'—', String(br.brvf_status||'').includes('PASS')?'up':'am'],['Markov Mod', vl.validator_conf_mod!=null?(vl.validator_conf_mod+'×'):'—', vl.validator_conf_mod>=1?'up':'dn'],['Markov Veto', vl.validator_gate_veto?'⛔ VETO':'✅ OK', vl.validator_gate_veto?'dn':'up']].map(([l,v,c])=>`<div class="db-row"><span class="db-lbl">${esc(l)}</span><span class="db-val ${c}">${esc(String(v))}</span></div>`).join('');
+  const next = _dashInferNextLevel(d);
+  return `
+  <div id="dash-prediction">${buildPredictionPanel(d)}</div>
+  <div id="dash-enhanced">${buildEnhancedLevelsPanel(d)}</div>
+  <div class="db-section"><div class="db-sec-title">⚡ Signal Status</div><div class="db-row"><span class="db-lbl">Symbol</span><span class="db-val" id="dash-symbol">${esc(sym)}</span></div><div class="db-row"><span class="db-lbl">Direction</span><span class="db-val ${biasC}" id="dash-direction">${bias}</span></div><div class="db-row"><span class="db-lbl">State</span><span class="db-val" id="dash-state">${stateIcon} ${state}</span></div><div class="db-row"><span class="db-lbl">Grade</span><span class="db-val ${gradeC}" id="dash-grade">${grade}</span></div><div class="db-row"><span class="db-lbl">Probability</span><span class="db-val" id="dash-prob">${esc(prob)} · ${esc(tier)}</span></div><div class="db-row"><span class="db-lbl">ATR Volatility</span><span class="db-val" id="dash-atr">${atr.toFixed(2)}% · ${speedLabel}</span></div><div class="db-row"><span class="db-lbl">Live Price</span><span class="db-val ${biasC}" id="dash-live">${price ? fp(price) : '—'}</span></div><div class="db-row"><span class="db-lbl">Last Sync</span><span class="db-val" id="dash-live-age">—</span></div><div class="db-row"><span class="db-lbl" id="dash-next-label">${esc(next.label)}</span><span class="db-val ${next.cls||''}" id="dash-next-value">${esc(next.value)}</span></div></div>
+  <div class="db-section"><div class="db-sec-title">📊 Confidence vs Required</div><div class="db-bar-wrap"><div class="db-bar-lbl"><span id="dash-conf-now">CONF ${conf}%</span><span>REQ ${req}%</span></div><div class="db-bar-track"><div class="db-bar-fill ${confCls}" id="dash-conf-fill" style="width:${confPct}%"></div></div></div><div class="db-bar-wrap" style="margin-top:12px"><div class="db-bar-lbl"><span id="dash-rr-now">R:R ${rr.toFixed(2)}</span><span>MIN 1.5</span></div><div class="db-bar-track"><div class="db-bar-fill ${rrCls}" id="dash-rr-fill" style="width:${rrPct}%"></div></div></div><div class="db-bar-wrap" style="margin-top:12px"><div class="db-bar-lbl"><span id="dash-gate-now">GATES ${gc}/11</span><span>MIN 6</span></div><div class="db-bar-track"><div class="db-bar-fill ${gateCls}" id="dash-gate-fill" style="width:${gatePct}%"></div></div></div><div class="db-gate-grid" id="dash-gate-grid">${gateDots}</div></div>
+  <div class="db-section"><div class="db-sec-title">🧠 OCE Pipeline</div>${pipeRows}</div>
+  <div class="db-section"><div class="db-sec-title">📋 Live Signal Log</div><div class="db-log" id="dash-log"></div></div>`;
+}
+
+const _dashLogs = [];
+function _dashLog(tag, msg, cls='inf') {
+  const now = new Date(), ts = now.toTimeString().slice(0,8); _dashLogs.push({ts, tag, msg, cls});
+  const el = document.getElementById('dash-log'); if (!el) return;
+  const row = document.createElement('div'); row.className = 'db-log-row';
+  row.innerHTML = `<span class="db-log-ts">[${ts}]</span><span class="db-log-tag ${cls}">${tag}</span><span class="db-log-msg">${esc(msg)}</span>`;
+  el.appendChild(row); while (el.children.length > 80) el.removeChild(el.firstChild);
+  el.scrollTop = el.scrollHeight;
+}
+
+function _startDashLog(d) {
+  const gp = d.gate_pass||[], gc = gp.filter(Boolean).length, state = (d.signal_state||'BLOCKED').toUpperCase(), conf = Math.round(d.conf||0), bias = (d.bias||'').toUpperCase().includes('BULL') ? 'LONG' : 'SHORT', ev = d.oce_eval||{}, vl = d.markov_validation||{}, next = _dashInferNextLevel(d);
+  setTimeout(()=>_dashLog('INIT', `Signal loaded · ${d.symbol||'—'} · ${bias}`, 'inf'), 100);
+  setTimeout(()=>_dashLog('LIVE', `Dashboard stream armed · next ${next.label} ${next.value}`, 'ok'), 220);
+  setTimeout(()=>_dashLog('GATE', `${gc}/11 gates passed`, gc>=6?'ok':'blk'), 360);
+  setTimeout(()=>_dashLog('CONF', `Confidence ${conf}% · ${conf>=60?'MET':'BELOW'} 60% threshold`, conf>=60?'ok':'wrn'), 520);
+  setTimeout(()=>_dashLog('OCE', `Eval: ${ev.eval_gate||'—'} · ${ev.epistemic_label||'—'}`, ev.eval_gate==='PASS'?'ok':'wrn'), 700);
+  setTimeout(()=>_dashLog('MKV', vl.validator_verdict||'Markov: no data', vl.validator_gate_veto?'blk':'ok'), 900);
+  setTimeout(()=>_dashLog(state, `Signal is ${state}`, state==='ACTIVE'?'ok':state==='DEFERRED'?'wrn':'blk'), 1100);
+}
+
+const GNAMES=['Structure Bias','Imbalance/FVG','OB Entry','Liquidity Sweep','Kill Zone','HTF Align','Market Structure','Volume Profile','R:R Floor','Macro Clear','Devil\'s Advocate'];
+
+/* TRADINGVIEW */
+let _tvOk=false, _tvRetries=0, _tvSigKey='', _restPollTimer=null, _wsBootTimer=null, _restMode=false, _tvScriptLoaded = false;
+function _ensureTvScript(onReady) {
+  if (typeof TradingView !== 'undefined' && TradingView.widget) { onReady(); return; }
+  if (_tvScriptLoaded) { const poll = setInterval(() => { if (typeof TradingView !== 'undefined' && TradingView.widget) { clearInterval(poll); onReady(); } }, 200); return; }
+  _tvScriptLoaded = true; const s = document.createElement('script'); s.src = 'https://s3.tradingview.com/tv.js'; s.onload = () => onReady();
+  s.onerror = () => { _tvScriptLoaded = false; const c = document.getElementById('tv-container'); if (c) c.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:400px;flex-direction:column;gap:8px;font-family:var(--mono);font-size:12px;color:var(--text2)"><div style="font-size:28px;opacity:.4">📺</div><div>TradingView unavailable</div></div>'; };
+  document.head.appendChild(s);
+}
+function _primeTV() { _ensureTvScript(() => {}); }
+
+function initTV() {
+  const sig=window._sig, c=document.getElementById('tv-container'); if(!sig||!c) return;
+  const raw=(sig.symbol||'BTCUSDT').toUpperCase().replace('/','').replace('-',''), tvSym='BINANCE:'+(raw.endsWith('USDT')?raw:raw+'USDT');
+  const tfMap={'1m':'1','5m':'5','15m':'15','15M':'15','30m':'30','1H':'60','1h':'60','2H':'120','2h':'120','4H':'240','4h':'240','6H':'360','12H':'720','1D':'D','1d':'D','1W':'W','1w':'W'};
+  const tf=tfMap[sig.chart_tf||sig.exec_tf||'4h']||'240', key = `${tvSym}|${tf}|${document.body.classList.contains('dark-mode') ? 'dark' : 'light'}`;
+  if (_tvOk && _tvSigKey === key) { c.dataset.loading=''; return; }
+  _tvRetries = 0; _tvOk = false; _tvSigKey = key; c.dataset.loading = '1';
+  _ensureTvScript(() => { requestAnimationFrame(() => { setTimeout(() => { _initTVInner(sig, c, key); }, 0); }); });
+}
+
+function _initTVInner(sig, c, key) {
+  if (typeof TradingView==='undefined' || !TradingView.widget) {
+    if (_tvRetries++ < 10) setTimeout(()=>{ if(document.getElementById('tv-container')) _initTVInner(sig, c, key); }, 350);
+    else { _tvRetries=0; c.dataset.loading=''; c.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:400px;flex-direction:column;gap:8px;font-family:var(--mono);font-size:12px;color:var(--text2)"><div style="font-size:28px;opacity:.4">📺</div><div>TradingView unavailable</div></div>'; }
+    return;
+  }
+  const rect = c.getBoundingClientRect();
+  if (rect.width < 10) { c.style.cssText='width:100%;height:420px;min-height:420px;display:block;'; setTimeout(()=>_initTVInner(sig, c, key), 120); return; }
+  if (_tvOk && _tvSigKey === key) { c.dataset.loading=''; return; }
+  const raw=(sig.symbol||'BTCUSDT').toUpperCase().replace('/','').replace('-',''), tvSym='BINANCE:'+(raw.endsWith('USDT')?raw:raw+'USDT');
+  const tfMap={'1m':'1','5m':'5','15m':'15','15M':'15','30m':'30','1H':'60','1h':'60','2H':'120','2h':'120','4H':'240','4h':'240','6H':'360','12H':'720','1D':'D','1d':'D','1W':'W','1w':'W'};
+  const tf=tfMap[sig.chart_tf||sig.exec_tf||'4h']||'240';
+  c.style.cssText='width:100%;height:420px;min-height:420px;display:block;'; c.innerHTML='';
+  try {
+    new TradingView.widget({ container_id:'tv-container', symbol:tvSym, interval:tf, timezone:'Etc/UTC', theme: document.body.classList.contains('dark-mode') ? 'dark' : 'light', style:'1', locale:'en', toolbar_bg:'#f8fafc', enable_publishing:false, hide_top_toolbar:false, save_image:false, allow_symbol_change:false, hide_side_toolbar:false, autosize:true, studies:['Volume@tv-studyapi'], overrides:{ 'mainSeriesProperties.candleStyle.upColor':'#10b981', 'mainSeriesProperties.candleStyle.downColor':'#ef4444', 'mainSeriesProperties.candleStyle.borderUpColor':'#10b981', 'mainSeriesProperties.candleStyle.borderDownColor':'#ef4444', 'mainSeriesProperties.candleStyle.wickUpColor':'#10b981', 'mainSeriesProperties.candleStyle.wickDownColor':'#ef4444', 'paneProperties.background': document.body.classList.contains('dark-mode') ? '#0f172a' : '#ffffff', 'paneProperties.backgroundType':'solid', 'paneProperties.vertGridProperties.color': document.body.classList.contains('dark-mode') ? '#1e293b' : '#f1f5f9', 'paneProperties.horzGridProperties.color': document.body.classList.contains('dark-mode') ? '#1e293b' : '#f1f5f9', 'scalesProperties.textColor': document.body.classList.contains('dark-mode') ? '#94a3b8' : '#64748b', 'scalesProperties.lineColor': document.body.classList.contains('dark-mode') ? '#334155' : '#e2e8f0' } });
+    _tvOk=true; _tvRetries=0; c.dataset.loading='';
+  } catch(e) { _tvOk=false; c.dataset.loading=''; c.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:420px;flex-direction:column;gap:10px;font-family:var(--mono);font-size:12px;color:var(--text2)"><div style="font-size:32px;opacity:.35">📺</div><div>Chart unavailable</div></div>'; }
+}
+
+/* ICT CANVAS */
+const CC={bg:'#f8fafc',panel:'#f1f5f9',grid:'#e2e8f0',text:'#0f172a',dim:'#64748b',cyan:'#06b6d4',green:'#10b981',red:'#ef4444',amber:'#f59e0b',ma50:'#f59e0b',ma200:'#94a3b8',ote:'#3b82f6',sl2:'#ea580c',sl3:'#991b1b',be:'#64748b',draw:'#10b981',ob:'#d97706',fvg:'#06b6d4',entry:'#10b981',bos:'#10b981',choch:'#ea580c'};
+let _ws=null,_cds=[],_lx=undefined,_raf=null,_cdot=null,_lpx=null,_act='4h',_wsRetries=0;
+const _WS_MAX_RETRIES = 12; window._ictInited=false;
+const TFBIN={'1m':'1m','5m':'5m','15m':'15m','30m':'30m','1h':'1h','4h':'4h','1d':'1d'};
+let _ictZoom=60, _ictZoomOffset=0, _pinchDist0=null, _pinchZoom0=null;
+
+function toBinanceSym(raw) { const s = (raw || 'BTCUSDT').toUpperCase().replace(/[/\-]/g, '').replace(/\s/g, ''), base = s.endsWith('USDT') ? s.slice(0, -4) : s; return (!base || base.length < 2) ? 'BTCUSDT' : base + 'USDT'; }
+async function fetchCDs(sym,tf){ try{ const r=await fetch(`https://api.binance.com/api/v3/klines?symbol=${toBinanceSym(sym)}&interval=${tf}&limit=80`,{cache:'no-cache'}); if(!r.ok) return []; const d=await r.json(); return Array.isArray(d)?d.map(k=>({t:+k[0],o:+k[1],h:+k[2],l:+k[3],c:+k[4],v:+k[5]})):[]; } catch(e){ return []; } }
+function _clearRestPoll(){ if (_restPollTimer) { clearInterval(_restPollTimer); _restPollTimer = null; } }
+async function _pollLastPrice(sym, silent=false){ try { const r = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${toBinanceSym(sym)}`, {cache:'no-cache'}); if (!r.ok) return; const d = await r.json(), px = Number(d?.price || 0); if (!px) return; _restMode = true; const el=document.getElementById('conn-lbl'); if(el) el.textContent='REST LIVE'; if(_cdot) _cdot.className='cdot live'; onTick(px); if (!silent) _dashLog('REST', `Fallback tick ${fp(px)}`, 'wrn'); } catch(_) {} }
+function _startRestPoll(sym){ if (_restPollTimer) return; _pollLastPrice(sym, true); _restPollTimer = setInterval(()=>_pollLastPrice(sym, true), 5000); }
+
+function wsConnect(sym,cb){
+  if(_wsBootTimer){ clearTimeout(_wsBootTimer); _wsBootTimer=null; }
+  if(_ws){ try{ _ws.onclose=null; _ws.close(); }catch(e){} _ws=null; }
+  const ws=new WebSocket(`wss://stream.binance.com:9443/ws/${toBinanceSym(sym).toLowerCase()}@trade`);
+  const el=document.getElementById('conn-lbl'); if(el) el.textContent='Connecting…';
+  _wsBootTimer = setTimeout(() => { if (!_ws || _ws.readyState !== 1) { const label=document.getElementById('conn-lbl'); if (label) label.textContent='REST fallback'; _startRestPoll(sym); } }, 3500);
+  ws.onopen=()=>{ if(_wsBootTimer){ clearTimeout(_wsBootTimer); _wsBootTimer=null; } _wsRetries=0; _restMode=false; _clearRestPoll(); if(_cdot)_cdot.className='cdot live'; const el=document.getElementById('conn-lbl'); if(el)el.textContent='LIVE'; };
+  ws.onmessage=e=>{ try{ const d=JSON.parse(e.data); if(d.p){ _restMode=false; cb(parseFloat(d.p)); } }catch(_){} };
+  ws.onclose=()=>{ if(_wsBootTimer){ clearTimeout(_wsBootTimer); _wsBootTimer=null; } if(_cdot)_cdot.className='cdot'; const el=document.getElementById('conn-lbl'); if(_wsRetries >= _WS_MAX_RETRIES) { if(el) el.textContent='REST MODE'; _startRestPoll(sym); return; } if(el) el.textContent='Reconnecting...'; _startRestPoll(sym); const delay = Math.min(60000, 3000 * Math.pow(1.5, _wsRetries++)); setTimeout(()=>{ if(window._ictInited) wsConnect(sym,cb); }, delay); };
+  ws.onerror=()=>ws.close(); _ws=ws;
+}
+
+function onTick(px){
+  if(_cds.length>0){ const l=_cds[_cds.length-1]; l.c=px; if(px>l.h)l.h=px; if(px<l.l)l.l=px; }
+  if(window._sig) window._sig.price = px; if(_lpx) _lpx.textContent=fp(px); _checkInv(px);
+  if(window._sig){ const now = performance.now ? performance.now() : Date.now(); if ((now - _dashLastDomSyncAt) > 250) { _dashLastDomSyncAt = now; updateDashboard(window._sig, 'tick'); } else if (!_dashTickRaf) { _dashTickRaf = requestAnimationFrame(() => { _dashTickRaf = 0; _dashLastDomSyncAt = performance.now ? performance.now() : Date.now(); updateDashboard(window._sig, 'tick'); }); } }
+  if(!_raf) _raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); });
+}
+
+async function changeTF(tf,btn){
+  if(tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+  document.querySelectorAll('.tfb').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active');
+  _act=tf; _saveTF(tf); _ictZoom=60; _ictZoomOffset=0; const sig=window._sig; if(!sig) return;
+  _cds=await fetchCDs(sig.symbol,TFBIN[tf]||tf); if(_cds.length && window._sig){ window._sig.price = _cds[_cds.length-1].c; }
+  drawICT(); if(window._sig) updateDashboard(window._sig, 'tf-change'); _dashLog('TF', `ICT timeframe switched to ${String(tf).toUpperCase()}`, 'inf');
+}
+
+async function initICT(sig){
+  if(window._ictInited) return; window._ictInited=true;
+  const cv=document.getElementById('ict-cv'),wrap=document.getElementById('ict-wrap'); if(!cv||!wrap) return;
+  _cdot=document.getElementById('conn-dot'); _lpx=document.getElementById('live-px');
+  function _resize(){ const dpr=Math.min(window.devicePixelRatio||1,2),W=wrap.clientWidth||360,H=420; cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px'; const ctx=cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height); ctx.scale(dpr,dpr); window._ictCtx=ctx; window._ictW=W; window._ictH=H; }
+  _resize();
+  if(window.ResizeObserver&&!wrap._ictRO){ wrap._ictRO=new ResizeObserver(()=>{ _resize(); if(!_raf)_raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); }); wrap._ictRO.observe(wrap); }
+  const saved=_loadTF(), sigTF=(sig.chart_tf||sig.exec_tf||'4H').toLowerCase(); _act=TFBIN[saved]?saved:(TFBIN[sigTF]?sigTF:'4h');
+  document.querySelectorAll('.tfb').forEach(b=>b.classList.toggle('active',b.dataset.tf===_act));
+  _cds=await fetchCDs(sig.symbol,TFBIN[_act]||'4h');
+  if(_cds.length){ sig.price = _cds[_cds.length-1].c; if(_lpx) _lpx.textContent = fp(sig.price); const el=document.getElementById('conn-lbl'); if(el) el.textContent='Chart ready'; }
+  drawICT(); updateDashboard(sig, 'ict-init'); wsConnect(sig.symbol,onTick);
+
+  cv.addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(); _lx=e.clientX-r.left; if(!_raf)_raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); });
+  cv.addEventListener('pointerleave',()=>{ _lx=undefined; if(!_raf)_raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); });
+  cv.addEventListener('wheel', e=>{ e.preventDefault(); const delta = e.deltaY > 0 ? 1.15 : 0.87; _ictZoom = Math.round(Math.max(10, Math.min(_cds.length, _ictZoom * delta))); if(!_raf)_raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); }, {passive:false});
+  function _pinchDist(e){ return Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); }
+  let _touchPanX0=null, _panOffset0=null;
+  cv.addEventListener('touchstart', e=>{ if(e.touches.length===2){ _pinchDist0 = _pinchDist(e); _pinchZoom0 = _ictZoom; _touchPanX0 = null; } else if(e.touches.length===1){ _touchPanX0 = e.touches[0].clientX; _panOffset0 = _ictZoomOffset; _pinchDist0 = null; } }, {passive:true});
+  cv.addEventListener('touchmove', e=>{ e.preventDefault(); if(e.touches.length===2 && _pinchDist0!==null){ const ratio = _pinchDist(e) / _pinchDist0; _ictZoom = Math.round(Math.max(10, Math.min(_cds.length, _pinchZoom0 / ratio))); if(!_raf)_raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); } else if(e.touches.length===1 && _touchPanX0!==null){ const dx = _touchPanX0 - e.touches[0].clientX, W_ = window._ictW||360, canPerPx = _ictZoom / (W_ - 82); _ictZoomOffset = Math.max(0, Math.min(_cds.length - Math.max(10, Math.min(_ictZoom, _cds.length)), Math.round(_panOffset0 + dx * canPerPx))); if(!_raf)_raf=requestAnimationFrame(()=>{ _raf=null; drawICT(); }); } }, {passive:false});
+  cv.addEventListener('touchend', e=>{ if(e.touches.length < 2) _pinchDist0 = null; if(e.touches.length < 1) _touchPanX0 = null; }, {passive:true});
+}
+
+function drawICT(){
+  const ctx=window._ictCtx,sig=window._sig; if(!ctx||!sig) return;
+  const isDark = document.body.classList.contains('dark-mode');
+  const d_bg = isDark ? '#0f172a' : '#f8fafc', d_panel = isDark ? '#1e293b' : '#f1f5f9', d_grid = isDark ? '#334155' : '#e2e8f0', d_text = isDark ? '#f1f5f9' : '#0f172a', d_dim = isDark ? '#94a3b8' : '#64748b';
+  const W=window._ictW||360,H=window._ictH||420, PL=8,PR=80,PT=56,VH=38,PB=VH+8,CW=W-PL-PR,CH=H-PT-PB;
+  const _maxCds = _cds.length, _visN = Math.max(10, Math.min(_ictZoom, _maxCds)), _off = Math.max(0, Math.min(_ictZoomOffset, _maxCds - _visN)), _end = _maxCds - _off, _start = Math.max(0, _end - _visN);
+  const cds=_cds.slice(_start, _end), N=Math.max(cds.length,1), cw=Math.max(2,Math.floor(CW/N)-1), ap=[]; cds.forEach(c=>{ap.push(c.h,c.l)});
+  [sig.tp3,sig.tp2,sig.tp1,sig.sl1,sig.sl2,sig.sl3,sig.ob_high,sig.ob_low,sig.ote_zone_high,sig.ote_zone_low].forEach(v=>{if(v&&v>0)ap.push(parseFloat(v))});
+  if(ap.length<2){const ref=sig.price||2000;ap.push(ref*1.01,ref*0.99)}
+  const yMx=Math.max(...ap)*1.003,yMn=Math.min(...ap)*0.997,yR=yMx-yMn||1, py=v=>PT+CH*(1-(v-yMn)/yR), px=i=>PL+(i+0.5)*CW/N;
+  ctx.fillStyle=d_bg; ctx.fillRect(0,0,W,H); ctx.strokeStyle=d_grid; ctx.lineWidth=0.5;
+  for(let i=0;i<=6;i++){
+    const gy=PT+(CH/6)*i,gv=yMx-(i/6)*yR; ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(W-PR,gy);ctx.stroke();
+    ctx.fillStyle=d_dim;ctx.font='10px JetBrains Mono,monospace';ctx.textAlign='left';
+    ctx.fillText(gv>=1000?gv.toLocaleString('en-US',{maximumFractionDigits:0}):gv>=10?gv.toFixed(2):gv>=1?gv.toFixed(4):gv.toFixed(7),W-PR+4,gy+4);
+  }
+  function shade(lo,hi,c,a,lbl){
+    if(!lo||!hi||lo<=0||hi<=0)return; const yt=Math.max(PT,py(Math.max(lo,hi))),yb=Math.min(PT+CH,py(Math.min(lo,hi))); if(yb<=yt)return;
+    ctx.globalAlpha=a;ctx.fillStyle=c;ctx.fillRect(PL,yt,CW,yb-yt); ctx.globalAlpha=1; ctx.strokeStyle=c;ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(PL,yt);ctx.lineTo(W-PR,yt);ctx.stroke(); ctx.beginPath();ctx.moveTo(PL,yb);ctx.lineTo(W-PR,yb);ctx.stroke();
+    if(lbl){ctx.fillStyle=c;ctx.font='bold 10px JetBrains Mono,monospace';ctx.textAlign='left';ctx.fillText(lbl,PL+4,yt+12)}
+  }
+  shade(sig.ob_low,sig.ob_high,CC.ob,.16,'OB'); shade(sig.fvg_low,sig.fvg_high,CC.fvg,.12,'FVG'); shade(sig.entry_low,sig.entry_high,CC.entry,.13,'ENTRY'); shade(sig.ote_zone_low,sig.ote_zone_high,CC.ote,.18,'OTE');
+  function hl(v,c,lbl,dash,lw){
+    if(!v||v<=0)return; const yy=py(v); if(yy<PT||yy>PT+CH)return;
+    ctx.strokeStyle=c;ctx.lineWidth=lw||1.5;ctx.setLineDash(dash||[5,4]); ctx.beginPath();ctx.moveTo(PL,yy);ctx.lineTo(W-PR,yy);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=c;ctx.font='10px JetBrains Mono,monospace';ctx.textAlign='left';ctx.fillText(lbl||'',W-PR+4,yy+3);
+  }
+  hl(sig.tp3,CC.green,'TP3',[4,3],1.5);hl(sig.tp2,CC.green,'TP2',[7,5],1);hl(sig.tp1,CC.green,'TP1',[10,5],1);
+  if(sig.sl3>0&&Math.abs((sig.sl3-sig.sl1)/Math.max(sig.sl1,1))>0.0001)hl(sig.sl3,CC.sl3,'SL3',[4,3],1);
+  if(sig.sl2>0&&Math.abs((sig.sl2-sig.sl1)/Math.max(sig.sl1,1))>0.0001)hl(sig.sl2,CC.sl2,'SL2',[8,5],1);
+  hl(sig.sl1||sig.inv,CC.red,'SL1',[6,4],2);
+  const livePx=_cds.length?_cds[_cds.length-1].c:(sig.price||0); hl(livePx,CC.cyan,'NOW',[2,3],1.5);
+  if(sig.entry_mid&&livePx&&Math.abs(sig.entry_mid-livePx)/Math.max(livePx,1)>0.001)hl(sig.entry_mid,CC.be,'BE',[3,4],1);
+  try{ const ax=W-PR-18,ye=py(sig.entry_mid),yt3=py(sig.tp3); if(yt3>=PT&&yt3<=PT+CH&&ye>=PT&&ye<=PT+CH){ ctx.strokeStyle=CC.draw;ctx.lineWidth=1.5;ctx.setLineDash([]); ctx.beginPath();ctx.moveTo(ax,ye);ctx.lineTo(ax,yt3);ctx.stroke(); const dir=sig.tp3>sig.entry_mid?-1:1; ctx.fillStyle=CC.draw;ctx.beginPath();ctx.moveTo(ax,yt3);ctx.lineTo(ax-5,yt3+dir*8);ctx.lineTo(ax+5,yt3+dir*8);ctx.closePath();ctx.fill(); ctx.font='bold 9px JetBrains Mono,monospace';ctx.textAlign='left';ctx.fillText('DRAW',ax+4,(ye+yt3)/2+4); } }catch(e){}
+  if(cds.length>1){ const cl=cds.map(c=>c.c); [[20,CC.ma50,'MA20'],[50,CC.ma200,'MA50']].forEach(([p,clr,lbl])=>{ if(cl.length<3)return; ctx.strokeStyle=clr;ctx.lineWidth=1.2;ctx.setLineDash([]);ctx.beginPath();let st=false; cl.forEach((v,i)=>{const s=Math.max(0,i-p+1),avg=cl.slice(s,i+1).reduce((a,b)=>a+b,0)/(i-s+1),yv=py(avg);if(yv<PT||yv>PT+CH)return;if(!st){ctx.moveTo(px(i),yv);st=true}else ctx.lineTo(px(i),yv)}); ctx.stroke(); const ln=cl.slice(-Math.min(p,cl.length)),lma=ln.reduce((a,b)=>a+b,0)/ln.length,yl=py(lma); if(yl>=PT&&yl<=PT+CH){ctx.fillStyle=clr;ctx.font='10px JetBrains Mono,monospace';ctx.textAlign='left';ctx.fillText(lbl,px(N-1)+4,yl-4)} }); }
+  cds.forEach((c,i)=>{ const x=px(i),iB=c.c>=c.o,col=iB?CC.green:CC.red; ctx.strokeStyle=col;ctx.lineWidth=1;ctx.setLineDash([]); ctx.beginPath();ctx.moveTo(x,py(c.h));ctx.lineTo(x,py(c.l));ctx.stroke(); const yt=py(Math.max(c.o,c.c)),yb=py(Math.min(c.o,c.c)); ctx.fillStyle=col;ctx.fillRect(x-cw/2,yt,cw,Math.max(1,yb-yt)); });
+  const vB=H-6,vHpx=vB-(H-PB+4),mxV=Math.max(...cds.map(c=>c.v),1); cds.forEach((c,i)=>{ const x=px(i),vh=(c.v/mxV)*vHpx,col=c.c>=c.o?CC.green:CC.red; ctx.globalAlpha=0.35;ctx.fillStyle=col;ctx.fillRect(x-cw/2,vB-vh,cw,vh);ctx.globalAlpha=1; });
+  if(sig.bos_price>0){ const by=py(sig.bos_price); if(by>=PT&&by<=PT+CH){ ctx.strokeStyle=sig.choch?CC.choch:CC.bos;ctx.lineWidth=1.5;ctx.globalAlpha=0.35;ctx.setLineDash([]); ctx.beginPath();ctx.moveTo(PL,by);ctx.lineTo(W-PR,by);ctx.stroke();ctx.globalAlpha=1; ctx.fillStyle=sig.choch?CC.choch:CC.bos;ctx.font='bold 11px JetBrains Mono,monospace';ctx.textAlign='left'; ctx.fillText(sig.choch?'CHoCH':(sig.isLong?'BOS':'BOS'),PL+5,by-3); } }
+  if(sig.entry_mid>0){const emy=py(sig.entry_mid);if(emy>=PT&&emy<=PT+CH){ctx.strokeStyle=CC.amber;ctx.lineWidth=1;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(PL,emy);ctx.lineTo(W-PR,emy);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=CC.amber;ctx.font='10px JetBrains Mono,monospace';ctx.textAlign='left';ctx.fillText('OBC AVG',PL+4,emy-3)}}
+  const _beSlPx = (sig.enh_be_sl||{}).be_sl_price; if(_beSlPx>0 && Math.abs(_beSlPx-(sig.sl1||0))/Math.max(sig.sl1||1,1)>0.001) hl(_beSlPx,CC.be,'BE-SL',[3,4],1);
+  const _cePx = sig.ce_price || ((sig.enh_fvg_ce||{}).ce_price); if(_cePx>0) hl(_cePx,'#3b82f6','CE',[4,3],1.5);
+  if(sig.tp4>0) hl(sig.tp4,'#10b981','TP4',[3,2],1); if(sig.tp5>0) hl(sig.tp5,'#10b981','TP5',[3,2],1); if(sig.tp6>0) hl(sig.tp6,'#10b981','TP6',[3,2],1);
+  ctx.fillStyle=d_panel;ctx.fillRect(0,0,W,PT-2); const gp=sig.gate_pass||[], gc=(gp).filter(Boolean).length, sym2=(sig.symbol||'').replace('USDT','').replace('/','') + '/USDT';
+  ctx.fillStyle=gc===gp.length?CC.green:CC.amber;ctx.font='bold 11px JetBrains Mono,monospace';ctx.textAlign='left'; ctx.fillText(`${sym2} ${_act.toUpperCase()} ${sig.isLong?'BULL':'BEAR'} ${gc}/${gp.length} Gr.${sig.grade}`,PL,16);
+  const lpStr=livePx>=1000?livePx.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):livePx>=1?livePx.toFixed(5):livePx.toFixed(8); ctx.fillStyle=CC.cyan;ctx.font='bold 12px JetBrains Mono,monospace';ctx.textAlign='right'; ctx.fillText('LIVE $'+lpStr,W-PR-4,16);
+  ctx.fillStyle=d_text;ctx.font='11px JetBrains Mono,monospace';ctx.textAlign='left'; const sl1v=sig.sl1||0,tp3v=sig.tp3||0; ctx.fillText('SL1:'+( sl1v>=1000?sl1v.toLocaleString('en-US',{maximumFractionDigits:0}):sl1v.toFixed(2) )+'  TP3:'+( tp3v>=1000?tp3v.toLocaleString('en-US',{maximumFractionDigits:0}):tp3v.toFixed(2) ),PL,32);
+  const _stateShort=(sig.signal_state||'BLOCKED').toUpperCase().slice(0,7), _confTxt=`C:${sig.conf||0}%`; ctx.fillStyle=_stateShort==='ACTIVE'?CC.green:_stateShort.startsWith('DEFER')?CC.amber:CC.red; ctx.fillText(`${_stateShort}  ${_confTxt}`,PL,48);
+  const _rrTxt=`R:R ${parseFloat(sig.rr||0).toFixed(2)}`; ctx.fillStyle=parseFloat(sig.rr||0)>=2?CC.green:CC.amber;ctx.textAlign='right'; ctx.fillText(_rrTxt,W-PR-4,48); ctx.textAlign='left';
+  const eg=sig.oce_eval?.eval_gate||'--',ar=(sig.oce_audit?.audit_result||'').slice(0,4), hs2=sig.hmm_data?.hmm_state||'--', sp2=sig.signal_probability_data||{},pt2=sp2.probability_tier||'LOW',pc2=sp2.signal_probability_pct||'--', sp3=parseFloat(pc2)||0,gcol=pt2==='HIGH'?CC.green:pt2==='MODERATE'?CC.amber:CC.red;
+  const gx=W-PR/2+2,gy2=PT+CH/2-8,gr=22; ctx.strokeStyle=d_grid;ctx.lineWidth=5;ctx.setLineDash([]); ctx.beginPath();ctx.arc(gx,gy2,gr,Math.PI,2*Math.PI);ctx.stroke(); ctx.strokeStyle=gcol;ctx.beginPath();ctx.arc(gx,gy2,gr,Math.PI,Math.PI+(sp3/100)*Math.PI);ctx.stroke(); ctx.fillStyle=gcol;ctx.beginPath();ctx.arc(gx,gy2,3,0,Math.PI*2);ctx.fill(); ctx.font='bold 11px JetBrains Mono,monospace';ctx.textAlign='center';ctx.fillStyle=gcol;ctx.fillText(sp3+'%',gx,gy2+16); ctx.font='10px JetBrains Mono,monospace';ctx.fillStyle=d_text;ctx.fillText('Gr.'+sig.grade,gx,gy2-gr-5); ctx.fillStyle=d_dim;ctx.fillText('Odds',gx,gy2+28);
+  const _gFrac=gp.length>0?gc/gp.length:0; ctx.fillStyle=d_grid;ctx.fillRect(gx-22,gy2+40,44,6); ctx.fillStyle=_gFrac===1?CC.green:_gFrac>=0.6?CC.amber:CC.red;ctx.fillRect(gx-22,gy2+40,Math.round(44*_gFrac),6); ctx.font='10px JetBrains Mono,monospace';ctx.fillStyle=d_dim;ctx.textAlign='center';ctx.fillText(`${gc}/${gp.length}g`,gx,gy2+56); ctx.textAlign='left';
+  if(_lx!==undefined){ ctx.strokeStyle=isDark?'rgba(255,255,255,0.15)':'rgba(26,35,50,0.15)';ctx.lineWidth=0.5;ctx.setLineDash([3,3]); ctx.beginPath();ctx.moveTo(_lx,PT);ctx.lineTo(_lx,PT+CH);ctx.stroke();ctx.setLineDash([]); const ci=Math.round((_lx-PL)/CW*N-0.5); if(ci>=0&&ci<cds.length){ const c=cds[ci]; ctx.fillStyle=isDark?'rgba(30,41,59,.96)':'rgba(238,241,246,.96)';ctx.fillRect(PL,PT+2,180,18); ctx.strokeStyle=d_grid;ctx.lineWidth=1;ctx.strokeRect(PL,PT+2,180,18); ctx.fillStyle=d_text;ctx.font='10px JetBrains Mono,monospace';ctx.textAlign='left'; ctx.fillText(`O:${c.o.toFixed(2)} H:${c.h.toFixed(2)} L:${c.l.toFixed(2)} C:${c.c.toFixed(2)}`,PL+5,PT+14); } }
+  const _zoomLabel = `${N}/${_cds.length} candles` + (_ictZoomOffset>0?` [+${_ictZoomOffset}]`:''); ctx.fillStyle=isDark?'rgba(255,255,255,0.1)':'rgba(26,35,50,0.1)'; const _zlW=ctx.measureText(_zoomLabel).width+12; ctx.fillRect(W-PR-_zlW-4,PT+CH-18,_zlW+4,16); ctx.fillStyle=d_dim;ctx.font='10px JetBrains Mono,monospace';ctx.textAlign='right'; ctx.fillText(_zoomLabel,W-PR-6,PT+CH-6); ctx.textAlign='left';
+  const _strip=document.getElementById('ict-strip');
+  if(_strip&&!_strip._built){ _strip._built=true; const _mk=s=>`<span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid;background:${s.bg};color:${s.fg};border-color:${s.bd}">${s.t}</span>`; const _chips=[{t:`EVAL:${eg}`,bg:eg==='PASS'?'var(--long2)':'var(--short2)',fg:eg==='PASS'?CC.green:CC.red,bd:'transparent'},{t:`P:${pc2}`,bg:pt2==='HIGH'?'var(--long2)':pt2==='MODERATE'?'var(--amberBg)':'var(--short2)',fg:pt2==='HIGH'?CC.green:pt2==='MODERATE'?CC.amber:CC.red,bd:'transparent'},{t:`HMM:${hs2.slice(0,6)}`,bg:['BULL','TRENDING'].includes(hs2)?'var(--long2)':['BEAR','VOLATILE'].includes(hs2)?'var(--short2)':'var(--amberBg)',fg:['BULL','TRENDING'].includes(hs2)?CC.green:['BEAR','VOLATILE'].includes(hs2)?CC.red:CC.amber,bd:'transparent'},{t:`4.9:${ar}`,bg:'var(--bg3)',fg:ar==='PASS'?CC.green:CC.amber,bd:'transparent'}]; _strip.innerHTML=_chips.map(_mk).join(''); }
+}
+
+function buildGate11(d) {
+  const g11 = d.gate11_detail || {}; if (!g11.gate11_note) return ''; const pass = g11.gate11_pass !== false, score = g11.gate11_adv_score != null ? g11.gate11_adv_score : '?', threshold = g11.gate11_threshold || 2, note = g11.gate11_note || '';
+  return `<div class="g11-panel${pass?' pass':''} fi fi4"><div class="g11-row"><span class="g11-lbl">G11 Devil's Advocate</span><span class="g11-val ${pass?'pass':'fail'}">${pass?'✓ WEAK':'✕ STRONG'} (${score}/${threshold+1})</span></div><div class="g11-note">${esc(note)}</div></div>`;
+}
+
+function buildFingerprint(d) {
+  const fp2 = d.gate_fp_data || {}, n = fp2.gate_n || 0; if (!n) return ''; const rate = fp2.gate_tp_rate;
+  if (rate == null) return `<div class="fp-row fi fi4"><span class="fp-lbl">Gate Memory</span><span class="fp-val mid">Learning…</span><span class="fp-n">${n} samples</span></div>`;
+  const pct = Math.round(rate * 100), cls = pct >= 65 ? 'high' : pct >= 45 ? 'mid' : 'low'; return `<div class="fp-row fi fi4"><span class="fp-lbl">⟳ Historical TP Rate</span><span class="fp-val ${cls}">${pct}%</span><span class="fp-n">n=${n}</span></div>`;
+}
+
+function buildCrowd(d) {
+  const cr = d.crowd_data || {}, total = (cr.crowd_tp || 0) + (cr.crowd_sl || 0); if (!total) return '';
+  const tpRate = cr.crowd_tp_rate != null ? Math.round(cr.crowd_tp_rate * 100) : 0; return `<div class="crowd-row fi fi4"><span class="crowd-lbl">👥 Crowd ${total} users</span><div class="crowd-bar"><div class="crowd-fill" style="width:${tpRate}%"></div></div><span class="crowd-pct">${tpRate}% TP</span></div>`;
+}
+
+function buildPCA(d) {
+  const pts = d.pca_points || []; if (!pts.length) return '';
+  return `<div class="sec fi fi6"><span class="sect">📊 Signal Cluster Map</span><span class="secb">PCA · ${pts.length} signals</span></div><div class="pca-wrap fi fi6"><canvas id="pca-cv"></canvas><div class="pca-legend"><div class="pca-li"><div class="pca-dot" style="background:var(--long)"></div>TP Hit</div><div class="pca-li"><div class="pca-dot" style="background:var(--short)"></div>SL Hit</div><div class="pca-li"><div class="pca-dot" style="background:var(--text3)"></div>Timeout</div><div class="pca-li"><div class="pca-dot" style="border:2px solid var(--blue);background:transparent"></div>Current</div></div></div>`;
+}
+
+function renderPCA(d) {
+  const pts = d.pca_points || [], cv = document.getElementById('pca-cv'); if (!cv || !pts.length) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2), W = cv.offsetWidth || 280, H = 180; cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr); ctx.fillStyle = document.body.classList.contains('dark-mode') ? '#1e293b' : '#f8fafc'; ctx.fillRect(0, 0, W, H);
+  const xs = pts.map(p => p.x), ys = pts.map(p => p.y), xMin = Math.min(...xs), xMax = Math.max(...xs) || 1, yMin = Math.min(...ys), yMax = Math.max(...ys) || 1, pad = 20, sx = v => pad + ((v - xMin) / (xMax - xMin || 1)) * (W - pad * 2), sy = v => H - pad - ((v - yMin) / (yMax - yMin || 1)) * (H - pad * 2);
+  const C_MAP = { TP1:'#10b981', TP2:'#10b981', TP3:'#10b981', SL:'#ef4444', TIMEOUT:'#94a3b8' };
+  pts.forEach(p => { const x = sx(p.x), y = sy(p.y); ctx.beginPath(); if (p.current) { ctx.arc(x, y, 8, 0, Math.PI * 2); ctx.fillStyle = 'rgba(59,130,246,0.15)'; ctx.fill(); ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2; ctx.stroke(); } else { ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fillStyle = C_MAP[p.outcome] || '#94a3b8'; ctx.globalAlpha = 0.8; ctx.fill(); ctx.globalAlpha = 1; } });
+}
+
+let _jAction = null;
+function toggleJrnl() { const b = document.getElementById('jrnl-body'), t = document.getElementById('jrnl-tgl'); if (!b) return; const open = b.classList.toggle('open'); if (t) t.textContent = open ? 'Hide' : 'Log'; if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged(); }
+function jSelect(action) { _jAction = action; ['jb-took','jb-skip'].forEach(id => { const el = document.getElementById(id); if (el) { el.className = 'jb'; } }); const active = document.getElementById(action === 'took' ? 'jb-took' : 'jb-skip'); if (active) active.className = 'jb ' + (action === 'took' ? 'active-took' : 'active-skip'); const outcomes = document.getElementById('jrnl-outcomes'); if (outcomes) outcomes.className = 'jrnl-outcomes' + (action === 'took' ? ' show' : ''); if (action === 'skip') submitJournal('SKIP'); }
+function submitJournal(outcome) {
+  const s = window._sig; if (!s) return; const entry = { sym: s.symbol || '', hash: (s.gate_fp_data || {}).gate_hash || '', act: _jAction || 'skip', out: outcome, ts: Date.now(), grade: s.grade || '' }; const payload = JSON.stringify(entry); let delivered = false;
+  if (tg?.sendData) { try { tg.sendData(payload); delivered = true; } catch(e) { console.warn('[JOURNAL] sendData error:', e); } }
+  if (!delivered) { const items = _readStore(_JRNL_KEY, []), next = Array.isArray(items) ? items.slice(-19) : []; next.push(entry); _writeStore(_JRNL_KEY, next); }
+  const sent = document.getElementById('jrnl-sent'); if (sent) { sent.className = 'jrnl-sent show'; sent.textContent = delivered ? `✓ Logged: ${outcome}` : `✓ Saved locally: ${outcome}`; }
+  if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); setTimeout(() => { const s2 = document.getElementById('jrnl-sent'); if(s2) s2.className='jrnl-sent'; }, 3000);
+}
+
+function refreshView() { try { if (_ws) { _ws.onclose = null; _ws.close(); } } catch(_) {} location.reload(); }
+
+function buildSuperMarkov(d) {
+  const sm = d.super_markov || {}; if (!sm.super_conf_mod && !sm.super_verdict) return '';
+  const mod = sm.super_conf_mod || 1.0, vkey = sm.super_verdict_key || 'NEUTRAL', verdict = sm.super_verdict || `Super Markov ×${mod.toFixed(2)}`;
+  const vCls = vkey==='CONFIRMED'?'sm-confirmed':vkey==='VETOED'?'sm-vetoed':vkey==='POSITIVE'?'sm-positive':vkey==='WEAK'||vkey==='CAUTION'?'sm-weak':'sm-neutral';
+  const bMod = m => { const v = parseFloat(m||1); const cls = v>=1.05?'up':v<=0.92?'dn':'mid'; return `<span class="sm-b ${cls}">×${v.toFixed(2)}</span>`; };
+  return `<div class="sec fi fi5"><span class="sect">🧠 Super Markov</span><span class="secb">5-Brain·Weighted</span></div><div class="sm-panel fi fi5"><div class="sm-verdict ${vCls}">${esc(verdict)}</div><div class="sm-row"><span class="sm-lbl">Combined Mod</span><span class="mk-val mk-mod">${mod.toFixed(3)}×</span></div><div class="sm-brain"><span class="sm-lbl">ICT</span>${bMod(sm.ict_mod)}<span class="sm-lbl">Sentiment</span>${bMod(sm.sentiment_mod)}<span class="sm-lbl">Regime</span>${bMod(sm.regime_mod)}<span class="sm-lbl">Sector</span>${bMod(sm.sector_mod)}<span class="sm-lbl">Trend</span>${bMod(sm.trend_mod)}<span class="sm-lbl">Cross</span>${bMod(sm.cross_mod)}</div>${(sm.sentiment_pos||[]).length?`<div class="sm-row"><span class="sm-lbl">🟢 Sentiment</span><span style="font-family:var(--mono);font-size:10px;color:var(--long)">${sm.sentiment_pos.map(esc).join(' ')}</span></div>`:''}${(sm.sentiment_neg||[]).length?`<div class="sm-row"><span class="sm-lbl">🔴 Bearish</span><span style="font-family:var(--mono);font-size:10px;color:var(--short)">${sm.sentiment_neg.map(esc).join(' ')}</span></div>`:''}</div>`;
+}
+
+function buildLevelLearner(d) {
+  const ll = d.level_learner || {}, bw = ll.blend_weight || 0, n = ll.n_samples || 0; if (!n && !bw) return '';
+  const conf = (ll.confidence||'NONE').toLowerCase(), confCls = conf==='high'?'high':conf==='medium'?'medium':conf==='low'?'low':'none', pct = Math.round(bw*100), wr = ll.win_rate ? `WR ${ll.win_rate}%` : '', note = ll.learned_note ? esc(ll.learned_note).slice(0,70) : 'Collecting data…';
+  return `<div class="ll-panel fi fi3"><div class="ll-row"><span class="ll-lbl">🧠 Self-Learned Levels</span><div class="ll-bar"><div class="ll-fill" id="llBar" style="width:${pct}%"></div></div><span class="ll-val ${confCls}">${pct}%</span></div><div class="ll-row" style="margin-top:4px"><span style="font-family:var(--mono);font-size:10px;color:var(--text3)">${n} trades · ${conf.toUpperCase()} · ${wr}</span></div><div class="ll-note">${note}</div></div>`;
+}
+
+function buildFlashWarning(d) { if (!d.flash_warning) return ''; const pct = (d.flash_warning_pct||0).toFixed(2); return `<div class="flash-warn fi fi1">⚡ HIGH VOLATILITY: ${pct}% move in 5 candles — Analysis continues with elevated risk flag</div>`; }
+
+function buildMarkovAdjProb(d) {
+  const ma = d.markov_adjusted || {}; if (!ma.adjusted_probability) return '';
+  const pct = ma.adjusted_pct || '--', tier = (ma.adjusted_tier||'LOW').toLowerCase(), base = ma.base_probability || 0, mod = ma.markov_conf_mod || 1.0, icon = ma.tier_icon || '🔴';
+  return `<div class="map-badge fi fi3"><span class="map-lbl">Markov-Adjusted Prob</span><span class="map-val ${tier}">${icon} ${esc(pct)}</span><span style="font-family:var(--mono);font-size:10px;color:var(--text3)">Base ${base.toFixed(1)}% × ${mod.toFixed(2)}</span></div>`;
+}
+
+function buildGate14(d) {
+  const g14 = d.gate14_cusum_veto; if (g14 === undefined || g14 === null) return ''; const pass = !g14;
+  return `<div class="fp-row fi fi4"><span class="fp-lbl">G14 Regime Coherence (CUSUM)</span><span class="fp-val ${pass?'high':'low'}">${pass?'✓ COHERENT':'✕ VETO'}</span></div>`;
+}
+
+function buildLiqHeatmap(d) {
+  const ll10 = parseFloat(d.liq_long_10x || 0), ll20 = parseFloat(d.liq_long_20x || 0), ll50 = parseFloat(d.liq_long_50x || 0), ls10 = parseFloat(d.liq_short_10x || 0), ls20 = parseFloat(d.liq_short_20x || 0), ls50 = parseFloat(d.liq_short_50x || 0);
+  if (!ll10 && !ll20 && !ll50 && !ls10 && !ls20 && !ls50) return '';
+  const isReal = !!d.liq_clusters_real, count = parseInt(d.liq_clusters_count || 0), note = d.liq_heatmap_note || '', badgeTxt = isReal ? `🟢 REAL DATA · ${count} cluster${count !== 1 ? 's' : ''}` : '⚠️ ESTIMATED';
+  function shortRow(tag, price) { if (!price) return ''; return `<div class="lh-row"><span class="lh-tag ls">${tag}</span><span class="lh-price" onclick="cpy('${fp(price)}')">${fp(price)}</span><span style="font-size:11px;color:var(--short)">▲ Shorts Liq</span></div>`; }
+  function longRow(tag, price) { if (!price) return ''; return `<div class="lh-row"><span class="lh-tag ll">${tag}</span><span class="lh-price" onclick="cpy('${fp(price)}')">${fp(price)}</span><span style="font-size:11px;color:var(--long)">▼ Longs Liq</span></div>`; }
+  const rows = [shortRow('SHORT · 50×', ls50), shortRow('SHORT · 20×', ls20), shortRow('SHORT · 10×', ls10), longRow('LONG · 10×', ll10), longRow('LONG · 20×', ll20), longRow('LONG · 50×', ll50)].filter(Boolean).join('');
+  return `<div class="sec fi fi4"><span class="sect">💧 Liquidation Heatmap</span><span class="secb">10× 20× 50× Clusters</span></div><div class="lhp fi fi4"><span class="lh-badge ${isReal ? 'real' : ''}">${badgeTxt}</span>${rows}${note ? `<div class="lh-note">${note}</div>` : ''}</div>`;
+}
+
+function build(d) {
+  const isLong=(d.bias||'').toUpperCase().includes('BULL')||(d.bias||'')==='LONG', mv2 = d.markov_data || {}, dc=isLong?'long':'short',dl=isLong?'LONG ▲':'SHORT ▼', sym=(d.symbol||'').replace('USDT','').replace('/','') + '/USDT', grade=d.grade||'?',conf=Math.round(d.conf||0), gp=d.gate_pass||[],gc=gp.filter(Boolean).length, sp=d.signal_probability_data||{}, pp=sp.signal_probability_pct||'--',pt=(sp.probability_tier||'LOW').toLowerCase(), rr=parseFloat(d.rr||0).toFixed(2), state=(d.signal_state||'BLOCKED').toLowerCase(), sc=state==='active'?'active':state==='deferred'?'deferred':'blocked', sl2lbl=state==='active'?'● ACTIVE':state==='deferred'?'◐ DEFERRED':'✕ BLOCKED', grClr={S:'var(--long)',A:'var(--long)',B:'var(--amber)',C:'var(--text2)',D:'var(--short)',F:'var(--short)'}[grade]||'var(--text2)', ptCl=pt==='high'?'g':pt==='moderate'?'a':'r', hmm=d.hmm_data||{},hs=(hmm.hmm_state||'RANGE').toLowerCase(),hp=(hmm.hmm_path||[]).slice(-8), gps=d.oce_gaps||[],ev=d.oce_eval||{},au=d.oce_audit||{},br=d.oce_brvf||{}, btf=d.bias_tf||'',rtf=d.ref_tf||'',etf=d.exec_tf||'',tt=(d.trader_type||'').split('(')[0].trim(), em=parseFloat(d.ote_entry||((parseFloat(d.entry_low||0)+parseFloat(d.entry_high||0))/2))||0;
+  function pct(price,ref,up){ if(!price||!ref)return{s:'',c:'var(--text3)'}; const df=((price-ref)/ref)*100,isP=up?df>0:df<0; return{s:(df>=0?'+':'')+df.toFixed(2)+'%',c:isP?'var(--long)':'var(--short)'}; }
+  const t3p=pct(d.tp3,em,isLong),t2p=pct(d.tp2,em,isLong),t1p=pct(d.tp1,em,isLong), slp=pct(d.sl1??d.inv_sl,em,!isLong);
+  function lvl(tag,cls,price,p){ const raw=parseFloat(price)||0; if(!raw)return''; return `<div class="ri" onclick="cpy('${fp(raw)}')"><span class="rt ${cls}">${tag}</span><span class="rp">${fp(raw)}</span>`+(p?.s?`<span class="rpct" style="color:${p.c}">${p.s}</span>`:'<span class="rpct"></span>')+`<span class="rcpy">⎘</span></div>`; }
+  const gates=gp.map((pass,i)=>`<div class="gce ${pass?'pass':'fail'}" onclick="toast('G${i+1}: ${GNAMES[i]||'Gate'+(i+1)}')"><span class="gn">${i+1}</span>${pass?'✓':'✕'}</div>`).join(''), pnodes=hp.map((s,i,a)=>`<span class="pn ${s}${i===a.length-1?' curr':''}">${s}</span>`+(i<a.length-1?'<span class="pa">›</span>':'')).join(''), grs=gps.map(g=>`<div class="gapr"><span class="gapsrc">${esc(g.source||'—')}</span><span class="gapnt">${esc((g.note||'').slice(0,36))}</span><span class="gapq ${esc(g.quality)}">${esc(g.quality)}</span></div>`).join('');
+  const pipes=[{id:'hmm',st:'ST.1',lb:'HMM Regime',val:esc(hmm.hmm_state||'—'),cls:['bull','trending'].includes(hs)?'pass':['bear','volatile'].includes(hs)?'fail':'warn',det:`State  : ${esc(hmm.hmm_state||'—')}\nConf   : ${esc(hmm.hmm_confidence_pct||'—')}\nPath   : ${esc(hmm.hmm_path_str||'—')}`},{id:'eval',st:'ST.4.8',lb:'Eval Gate',val:esc(ev.eval_gate||'—'),cls:ev.eval_gate==='PASS'?'pass':'fail',det:`Gate   : ${esc(ev.eval_gate||'—')}\nScore  : ${esc(ev.eval_score||'—')}\nLabel  : ${esc(ev.epistemic_label||'—')}`},{id:'audit',st:'ST.4.9',lb:'Code Audit',val:esc(au.audit_result||'—'),cls:au.audit_result==='PASS'?'pass':au.audit_result?.includes('NOTES')?'warn':'fail',det:`D1 Func: ${esc(au.d1_functional||'—')}\nD2 UX  : ${esc(au.d2_ux||'—')}\nD3 QA  : ${esc(au.d3_qa||'—')}`},{id:'brvf',st:'BRVF',lb:'BRVF Loop',val:esc(br.brvf_status||'—'),cls:br.brvf_status?.includes('PASS')?'pass':br.brvf_status==='ERROR'?'fail':'warn',det:`Status : ${esc(br.brvf_status||'—')}\nFixes  : ${esc((br.brvf_fixes||[]).join(', ')||'none')}`}].map(p=>`<div><div class="pr" id="pr-${p.id}" onclick="togglePipe('${p.id}')"><div class="prl"><span class="pst">${p.st}</span><span class="plbl">${p.lb}</span></div><div class="prr"><span class="pb ${p.cls}">${p.val}</span><span class="pch">›</span></div></div><div class="pd" id="pd-${p.id}"><div class="pdl">${p.det}</div></div></div>`).join('');
+
+  window._sig={ ...d,isLong,tp1:+d.tp1||0,tp2:+d.tp2||0,tp3:+d.tp3||0,sl1:+(d.sl1??d.inv_sl)||0,sl2:+d.sl2||0,sl3:+d.sl3||0,inv:+d.inv_sl||0,entry_mid:em,entry_low:+d.entry_low||0,entry_high:+d.entry_high||0,ob_high:+d.ob_high||0,ob_low:+d.ob_low||0,fvg_high:+d.fvg_high||0,fvg_low:+d.fvg_low||0,ote_zone_low:+(d.ote_zone_low||d.entry_low)||0,ote_zone_high:+(d.ote_zone_high||d.entry_high)||0,bos_price:+d.bos_price||0,choch:!!d.choch,price:+d.price||0,grade,conf,rr,gate_pass:gp,signal_probability_data:sp,oce_eval:ev,oce_audit:au,hmm_data:hmm,chart_tf:d.chart_tf||d.exec_tf||'4H',gate_fp_data: d.gate_fp_data||{}, gate11_detail: d.gate11_detail||{}, gate_scores: d.gate_scores||[], crowd_data: d.crowd_data||{}, pca_points: d.pca_points||[], entry_leg1: +d.entry_leg1||0, entry_leg2: +d.entry_leg2||0, entry_leg3: +d.entry_leg3||0, entry_mode: d.entry_mode||'LIMIT_ZONE', super_markov: d.super_markov||{}, level_learner: d.level_learner||{}, gate14_cusum_veto: d.gate14_cusum_veto||false, flash_warning: !!d.flash_warning, flash_warning_pct: +d.flash_warning_pct||0, markov_adjusted: d.markov_adjusted||{}, markov_2nd_pred: mv2.markov_2nd_pred || '', markov_2nd_prob: mv2.markov_2nd_prob || 0, markov_p2_pred: mv2.markov_p2_pred || '', markov_p2_prob: mv2.markov_p2_prob || 0, markov_p3_pred: mv2.markov_p3_pred || '', markov_p3_prob: mv2.markov_p3_prob || 0, markov_state_winrates: mv2.markov_state_winrates || {}, markov_curr_winrate: mv2.markov_curr_winrate || {}, markov_session_state_wr: mv2.markov_session_state_wr || {}, markov_regime_geometry: mv2.markov_regime_geometry || {}, super_confidence_score: mv2.super_confidence_score || (d.super_confidence_score||0), enh_be_sl: d.enh_be_sl || {}, enh_fib_ext: d.enh_fib_ext || {}, enh_fvg_ce: d.enh_fvg_ce || {}, tp4: +d.tp4||0, tp5: +d.tp5||0, tp6: +d.tp6||0, ce_price: +d.ce_price||0 };
+
+  return `
+  <div class="hdr fi"><div class="hdr-left"><span class="hdr-logo">MOP·ICT·QUANT</span><div class="ldot" id="ldot"></div><span class="age-badge age-fresh" id="age-badge">…</span></div><div style="text-align:right"><div class="hdr-px" id="live-px">${fp(d.price)}</div><div class="hdr-chg">Live · ${sym}</div></div><span class="hdr-ver">OCE v10.3</span></div>
+  <div class="hero ${dc} fi fi1" id="hero-card"><div class="hero-glow"></div><div class="hero-top"><div style="display:flex;align-items:center"><span class="dchip">${esc(dl)}</span><span class="hsym">${esc(sym)}</span></div></div><div class="hm"><div class="mc"><span class="ml">Grade</span><span class="mv" style="color:${grClr}">${grade}</span></div><div class="mc"><span class="ml">Gates</span><span class="mv ${gc===10?'g':gc>=7?'a':'r'}">${gc}/10</span></div><div class="mc"><span class="ml">Prob</span><span class="mv ${ptCl}">${pp}</span></div></div></div>
+  <div class="state ${sc} fi fi1"><div style="display:flex;align-items:center"><span class="sdot"></span><span class="slbl">${esc(sl2lbl)}</span></div><span class="sev">${ev.epistemic_label||'—'}</span></div>
+  <div class="tabs fi fi2"><button class="tab active" id="tab-dash" onclick="switchTab('dash')">🖥 DASHBOARD</button><button class="tab" id="tab-ict" onclick="switchTab('ict')">📈 LIVE ICT CHART</button><button class="tab" id="tab-tv" onclick="switchTab('tv')">📺 TRADINGVIEW</button></div>
+  <div class="cpanel vis fi fi2" id="dash-panel"><div class="db-wrap" id="dash-inner" data-built="1">${buildDashboard(window._sig)}</div></div>
+  <div class="cpanel fi fi2" id="ict-panel"><div class="ict-bar"><div class="tfbtns"><button class="tfb" data-tf="1m" onclick="changeTF('1m',this)">1m</button><button class="tfb" data-tf="5m" onclick="changeTF('5m',this)">5m</button><button class="tfb" data-tf="15m" onclick="changeTF('15m',this)">15m</button><button class="tfb" data-tf="1h" onclick="changeTF('1h',this)">1H</button><button class="tfb active" data-tf="4h" onclick="changeTF('4h',this)">4H</button><button class="tfb" data-tf="1d" onclick="changeTF('1d',this)">1D</button></div><div style="display:flex;align-items:center;gap:6px"><button class="tfb" onclick="_ictZoomIn()" title="Zoom in" style="padding:4px 8px;font-size:13px;line-height:1">−</button><button class="tfb" onclick="_ictZoomOut()" title="Zoom out" style="padding:4px 8px;font-size:13px;line-height:1">+</button><button class="tfb" onclick="_ictZoomReset()" title="Reset zoom" style="padding:4px 8px;font-size:11px">⊙</button></div><div class="cst"><div class="cdot" id="conn-dot"></div><span id="conn-lbl">Connecting...</span></div></div><div id="ict-strip" style="display:flex;gap:6px;padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap;min-height:26px"></div><div id="ict-wrap"><canvas id="ict-cv"></canvas></div><div class="lgrow">${[['#d97706','OB'],['#06b6d4','FVG'],['#3b82f6','OTE'],['#10b981','TP1-3'],['#10b981','TP4-6'],['#ef4444','SL1'],['#ea580c','SL2'],['#991b1b','SL3'],['#3b82f6','CE'],['#10b981','DRAW'],['#f59e0b','MA20'],['#94a3b8','MA50']].map(([c,l])=>`<div class="lgi"><div class="lgd" style="background:${c}"></div><span>${l}</span></div>`).join('')}</div></div>
+  <div class="cpanel fi fi2" id="tv-panel" style="height:420px"><div id="tv-container"></div></div>
+  ${btf||rtf||etf?`<div class="sec fi fi3"><span class="sect">Multi-Timeframe</span>${tt?`<span class="secb">${tt}</span>`:''}</div><div class="mtfc fi fi3"><div class="mtfr">${btf?`<span class="mtft b">${btf}</span><span class="mtfa">→</span>`:''}${rtf?`<span class="mtft r">${rtf}</span><span class="mtfa">→</span>`:''}${etf?`<span class="mtft e">${etf}</span>`:''}</div></div>`:''}
+  <div class="sec fi fi3"><span class="sect">Trade Levels</span><span class="secb">Tap to copy</span></div>
+  <div class="rc fi fi3"><div class="rw">${lvl('TP3','tp3',d.tp3,t3p)}${lvl('TP2','tp2',d.tp2,t2p)}${lvl('TP1','tp1',d.tp1,t1p)}${lvl('ENTRY','entry',em,null)}${(d.entry_leg1&&d.entry_leg1!==em)?`<div class="ri" onclick="cpy('${fp(d.entry_leg1)}')"><span class="rt entry" style="font-size:9px">L1·OB</span><span class="rp">${fp(d.entry_leg1)}</span><span class="rpct" style="color:var(--amber)">40%</span><span class="rcpy">⎘</span></div>`:``}${(d.entry_leg2&&d.entry_leg2!==em)?`<div class="ri" onclick="cpy('${fp(d.entry_leg2)}')"><span class="rt entry" style="font-size:9px">L2·OTE</span><span class="rp">${fp(d.entry_leg2)}</span><span class="rpct" style="color:var(--amber)">50%</span><span class="rcpy">⎘</span></div>`:``}${(d.entry_leg3&&d.entry_leg3!==d.entry_low)?`<div class="ri" onclick="cpy('${fp(d.entry_leg3)}')"><span class="rt entry" style="font-size:9px;color:var(--short)">L3·SWEEP</span><span class="rp">${fp(d.entry_leg3)}</span><span class="rpct" style="color:var(--short)">25%</span><span class="rcpy">⎘</span></div>`:``}${lvl('SL','sl',d.sl1??d.inv_sl,slp)}${lvl('INVAL','inv',d.inv_sl,null)}</div><div class="rftr"><div class="rfi"><span class="rfl">R:R Ratio</span><span class="rfv ${parseFloat(rr)>=2?'good':''}">${rr}</span><div class="rrbg"><div class="rrfill" id="rrBar"></div></div></div><div class="rfi"><span class="rfl">Confidence</span><span class="rfv">${conf}<span style="font-size:11px;color:var(--text2)">/100</span></span></div></div></div>
+  <div class="calc-drawer fi fi3"><div class="calc-hdr" onclick="toggleCalc()"><span class="calc-title">📐 Position Size Calculator</span><span id="calc-tgl" class="calc-toggle">Show</span></div><div class="calc-body" id="calc-body"><div class="calc-mode"><div class="calc-mode-btn active" id="calc-mode-risk">% Risk</div><div class="calc-mode-btn" id="calc-mode-fixed">Fixed $</div></div><div class="calc-row"><div class="calc-field"><span class="calc-label">Account (USD)</span><input class="calc-input" id="calc-acct" type="number" value="1000" min="1" step="100"></div><div class="calc-field" id="calc-risk-row"><span class="calc-label">Risk %</span><input class="calc-input" id="calc-risk" type="number" value="1" min="0.1" max="100" step="0.1"></div><div class="calc-field" id="calc-fixed-row" style="display:none"><span class="calc-label">Risk Amount ($)</span><input class="calc-input" id="calc-fixed" type="number" value="10" min="1" step="1"></div></div><div class="calc-results"><div class="calc-result-row"><span class="calc-result-label">Position Size</span><span class="calc-result-val" id="calc-r-pos">—</span></div><div class="calc-result-row"><span class="calc-result-label">Quantity</span><span class="calc-result-val" id="calc-r-qty">—</span></div><div class="calc-result-row"><span class="calc-result-label">Risk in USD</span><span class="calc-result-val" id="calc-r-risk">—</span></div><div class="calc-result-row"><span class="calc-result-label">SL Distance</span><span class="calc-result-val" id="calc-r-dist">—</span></div></div></div></div>
+  <div class="sec fi fi4"><span class="sect">10-Gate Dashboard</span><span class="secb">${gc}/${gp.length} Pass</span></div><div class="gc fi fi4"><div class="gg">${gates}</div></div>
+  ${buildGate11(d)}${buildFingerprint(d)}${buildCrowd(d)}
+  <div class="jrnl-drawer fi fi4"><div class="jrnl-hdr" onclick="toggleJrnl()"><span class="jrnl-title">📓 Trade Journal</span><span id="jrnl-tgl" class="jrnl-toggle">Log</span></div><div class="jrnl-body" id="jrnl-body"><div class="jrnl-btns"><div class="jb" id="jb-took" onclick="jSelect('took')">✅ Took Trade</div><div class="jb" id="jb-skip" onclick="jSelect('skip')">⏭ Skipped</div></div><div class="jrnl-outcomes" id="jrnl-outcomes"><div class="job" onclick="submitJournal('TP1')" style="color:var(--long)">Hit TP1</div><div class="job" onclick="submitJournal('TP2')" style="color:var(--long)">Hit TP2</div><div class="job" onclick="submitJournal('TP3')" style="color:var(--long)">Hit TP3 🎯</div><div class="job" onclick="submitJournal('SL')" style="color:var(--short)">Hit Stop Loss</div><div class="job" onclick="submitJournal('TIMEOUT')" style="color:var(--text2)">Timed Out / Manual Exit</div></div><div class="jrnl-sent" id="jrnl-sent"></div></div></div>
+  ${buildPCA(d)}${buildLiqHeatmap(d)}
+  <div class="sec fi fi4"><span class="sect">HMM Regime — Viterbi</span><span class="secb">${hp.length} bars</span></div><div class="hc fi fi4"><div class="ht"><span class="hs ${hs}">${hmm.hmm_state||'RANGE'}</span><div class="hbw"><div class="hbb"><div class="hbf ${hs}" id="hmmBar"></div></div><span class="hpct">${hmm.hmm_confidence_pct||'—'}</span></div></div><div class="hp">${pnodes}</div></div>
+  ${gps.length?`<div class="sec fi fi5"><span class="sect">Gap Detection</span><span class="secb">${gps.filter(g=>g.quality==='FULL').length}/8 Full</span></div><div class="gapc fi fi5">${grs}</div>`:''}
+  ${buildFlashWarning(d)}${buildMarkovAdjProb(d)}${buildLevelLearner(d)}${buildSuperMarkov(d)}${buildMarkov(d)}${buildMarkovIntel(d)}${buildGate14(d)}
+  <div class="sec fi fi5"><span class="sect">OCE Pipeline</span><span class="secb">Stage 4.9</span></div><div class="pc fi fi5">${pipes}</div><div style="height:10px"></div>`;
+}
+
+function buildMarkov(d) {
+  const mv = d.markov_data || {}, vl = d.markov_validation || {}, st = d.markov_state || mv.markov_state || '', effN = d.markov_effective_n || mv.markov_effective_n || 0, alpha = Math.min(1.0, effN / 100).toFixed(2), vkey = vl.validator_verdict_key || 'NEUTRAL', verdict = vl.validator_verdict || (st ? `🎲 Markov: ${st}` : '🎲 Markov: no data'), mod = vl.validator_conf_mod != null ? vl.validator_conf_mod : 1.0, chain = vl.validator_gate_chain || '', nSamp = vl.validator_n_samples || 0, bulledge = vl.validator_bull_edge != null ? (vl.validator_bull_edge*100).toFixed(1)+'%' : '—', veto = vl.validator_gate_veto ? '⛔ VETO' : '✅ OK', velFlag = vl.validator_velocity_flag, velNote = vl.validator_velocity_note || '', vCls = vkey==='CONFIRMED'?'mk-confirmed':vkey==='VETOED'||vkey==='FOMC_BLOCKED'?'mk-vetoed':vkey==='CAUTION'?'mk-caution':'mk-neutral';
+  if (!st && nSamp === 0) return '';
+  return `<div class="sec fi fi5"><span class="sect">🎲 Markov Chain</span><span class="secb">α=${alpha} · n=${nSamp}</span></div><div class="mkc fi fi5"><div class="mk-verdict ${esc(vCls)}">${esc(verdict)}</div><div class="mk-row"><span class="mk-lbl">State</span><span class="mk-val">${st||'—'}</span></div><div class="mk-row"><span class="mk-lbl">Conf Mod</span><span class="mk-val mk-mod">${mod.toFixed(2)}×</span></div><div class="mk-row"><span class="mk-lbl">Bull Edge</span><span class="mk-val">${bulledge}</span></div><div class="mk-row"><span class="mk-lbl">Gate Chain</span><span class="mk-val mk-chain">${chain||'—'}</span></div><div class="mk-row"><span class="mk-lbl">Gate Veto</span><span class="mk-val">${veto}</span></div>${velFlag?`<div class="mk-vel">${velNote}</div>`:''}</div>`;
+}
+
+function runAnims(d) {
+  const rr=Math.min(100,(parseFloat(d.rr||0)/3)*100); setTimeout(()=>{const b=document.getElementById('rrBar');if(b)b.style.width=rr+'%'},400);
+  const hc=parseFloat((d.hmm_data||{}).hmm_confidence||0.5)*100; setTimeout(()=>{const b=document.getElementById('hmmBar');if(b)b.style.width=hc+'%'},600);
+  setTimeout(()=>{ if(window._sig){ _ensureDashLive(window._sig, 'boot'); initICT(window._sig); } },220);
+  setTimeout(()=>{ if (window.requestIdleCallback) requestIdleCallback(()=>_primeTV(), {timeout:1500}); else setTimeout(()=>_primeTV(), 900); }, 320);
+  _startAgeBadge(d.signal_ts||null); setTimeout(()=>initCalc(),100); setTimeout(()=>renderPCA(d),500);
+}
+
+function init() {
+  const d = getSignal();
+  setTimeout(() => {
+    document.getElementById('loader').style.display = 'none';
+    if (!d) { document.getElementById('empty').classList.add('show'); return; }
+    const c = document.getElementById('content');
+    try { c.innerHTML = build(d); } catch(buildErr) {
+      if (!window._sig) { window._sig = { ...d, tp1: +d.tp1||0, tp2: +d.tp2||0, tp3: +d.tp3||0, sl1: +(d.sl1 ?? d.inv_sl)||0, sl2: +d.sl2||0, sl3: +d.sl3||0, inv: +d.inv_sl||0, entry_mid: ((+d.entry_low||0) + (+d.entry_high||0)) / 2, entry_low: +d.entry_low||0, entry_high: +d.entry_high||0, ob_high: +d.ob_high||0, ob_low: +d.ob_low||0, fvg_high: +d.fvg_high||0, fvg_low: +d.fvg_low||0, ote_zone_low: +(d.ote_zone_low||d.entry_low)||0, ote_zone_high: +(d.ote_zone_high||d.entry_high)||0, bos_price: +d.bos_price||0, choch: !!d.choch, price: +d.price||0, chart_tf: d.chart_tf||d.exec_tf||'4H', symbol: d.symbol||'BTCUSDT', }; }
+      c.innerHTML = '<div style="padding:30px;font-family:var(--sans);font-size:12px;color:var(--text2);text-align:center"><div style="font-size:32px;margin-bottom:12px">⚠️</div><div style="font-weight:600">Signal render error</div><div style="font-size:10px;margin-top:6px;opacity:.7;font-family:var(--mono)">' + esc(buildErr.message) + '</div></div>';
+    }
+    c.style.display = 'block';
+    document.querySelectorAll('button:not([type])').forEach(btn => btn.setAttribute('type', 'button'));
+    ['calc-acct','calc-risk','calc-fixed'].forEach(id => { const el = document.getElementById(id); if (el) { el.setAttribute('inputmode', 'decimal'); el.setAttribute('autocomplete', 'off'); } });
+    try { const savedTab = sessionStorage.getItem(_TAB_KEY); if (savedTab && ['ict','tv','dash'].includes(savedTab)) switchTab(savedTab); } catch(_) {}
+    if (!window._netHooksBound) { window._netHooksBound = true; window.addEventListener('offline', () => { const el = document.getElementById('conn-lbl'); if (el) el.textContent = 'Offline'; toast('Offline mode — showing cached signal', 2200); }); window.addEventListener('online', () => { toast('Back online', 1600); if (window._sig && window._ictInited) wsConnect(window._sig.symbol, onTick); }); }
+    runAnims(d);
+  }, 400);
+}
+
+if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+setTimeout(() => { const ld = document.getElementById('loader'); if (ld && ld.style.display !== 'none') { ld.style.display = 'none'; const em = document.getElementById('empty'); if (em && !window._sig) em.classList.add('show'); } }, 5000);
+
+function buildMarkovIntel(d) {
+  const mv = d.markov_data || {};
+  const st = d.markov_state || mv.markov_state || '', p1 = d.markov_next_pred || mv.markov_next_pred || '', p1p = Math.round(((d.markov_next_prob || mv.markov_next_prob || 0)) * 100), p2nd = d.markov_2nd_pred || mv.markov_2nd_pred || '', p2ndp = Math.round((d.markov_2nd_prob || mv.markov_2nd_prob || 0) * 100), p2 = d.markov_p2_pred || mv.markov_p2_pred || '', p2p = Math.round((d.markov_p2_prob || mv.markov_p2_prob || 0) * 100), p3 = d.markov_p3_pred || mv.markov_p3_pred || '', p3p = Math.round((d.markov_p3_prob || mv.markov_p3_prob || 0) * 100);
+  if (!st) return '';
+  function stateChip(name, prob, cls) { const short = (name || '—').replace('_', ' ').replace('MANIPULATION', 'MANIP'); const bg = name.includes('BULL') ? 'var(--long)' : name.includes('BEAR') ? 'var(--short)' : 'var(--amber)'; return `<span class="mi-chip" style="background:${bg}">${esc(short)} ${prob ? prob+'%' : ''}</span>`; }
+  const swr = d.markov_state_winrates || mv.markov_state_winrates || {}; let wrRows = ''; const sorted = Object.entries(swr).sort((a, b) => (b[1].total || 0) - (a[1].total || 0)).slice(0, 6);
+  if (sorted.length) { wrRows = sorted.map(([state, wr]) => { const pct = Math.round((wr.tp_rate || 0) * 100), fill = pct >= 55 ? 'var(--long)' : pct < 40 ? 'var(--short)' : 'var(--amber)', short = state.replace('_', '\u00A0').replace('MANIPULATION', 'MANIP'); return `<div class="mi-wr-row"><span class="mi-wr-lbl">${esc(short)}</span><div class="mi-wr-bar-wrap"><div class="mi-wr-bar" style="width:${pct}%;background:${fill}"></div></div><span class="mi-wr-pct" style="color:${fill}">${pct}%</span><span class="mi-wr-n">${wr.total || 0}t</span></div>`; }).join(''); } else { wrRows = '<div class="mi-empty">No outcome data yet</div>'; }
+  const cwr = d.markov_curr_winrate || mv.markov_curr_winrate || {}; let cwrBadge = '';
+  if (cwr.total >= 3) { const cp = Math.round((cwr.tp_rate || 0) * 100), cc = cp >= 55 ? 'var(--long)' : cp < 40 ? 'var(--short)' : 'var(--amber)'; cwrBadge = `<span class="mi-cwr" style="color:${cc}">State WR ${cp}% · ${cwr.total}t · ExpR:R ${(cwr.exp_rr||0).toFixed(1)}</span>`; }
+  const sc = d.super_confidence_score || 0; let scBar = '';
+  if (sc > 0) { const scFill = sc >= 65 ? 'var(--long)' : sc < 30 ? 'var(--short)' : 'var(--amber)'; scBar = `<div class="mi-sc-wrap"><span class="mi-sc-lbl">SuperConf</span><div class="mi-sc-track"><div class="mi-sc-fill" style="width:${sc}%;background:${scFill}"></div></div><span class="mi-sc-val" style="color:${scFill}">${sc}/100</span></div>`; }
+  const rg = d.markov_regime_geometry || mv.markov_regime_geometry || {}; let rgPill = '';
+  if (rg.regime_geometry_active) { const et = Math.round((rg.regime_entry_tighten_pct || 0) * 100), sw = Math.round((rg.regime_sl_widen_pct || 0) * 100); rgPill = `<div class="mi-rg">⚙️ Regime Geometry: entry −${et}% · SL +${sw}% ATR · cap ×${(rg.regime_conf_cap||1.3).toFixed(2)}</div>`; }
+  const be = d.enh_be_sl || {}; let beLine = '';
+  if (be.be_sl_valid) { const beIcon = be.be_triggered ? '⚡' : '📍', beStatus = be.be_triggered ? 'ACTIVE NOW' : '1:1 R:R pending'; beLine = `<div class="mi-be ${be.be_triggered ? 'mi-be-active' : ''}">${beIcon} BE SL: trigger <b>${fp(be.be_trigger_price)}</b> → move to <b>${fp(be.be_sl_price)}</b> <span class="mi-be-tag">${esc(beStatus)}</span>${be.trail_sl_tp1 ? `<br><span class="mi-trail">Trail-TP1 ${fp(be.trail_sl_tp1)} · Trail-TP2 ${fp(be.trail_sl_tp2)}</span>` : ''}</div>`; }
+  const fib = d.enh_fib_ext || {}; let fibLine = '';
+  if (fib.fib_ext_valid && d.tp4) { fibLine = `<div class="mi-fib">📏 Runners: <span class="mi-fib-tp">TP4 ${fp(d.tp4)}</span> <span class="mi-fib-lbl">1.272×</span> · <span class="mi-fib-tp">TP5 ${fp(d.tp5)}</span> <span class="mi-fib-lbl">1.618×</span> · <span class="mi-fib-tp">TP6 ${fp(d.tp6)}</span> <span class="mi-fib-lbl">2.000×</span> <span class="mi-fib-atr">(×${(fib.fib_disp_atr||0).toFixed(1)} ATR leg)</span></div>`; }
+  const ce = d.enh_fvg_ce || {}; let ceLine = '';
+  if (ce.ce_valid) { ceLine = `<div class="mi-ce">📐 FVG CE Entry: <b>${fp(ce.ce_price)}</b> · zone [${fp(ce.entry_low_ce)} – ${fp(ce.entry_high_ce)}]</div>`; }
+  const sswr = d.markov_session_state_wr || mv.markov_session_state_wr || {}; let sessRow = ''; const sessEntries = Object.entries(sswr).filter(([, sv]) => Object.keys(sv).length > 0).slice(0, 3);
+  if (sessEntries.length) { sessRow = `<div class="mi-sess-wrap">` + sessEntries.map(([sess, sv]) => { const topState = Object.entries(sv).sort((a,b) => b[1]-a[1])[0]; if (!topState) return ''; const [tst, twr] = topState, pct = Math.round(twr * 100), fill = pct >= 55 ? 'var(--long)' : pct < 40 ? 'var(--short)' : 'var(--amber)'; return `<div class="mi-sess-cell"><span class="mi-sess-name">${esc(sess)}</span><span class="mi-sess-state" style="color:${fill}">${esc((tst||'').replace('_',' '))}</span><span class="mi-sess-wr" style="color:${fill}">${pct}%</span></div>`; }).join('') + `</div>`; }
+  return `<div class="sec fi fi5"><span class="sect">🧠 Markov Intelligence v3</span><span class="secb">2nd-order · N-step · Session Matrix</span></div><div class="mi-panel fi fi5"><div class="mi-chain-wrap"><div class="mi-chain-row"><span class="mi-chain-lbl">State</span>${stateChip(st, 0, '')}<span class="mi-arrow">→</span><span class="mi-chain-lbl">1st</span>${stateChip(p1, p1p, '')}<span class="mi-arrow">→</span><span class="mi-chain-lbl">2nd</span>${stateChip(p2nd, p2ndp, 'mi-2nd')}</div><div class="mi-chain-row" style="margin-top:6px"><span class="mi-chain-lbl">P²</span>${stateChip(p2, p2p, '')}<span class="mi-arrow">→→</span><span class="mi-chain-lbl">P³</span>${stateChip(p3, p3p, '')}${cwrBadge}</div></div>${scBar}${rgPill}<div class="mi-wr-title">Win Rate by ICT State</div><div class="mi-wr-grid">${wrRows}</div>${sessRow ? `<div class="mi-wr-title" style="margin-top:10px">Session Adjusted Win Rates</div>${sessRow}` : ''}${beLine}${fibLine}${ceLine}</div>`;
+}
+</script>
+</body>
+</html>

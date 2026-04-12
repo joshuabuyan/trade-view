@@ -1,0 +1,41 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Runtime / generated state
+*.db
+*.sqlite
+*.sqlite3
+*.jsonl
+logs.jsonl
+mop_ict_structured.jsonl
+markov_brain.json
+pin_messages.json
+poly_paper.db
+poly_paper.json
+apex_watch_store.json
+gate_memory.json
+gate_blacklist.json
+conditions.json
+deep_struct_cache.json
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

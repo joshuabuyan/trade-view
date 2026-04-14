@@ -1,7 +1,0 @@
-server1_github_ready_upload.zip contents were prepared from server1_final_updated.zip with these changes:
-- kept the queue-based app.py and ta_job_queue.py
-- kept baseline working modules
-- removed runtime/generated state files (journal.db, rl_state.db, markov_brain.json, mop_ict_structured.jsonl, pin_messages.json)
-- added .gitignore
-- added .env.example
-- trimmed dev-only packages from requirements.txt for deployment

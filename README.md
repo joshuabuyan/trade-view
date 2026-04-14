@@ -1,2 +1,0 @@
-# trade-view
-trade-view

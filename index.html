@@ -1,6 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<script id="MOP-FINAL-HTML-SID-VAULT-NO-Z-BLOCKER-v1-early">
+/*
+  MOP-FINAL-HTML-SID-VAULT-NO-Z-BLOCKER-v1
+  Accepts GitHub payload vault URLs:
+    ?s=<sid>&_mop_vault=1&_mop_sym=SOLUSDT
+  Old ?z-only production blocker must not block SID vault mode.
+*/
+(function(){
+  try{
+    var q = new URLSearchParams(location.search || "");
+    var sid = q.get("s") || q.get("sid") || q.get("payload_id");
+    if(sid){
+      window.__MOP_SID_VAULT_MODE__ = true;
+      window.__MOP_DISABLE_Z_ONLY_BLOCKER__ = true;
+      window.__MOP_INITIAL_SID__ = sid;
+      window.__MOP_INITIAL_SYMBOL__ = q.get("_mop_sym") || q.get("symbol") || q.get("pair") || "";
+    }
+  }catch(e){}
+})();
+</script>
+
+
 <!-- === [MOP-HTML-WEBAPP-QUERY-Z-TRANSPORT-v7] START === -->
 <script id="MOP-HTML-WEBAPP-QUERY-Z-TRANSPORT-v7-script">
 (function(){
@@ -6278,6 +6301,299 @@ W.addEventListener('load',function(){setTimeout(function(){renderL22StructuralCa
 
   W.MOP_STRICT_PAYLOAD_CONTRACT_APPLY=applyStrict;
 })(window,document);
+</script>
+
+
+
+<script id="MOP-FINAL-HTML-SID-VAULT-NO-Z-BLOCKER-v1">
+(function(){
+  "use strict";
+
+  var MARK = "MOP-FINAL-HTML-SID-VAULT-NO-Z-BLOCKER-v1";
+
+  function qs(k){
+    try{return new URLSearchParams(location.search || "").get(k) || "";}catch(e){return "";}
+  }
+
+  var sid = qs("s") || qs("sid") || qs("payload_id");
+  var symHint = qs("_mop_sym") || qs("symbol") || qs("pair") || "";
+
+  if(!sid) return;
+
+  window.__MOP_SID_VAULT_MODE__ = true;
+  window.__MOP_DISABLE_Z_ONLY_BLOCKER__ = true;
+  window.__MOP_INITIAL_SID__ = sid;
+  window.__MOP_INITIAL_SYMBOL__ = symHint;
+
+  function cleanSymbol(x){
+    if(x && typeof x === "object"){
+      var keys = ["symbol","pair","ticker","base","asset","name"];
+      for(var i=0;i<keys.length;i++){
+        if(typeof x[keys[i]] === "string"){
+          var z = cleanSymbol(x[keys[i]]);
+          if(z) return z;
+        }
+      }
+      return "";
+    }
+    if(typeof x !== "string" && typeof x !== "number") return "";
+    var s = String(x || "").toUpperCase().trim();
+    if(!s || s.indexOf("OBJECT") >= 0 || /\[OBJECT\s+OBJECT\]/i.test(s)) return "";
+    s = s.replace(/^BINANCE[:_\-]/,"").replace(/^BYBIT[:_\-]/,"").replace(/^OKX[:_\-]/,"");
+    s = s.replace(/PERP|FUTURES|SPOT|\s/g,"");
+    s = s.replace(/[^A-Z0-9]/g,"");
+    if(!s || s === "UNKNOWN" || s === "NONE" || s === "NULL" || s.indexOf("OBJECT") >= 0) return "";
+    if(!/(USDT|USDC|FDUSD|BUSD)$/.test(s) && s.length <= 12) s += "USDT";
+    return /^[A-Z0-9]{2,25}(USDT|USDC|FDUSD|BUSD)$/.test(s) ? s : "";
+  }
+
+  function scanSymbol(o, depth){
+    depth = depth || 0;
+    if(depth > 6) return "";
+    if(typeof o === "string" || typeof o === "number") return cleanSymbol(o);
+    if(Array.isArray(o)){
+      for(var i=0;i<Math.min(o.length,20);i++){
+        var a = scanSymbol(o[i], depth+1);
+        if(a) return a;
+      }
+      return "";
+    }
+    if(!o || typeof o !== "object") return "";
+
+    var keys = ["symbol","pair","ticker","market","coin","asset","base","requested_symbol","technical_symbol","binance_symbol","trade_pair","trading_pair"];
+    for(var k=0;k<keys.length;k++){
+      if(o[keys[k]] !== undefined){
+        var s = scanSymbol(o[keys[k]], depth+1);
+        if(s) return s;
+      }
+    }
+
+    for(var kk in o){
+      if(/symbol|pair|ticker|market|coin|asset|contract|base/i.test(kk)){
+        var z = scanSymbol(o[kk], depth+1);
+        if(z) return z;
+      }
+    }
+    return "";
+  }
+
+  function n(x){
+    if(x === undefined || x === null || x === "" || x === "—") return 0;
+    if(typeof x === "string") x = x.replace(/[$,%\s,]/g,"");
+    var v = Number(x);
+    return isFinite(v) && v > 0 ? v : 0;
+  }
+
+  function first(){
+    for(var i=0;i<arguments.length;i++){
+      var x = arguments[i];
+      if(x === undefined || x === null) continue;
+      if(typeof x === "string" && !x.trim()) continue;
+      if(typeof x === "string" && ["—","-","None","null","undefined","nan"].indexOf(x.trim()) >= 0) continue;
+      return x;
+    }
+    return null;
+  }
+
+  function syncLockedPlan(d){
+    if(!d || typeof d !== "object") return d;
+
+    var sym = scanSymbol(d) || cleanSymbol(symHint);
+    if(sym) d.symbol = sym;
+
+    var lock = d.locked_trade_plan && typeof d.locked_trade_plan === "object" ? d.locked_trade_plan : null;
+    var finalPlan = d.final_trade_plan && typeof d.final_trade_plan === "object" ? d.final_trade_plan : null;
+    var plan = lock || finalPlan;
+
+    if(plan){
+      var entry = first(plan.entry, plan.entry_leg1, d.entry, d.entry_leg1, d.final_entry);
+      var sl = first(plan.sl1, plan.sl, d.sl1, d.sl, d.inv_sl);
+      var tp1 = first(plan.tp1, d.tp1);
+      var tp2 = first(plan.tp2, d.tp2);
+      var tp3 = first(plan.tp3, d.tp3);
+      var state = String(first(plan.state, d.signal_state, d.entry_state, d.state, "WAIT") || "WAIT").toUpperCase();
+      var side = String(first(plan.side, d.side, d.direction, d.bias, "WAIT") || "WAIT").toUpperCase();
+
+      if(n(entry) > 0 && n(sl) > 0 && (n(tp1) > 0 || n(tp2) > 0 || n(tp3) > 0)){
+        plan.entry = n(entry);
+        plan.entry_leg1 = n(first(plan.entry_leg1, entry));
+        plan.sl = n(sl);
+        plan.sl1 = n(sl);
+        plan.tp1 = n(tp1);
+        plan.tp2 = n(tp2);
+        plan.tp3 = n(tp3);
+        plan.state = state;
+        plan.side = side;
+
+        d.locked_trade_plan = Object.assign({}, plan, {authority:"locked_trade_plan", source_layer:MARK});
+        d.final_trade_plan = Object.assign({}, d.locked_trade_plan);
+
+        d.entry = d.locked_trade_plan.entry;
+        d.final_entry = d.locked_trade_plan.entry;
+        d.locked_entry = d.locked_trade_plan.entry;
+        d.entry_leg1 = d.locked_trade_plan.entry_leg1;
+        d.sl = d.locked_trade_plan.sl;
+        d.sl1 = d.locked_trade_plan.sl1;
+        d.locked_sl = d.locked_trade_plan.sl;
+        d.tp1 = d.locked_trade_plan.tp1;
+        d.tp2 = d.locked_trade_plan.tp2;
+        d.tp3 = d.locked_trade_plan.tp3;
+        d.locked_tp1 = d.locked_trade_plan.tp1;
+        d.locked_tp2 = d.locked_trade_plan.tp2;
+        d.locked_tp3 = d.locked_trade_plan.tp3;
+        d.signal_state = state;
+        d.locked_state = state;
+        d.side = side;
+      }
+    }
+
+    d._mop_html_sid_vault_loaded = MARK;
+    return d;
+  }
+
+  function payloadUrl(){
+    return "./payloads/" + encodeURIComponent(sid) + ".json?_mop_cb=" + Date.now();
+  }
+
+  function hideOldZBlocker(){
+    try{
+      var needles = [
+        "PRODUCTION WEBAPP BLOCKED",
+        "Missing ?z=",
+        "compressed live Technical Analysis payload",
+        "This file no longer uses the BTC demo fallback"
+      ];
+
+      var all = document.querySelectorAll("body *");
+      for(var i=0;i<all.length;i++){
+        var el = all[i];
+        if(!el || el === document.body || el === document.documentElement) continue;
+
+        var t = "";
+        try{ t = (el.innerText || el.textContent || "").trim(); }catch(e){ t = ""; }
+        if(!t || t.length > 1600) continue;
+
+        for(var j=0;j<needles.length;j++){
+          if(t.indexOf(needles[j]) >= 0){
+            el.setAttribute("data-mop-hidden-z-blocker", MARK);
+            el.style.display = "none";
+            el.style.visibility = "hidden";
+            el.style.pointerEvents = "none";
+            break;
+          }
+        }
+      }
+
+      document.documentElement.classList.remove("blocked","modal-open","production-blocked");
+      document.body.classList.remove("blocked","modal-open","production-blocked");
+      document.body.style.overflow = "";
+    }catch(e){}
+  }
+
+  function installPayload(d){
+    d = syncLockedPlan(d || {});
+
+    window.__MOP_GH_VAULT_PAYLOAD = d;
+    window.__MOP_SID_VAULT_PAYLOAD = d;
+    window.__CRYPTEX_PAYLOAD_CACHE = d;
+    window.__CRYP_PAYLOAD_CACHE = d;
+    window.CRYP_PAYLOAD = d;
+    window.PAYLOAD = d;
+
+    try{
+      if(window.State && typeof window.State === "object"){
+        window.State.payload = d;
+        window.State.remotePayload = null;
+        window.State.symbol = scanSymbol(d) || cleanSymbol(symHint) || window.State.symbol;
+        window.State.refreshUrl = window.State.refreshUrl || "";
+      }
+    }catch(e){}
+
+    try{
+      sessionStorage.setItem("MOP_LAST_SID_PAYLOAD", JSON.stringify(d));
+    }catch(e){}
+
+    return d;
+  }
+
+  function callRender(d){
+    hideOldZBlocker();
+
+    var fns = [
+      "updateUI",
+      "renderAll",
+      "renderDashboard",
+      "renderChart",
+      "renderLiquidity",
+      "renderHorizon",
+      "hydratePayload",
+      "hydrate",
+      "boot",
+      "init"
+    ];
+
+    for(var i=0;i<fns.length;i++){
+      try{
+        var fn = window[fns[i]];
+        if(typeof fn === "function"){
+          if(fns[i] === "updateUI" || fns[i] === "renderAll" || fns[i] === "hydratePayload" || fns[i] === "hydrate"){
+            fn(d);
+          }else{
+            fn();
+          }
+        }
+      }catch(e){}
+    }
+
+    try{
+      document.dispatchEvent(new CustomEvent("mop:vault-payload-loaded", {detail:d}));
+      window.dispatchEvent(new CustomEvent("mop:vault-payload-loaded", {detail:d}));
+      window.dispatchEvent(new Event("resize"));
+    }catch(e){}
+  }
+
+  function showError(msg){
+    hideOldZBlocker();
+    try{
+      var box = document.createElement("div");
+      box.setAttribute("id","mopSidVaultError");
+      box.style.cssText = "position:fixed;left:18px;right:18px;top:170px;z-index:999999;padding:14px;border-radius:16px;background:#111827;color:#fff;font:13px monospace;box-shadow:0 12px 40px rgba(0,0,0,.35);";
+      box.textContent = "SID vault payload load failed: " + msg;
+      document.body.appendChild(box);
+    }catch(e){}
+  }
+
+  async function load(){
+    hideOldZBlocker();
+
+    try{
+      var url = payloadUrl();
+      window.__MOP_SID_VAULT_URL = url;
+
+      var r = await fetch(url, {cache:"no-store", headers:{"Cache-Control":"no-cache"}});
+      if(!r.ok) throw new Error("HTTP " + r.status + " for " + url);
+
+      var d = await r.json();
+      installPayload(d);
+      callRender(d);
+
+      console.warn("[" + MARK + "] loaded SID vault payload", sid, scanSymbol(d), "bytes?", JSON.stringify(d).length);
+    }catch(e){
+      console.warn("[" + MARK + "] SID vault load failed", e);
+      showError(String(e && e.message || e));
+    }
+  }
+
+  hideOldZBlocker();
+  var blockerTimer = setInterval(hideOldZBlocker, 250);
+  setTimeout(function(){try{clearInterval(blockerTimer);}catch(e){}}, 15000);
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", load, {once:true});
+  }else{
+    load();
+  }
+})();
 </script>
 
 </body>

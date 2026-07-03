@@ -401,10 +401,6 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
 .sniper-note-box{font-family:var(--mono);font-size:9.5px;line-height:1.55;color:#a9b8c8;background:rgba(7,17,27,.72);border:1px solid var(--line);border-radius:11px;padding:10px;white-space:pre-wrap;overflow:hidden;max-height:90px;overflow-y:auto;margin-top:8px}
 .sniper-remap-banner{border:1px solid rgba(246,192,78,.38);background:rgba(246,192,78,.07);border-radius:11px;padding:9px 11px;font-family:var(--mono);font-size:9px;color:var(--amber);margin-top:8px;line-height:1.5;display:none}
 .sniper-remap-banner.active{display:block}
-.sniper-sweep-banner{border:1px solid rgba(74,227,255,.38);background:rgba(74,227,255,.07);border-radius:11px;padding:9px 11px;font-family:var(--mono);font-size:9px;color:#4ae3ff;margin-top:8px;line-height:1.5;display:none}
-.sniper-sweep-banner.active{display:block}
-.sniper-sweep-row{display:flex;gap:4px;flex-wrap:wrap}
-.sniper-sweep-row .sniper-box.wide{flex:1 1 100%}
 .scenario-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 9px;font-family:var(--mono);font-size:9px;font-weight:900;border:1px solid rgba(189,92,255,.38);background:rgba(189,92,255,.09);color:var(--purple)}
 .confidence-bar{height:5px;border-radius:99px;background:rgba(255,255,255,.07);margin-top:6px;overflow:hidden}
 .confidence-bar-fill{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.2,.8,.2,1)}</style>
@@ -452,17 +448,11 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
             <div class="plan-cell"><div class="name">TP2</div><div class="num good" id="tp2Val">—</div></div>
             <div class="plan-cell"><div class="name">TP3</div><div class="num good" id="tp3Val">—</div></div>
           </div>
-          <div class="tp-grid" id="extTpGrid" style="margin-top:4px;display:none">
-            <div class="plan-cell"><div class="name">TP4</div><div class="num good" id="tp4Val">—</div></div>
-            <div class="plan-cell"><div class="name">TP5</div><div class="num good" id="tp5Val">—</div></div>
-            <div class="plan-cell"><div class="name" style="font-size:9px;color:#f6c04e">EXT</div><div class="num" style="font-size:9px;color:#f6c04e" id="extTpLabel">EXTENDED</div></div>
-          </div>
           <div class="tp-grid" style="margin-top:8px">
             <div class="plan-cell"><div class="name">Route</div><div class="num" style="font-size:12px" id="routeVal">—</div></div>
             <div class="plan-cell"><div class="name">Bias</div><div class="num good" style="font-size:12px" id="biasVal">—</div></div>
             <div class="plan-cell"><div class="name">Confluence</div><div class="num good" style="font-size:12px" id="confVal">—</div></div>
           </div>
-          <div class="diagnostic-note" id="planDiagnostic" style="display:none;margin-top:8px;padding:8px;border-radius:8px;background:rgba(246,192,78,.08);border:1px solid rgba(246,192,78,.25);font-size:11px;color:#f6c04e"></div>
         </div>
       </div>
 
@@ -528,13 +518,11 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
           <div class="l33-box"><div class="k">Quality</div><div class="lv blue" id="l33Quality">—</div></div>
           <div class="l33-box"><div class="k">Decision</div><div class="lv warn" id="l33Decision">WAIT</div></div>
           <div class="l33-box"><div class="k">VSR</div><div class="lv blue" id="l33Vsr">WAIT</div></div>
-          <div class="l33-box"><div class="k">VSR Kill Zone</div><div class="lv blue" id="l33VsrKz">WAIT</div></div>
           <div class="l33-box"><div class="k">CISD</div><div class="lv blue" id="l33Cisd">WAIT</div></div>
           <div class="l33-box"><div class="k">Double Sweep</div><div class="lv blue" id="l33DoubleSweep">WAIT</div></div>
           <div class="l33-box"><div class="k">Vol Spike Rejection</div><div class="lv blue" id="l33VolSpike">WAIT</div></div>
           <div class="l33-box wide"><div class="k">Active Confirmations</div><div class="l33-labels" id="l33Labels"><span class="l33-mini-pill blue">WAITING FOR L33 PAYLOAD</span></div></div>
           <div class="l33-box wide"><div class="k">Pre-Governor Note</div><div class="lv l33-note warn" id="l33Note">Waiting for second_layer_metrics payload...</div></div>
-          <div class="l33-box wide"><div class="k">2nd-Layer Advisory</div><div class="lv l33-note blue" id="l33Advisory">Waiting for GAP-2 advisory payload…</div></div>
         </div>
       </div>
 
@@ -687,11 +675,6 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
             <div class="plan-cell"><div class="name">TP2</div><div class="num good" id="cTP2">—</div></div>
             <div class="plan-cell"><div class="name">TP3</div><div class="num good" id="cTP3">—</div></div>
           </div>
-          <div class="tp-grid" id="cExtTpGrid" style="margin-top:4px;display:none">
-            <div class="plan-cell"><div class="name">TP4</div><div class="num good" id="cTP4">—</div></div>
-            <div class="plan-cell"><div class="name">TP5</div><div class="num good" id="cTP5">—</div></div>
-            <div class="plan-cell"><div class="name" style="font-size:9px;color:#f6c04e">EXT</div><div class="num" style="font-size:9px;color:#f6c04e">✈️</div></div>
-          </div>
           <div class="tp-grid" style="margin-top:8px">
             <div class="plan-cell"><div class="name">Exec</div><div class="num blue" style="font-size:12px" id="cExecStatus">WAIT</div></div>
             <div class="plan-cell"><div class="name">Max Lev</div><div class="num blue" style="font-size:12px" id="cExecLev">—</div></div>
@@ -720,6 +703,57 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════
+           EXTENDED TARGETS — TP4/TP5, OUTSIDE macro PD range
+           Mirrors mockup intent: TP1-3 stay nested inside the macro PD
+           range on the chart itself; TP4/TP5 (bias_tf structural / macro
+           weekly draw) are shown separately here with their cascade
+           source label. Hidden entirely when the engine's MTF alignment
+           gate suppressed them (tp4_gate_passed / tp5_gate_passed).
+           ═══════════════════════════════════════════════════════════ -->
+      <div class="card" id="extendedTargetsCard" style="display:none">
+        <div class="card-head"><div class="card-title">Extended Targets</div><span class="pill purple">OUTSIDE PD RANGE</span></div>
+        <div class="body">
+          <div class="tp-grid" style="grid-template-columns:1fr 1fr">
+            <div class="plan-cell" id="tp4Cell" style="display:none">
+              <div class="name">TP4</div>
+              <div class="num purple" id="cTP4">—</div>
+              <div class="sub" id="cTP4Source">—</div>
+            </div>
+            <div class="plan-cell" id="tp5Cell" style="display:none">
+              <div class="name">TP5</div>
+              <div class="num purple" id="cTP5">—</div>
+              <div class="sub" id="cTP5Source">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           LOCKED TRADE PLAN SUMMARY — % move from entry + RR to TP3
+           ═══════════════════════════════════════════════════════════ -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">Locked Trade Plan Summary</div><span class="pill blue">% FROM ENTRY</span></div>
+        <div class="body">
+          <div class="plan-grid">
+            <div class="plan-cell"><div class="name">Entry</div><div class="num blue" id="sumEntry">—</div></div>
+            <div class="plan-cell"><div class="name">SL</div><div class="num bad" id="sumSL">—</div><div class="sub" id="sumSLPct">—</div></div>
+          </div>
+          <div class="tp-grid">
+            <div class="plan-cell"><div class="name">TP1</div><div class="num good" id="sumTP1">—</div><div class="sub" id="sumTP1Pct">—</div></div>
+            <div class="plan-cell"><div class="name">TP2</div><div class="num good" id="sumTP2">—</div><div class="sub" id="sumTP2Pct">—</div></div>
+            <div class="plan-cell"><div class="name">TP3</div><div class="num good" id="sumTP3">—</div><div class="sub" id="sumTP3Pct">—</div></div>
+          </div>
+          <div class="tp-grid" style="grid-template-columns:1fr 1fr" id="sumTp45Row">
+            <div class="plan-cell" id="sumTP4Cell" style="display:none"><div class="name">TP4</div><div class="num purple" id="sumTP4">—</div><div class="sub" id="sumTP4Pct">—</div></div>
+            <div class="plan-cell" id="sumTP5Cell" style="display:none"><div class="name">TP5</div><div class="num purple" id="sumTP5">—</div><div class="sub" id="sumTP5Pct">—</div></div>
+          </div>
+          <div class="plan-grid" style="margin-top:8px">
+            <div class="plan-cell wide"><div class="name">RR (to TP3)</div><div class="num blue" id="sumRR">—</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
            HTF SNIPER ENGINE v1.0 — Chart Tab Full Panel
            Reads: p.htf_sniper · best_tf Fib · BPE FVG · Nested FVG · Lock levels
            NEVER mutates locked_trade_plan — display only
@@ -735,13 +769,6 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
             <span class="scenario-pill" id="sniperScenarioPill">S— · —</span>
           </div>
           <div class="sniper-remap-banner" id="sniperRemapBanner">🔄 BOS REMAP ACTIVE — Fibonacci remapped to new swing</div>
-          <div class="sniper-sweep-banner" id="sniperSweepBanner"></div>
-          <div id="sniperSweepRow" class="sniper-sweep-row" style="margin-top:6px;display:none">
-            <div class="sniper-box"><span class="sk">Sweep Extreme</span><div class="sv cyan" id="sniperSweepExtreme">—</div></div>
-            <div class="sniper-box"><span class="sk">Equal-Lows Pool</span><div class="sv blue" id="sniperSweepEqLows">—</div></div>
-            <div class="sniper-box"><span class="sk">Sweep Zone</span><div class="sv blue" id="sniperSweepZoneTag">—</div></div>
-            <div class="sniper-box wide"><span class="sk">Sweep Note</span><div class="sv blue" id="sniperSweepNote">—</div></div>
-          </div>
           <div class="sniper-grid">
             <div class="sniper-box"><span class="sk">Best TF (Anchor)</span><div class="sv blue" id="sniperBestTf">—</div></div>
             <div class="sniper-box"><span class="sk">Exec TF (Trigger)</span><div class="sv blue" id="sniperExecTf">—</div></div>
@@ -823,34 +850,6 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
           </div>
           <div class="sniper-note-box" id="sniperNoteBox">Waiting for HTF Sniper Engine payload…</div>
           <div class="sniper-note-box" id="sniperCascadeNote" style="display:none;margin-top:4px;border-color:#f59e0b;color:#f59e0b;font-size:9px"></div>
-          <!-- SMC Sniper Protocol Engine (run_htf_sniper_engine Gaps 1–6) -->
-          <div style="margin-top:8px;padding:7px 9px;border:1px solid rgba(189,92,255,.22);border-radius:9px;background:rgba(189,92,255,.05)">
-            <div class="sk" style="color:#d78cff;margin-bottom:6px">🛡 SMC Protocol Engine (v9.6 Gaps 1–6)</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap">
-              <div class="sniper-box"><span class="sk">Protocol</span><div class="sv purple" id="sniperProtocol">—</div></div>
-              <div class="sniper-box"><span class="sk">Protocol Ready</span><div class="sv blue" id="sniperProtocolReady">—</div></div>
-              <div class="sniper-box"><span class="sk">Priority</span><div class="sv blue" id="sniperProtocolPrio">—</div></div>
-            </div>
-            <div class="sniper-note-box" id="sniperProtocolNote" style="margin-top:5px;max-height:52px">—</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:5px">
-              <div class="sniper-box"><span class="sk">IDM Bypass</span><div class="sv blue" id="sniperIdmBypass">—</div></div>
-              <div class="sniper-box"><span class="sk">FVG Valid</span><div class="sv blue" id="sniperFvgValidity">—</div></div>
-              <div class="sniper-box"><span class="sk">PO3 Trigger</span><div class="sv blue" id="sniperPo3Trigger">—</div></div>
-              <div class="sniper-box"><span class="sk">Rej Block</span><div class="sv blue" id="sniperRejBlock">—</div></div>
-              <div class="sniper-box"><span class="sk">VPVR Trap</span><div class="sv blue" id="sniperVpvrTrap">—</div></div>
-            </div>
-          </div>
-          <!-- LTF 1M Execution Cascade (Gap 1) -->
-          <div style="margin-top:6px;padding:7px 9px;border:1px solid rgba(0,230,255,.18);border-radius:9px;background:rgba(0,230,255,.04)">
-            <div class="sk" style="color:var(--cyan);margin-bottom:6px">⚡ LTF 1M Execution Cascade</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap">
-              <div class="sniper-box"><span class="sk">LTF Valid</span><div class="sv cyan" id="sniperLtfValid">—</div></div>
-              <div class="sniper-box"><span class="sk">LTF Method</span><div class="sv cyan" id="sniperLtfMethod">—</div></div>
-              <div class="sniper-box"><span class="sk">CHoCH 1m</span><div class="sv cyan" id="sniperLtfChoch">—</div></div>
-              <div class="sniper-box"><span class="sk">LTF Entry</span><div class="sv good" id="sniperLtfEntry">—</div></div>
-              <div class="sniper-box"><span class="sk">LTF SL</span><div class="sv bad" id="sniperLtfSl">—</div></div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -963,28 +962,6 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
         </div>
       </div>
 
-      <!-- v9.7: SMC Governor Commitment Layer -->
-      <div class="card">
-        <div class="card-head"><div class="card-title">🔒 Governor Commitment Layer</div><span class="pill blue" id="govCommitBadge">WAIT</span></div>
-        <div class="body inv-grid">
-          <div class="inv-box"><div class="k">Committed</div><div class="iv blue" id="govCommitState">—</div></div>
-          <div class="inv-box"><div class="k">EQ Blocked</div><div class="iv blue" id="govCommitEqBlk">—</div></div>
-          <div class="inv-box"><div class="k">DOL Blocked</div><div class="iv blue" id="govCommitDolBlk">—</div></div>
-          <div class="inv-box"><div class="k">4H Blocked</div><div class="iv blue" id="govCommit4hBlk">—</div></div>
-          <div class="inv-box"><div class="k">Commit Entry</div><div class="iv good" id="govCommitEntry">—</div></div>
-          <div class="inv-box"><div class="k">Commit SL</div><div class="iv bad" id="govCommitSl">—</div></div>
-          <div class="inv-box"><div class="k">SL Source</div><div class="iv blue" id="govCommitSlSrc">—</div></div>
-          <div class="inv-box"><div class="k">TP1</div><div class="iv good" id="govCommitTp1">—</div></div>
-          <div class="inv-box"><div class="k">TP2</div><div class="iv good" id="govCommitTp2">—</div></div>
-          <div class="inv-box"><div class="k">TP2 Source</div><div class="iv blue" id="govCommitTp2Src">—</div></div>
-          <div class="inv-box"><div class="k">TP3</div><div class="iv good" id="govCommitTp3">—</div></div>
-          <div class="inv-box"><div class="k">TP3 Source</div><div class="iv blue" id="govCommitTp3Src">—</div></div>
-          <div class="inv-box wide"><div class="k">Execution Ready</div><div class="iv blue" id="govExecReady">—</div></div>
-          <div class="inv-box wide"><div class="k">LTF MSS State</div><div class="iv blue" id="govLtfMss">—</div></div>
-          <div class="inv-box wide"><div class="k">15m Micro Seq</div><div class="iv blue" id="gov15mSeq">—</div></div>
-        </div>
-      </div>
-
       <div class="card">
         <div class="card-head"><div class="card-title">📈 Cascading TP Matrix</div><span class="pill blue" id="cascadeBadge">WAIT</span></div>
         <div class="body">
@@ -1026,73 +1003,6 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
       <div class="card">
         <div class="card-head"><div class="card-title">Full Report Compact</div><span class="chev">⌄</span></div>
         <div class="body report-list" id="reportList"></div>
-      </div>
-
-      <!-- v9.6 MERGE: PD Cascade 3-Tier Alignment -->
-      <div class="card">
-        <div class="card-head"><div class="card-title">📐 PD Cascade Alignment</div><span class="pill blue" id="pdCascadeBadge">WAIT</span></div>
-        <div class="body inv-grid">
-          <div class="inv-box"><div class="k">Cascade OK</div><div class="iv blue" id="pdCascadeOk">WAIT</div></div>
-          <div class="inv-box"><div class="k">Tier 1 (Bias TF)</div><div class="iv blue" id="pdTier1">WAIT</div></div>
-          <div class="inv-box"><div class="k">Tier 2 (Ref TF)</div><div class="iv blue" id="pdTier2">WAIT</div></div>
-          <div class="inv-box"><div class="k">Bias TF</div><div class="iv purple" id="pdBiasTf">—</div></div>
-          <div class="inv-box"><div class="k">Ref TF</div><div class="iv purple" id="pdRefTf">—</div></div>
-          <div class="inv-box"><div class="k">Sniper TF</div><div class="iv purple" id="pdSniperTf">—</div></div>
-          <div class="inv-box"><div class="k">Sniper FVG CE</div><div class="iv good" id="pdSniperFvgCe">—</div></div>
-          <div class="inv-box"><div class="k">Range Trending ↓</div><div class="iv warn" id="pdRangeTrending">—</div></div>
-          <div class="inv-box"><div class="k">BTC Macro Gate</div><div class="iv warn" id="pdBtcMacro">—</div></div>
-          <div class="inv-box"><div class="k">Ref-TF Confluence</div><div class="iv blue" id="pdRefConfluence">WAIT</div></div>
-          <div class="inv-box wide"><div class="k">Confluence Note</div><div class="iv inv-note blue" id="pdRefConfluenceNote">Waiting for PD-GAP-6 payload…</div></div>
-        </div>
-      </div>
-
-      <!-- v9.6 MERGE: SR-GAP-3 Top-Down Cascade Gate -->
-      <div class="card">
-        <div class="card-head"><div class="card-title">🔭 SR-GAP-3 Top-Down Cascade</div><span class="pill blue" id="srGap3Badge">WAIT</span></div>
-        <div class="body inv-grid">
-          <div class="inv-box"><div class="k">Cascade Clear</div><div class="iv blue" id="srG3Clear">WAIT</div></div>
-          <div class="inv-box"><div class="k">Quality</div><div class="iv blue" id="srG3Quality">—</div></div>
-          <div class="inv-box"><div class="k">Score</div><div class="iv blue" id="srG3Score">—</div></div>
-          <div class="inv-box"><div class="k">Weekly</div><div class="iv purple" id="srG3Weekly">—</div></div>
-          <div class="inv-box"><div class="k">Daily</div><div class="iv purple" id="srG3Daily">—</div></div>
-          <div class="inv-box"><div class="k">4H</div><div class="iv purple" id="srG3H4">—</div></div>
-          <div class="inv-box wide"><div class="k">Cascade Note</div><div class="iv inv-note blue" id="srG3Note">Waiting for SR-GAP-3 payload…</div></div>
-        </div>
-      </div>
-
-      <!-- v9.6 MERGE: SR-GAP-4 False CHoCH Classifier -->
-      <div class="card">
-        <div class="card-head"><div class="card-title">🔍 SR-GAP-4 CHoCH Validity</div><span class="pill blue" id="srGap4Badge">WAIT</span></div>
-        <div class="body inv-grid">
-          <div class="inv-box"><div class="k">CHoCH Present</div><div class="iv blue" id="srG4Present">WAIT</div></div>
-          <div class="inv-box"><div class="k">Prior Sweep</div><div class="iv blue" id="srG4Sweep">WAIT</div></div>
-          <div class="inv-box"><div class="k">Label</div><div class="iv blue" id="srG4Label">—</div></div>
-          <div class="inv-box"><div class="k">Sweep Source</div><div class="iv purple" id="srG4Source">—</div></div>
-          <div class="inv-box"><div class="k">Confidence</div><div class="iv blue" id="srG4Conf">—</div></div>
-          <div class="inv-box wide"><div class="k">CHoCH Note</div><div class="iv inv-note blue" id="srG4Note">Waiting for SR-GAP-4 payload…</div></div>
-        </div>
-      </div>
-
-      <!-- v9.6 MERGE: SR-GAP-5 Liq+FVG+Session Sequential Entry -->
-      <div class="card">
-        <div class="card-head"><div class="card-title">⚡ SR-GAP-5 Entry Model</div><span class="pill blue" id="srGap5Badge">WAIT</span></div>
-        <div class="body inv-grid">
-          <div class="inv-box"><div class="k">State</div><div class="iv blue" id="srG5State">WAIT</div></div>
-          <div class="inv-box"><div class="k">① Sweep</div><div class="iv blue" id="srG5Sweep">WAIT</div></div>
-          <div class="inv-box"><div class="k">② FVG</div><div class="iv blue" id="srG5Fvg">WAIT</div></div>
-          <div class="inv-box"><div class="k">③ Session</div><div class="iv blue" id="srG5Session">WAIT</div></div>
-          <div class="inv-box"><div class="k">Kill Zone</div><div class="iv purple" id="srG5Kz">—</div></div>
-          <div class="inv-box"><div class="k">All Aligned</div><div class="iv blue" id="srG5Aligned">WAIT</div></div>
-          <div class="inv-box wide"><div class="k">Entry Note</div><div class="iv inv-note blue" id="srG5Note">Waiting for SR-GAP-5 payload…</div></div>
-        </div>
-      </div>
-
-      <!-- v9.6 MERGE: TTFM Extended Summary -->
-      <div class="card">
-        <div class="card-head"><div class="card-title">📋 TTFM Summary</div><span class="pill blue">FRACTAL</span></div>
-        <div class="body">
-          <div class="iv inv-note blue" id="ttfmSummaryLine" style="font-family:var(--mono);font-size:11px;line-height:1.7;word-break:break-all">Waiting for TTFM summary payload…</div>
-        </div>
       </div>
     </section>
   </main>
@@ -1164,14 +1074,6 @@ body.mop-chart-fs-active{overflow:hidden!important;touch-action:none!important}
     return x;
   }
   function normalizeSymbol(raw){
-    // [FIX-OBJECTOBJECT] raw must be a string or number. If a caller passes
-    // an object/array (e.g. a mis-keyed payload field), String(raw) used to
-    // silently produce "[object Object]" -> stripped to "OBJECTOBJECT" ->
-    // suffixed with "USDT", rendering as "OBJECTOBJECT/USDT" in the header.
-    // Reject non-primitives here so that bad input always falls through to
-    // scanSymbol()'s recursive, key-aware search instead of masquerading as
-    // a valid ticker.
-    if(raw!==null && typeof raw==='object') return '';
     var s=String(raw||'').trim().toUpperCase();
     s=s.replace(/^BINANCE[:_\-]/,'').replace(/^BYBIT[:_\-]/,'').replace(/^OKX[:_\-]/,'');
     s=s.replace(/PERP$|_PERP$|\.P$/,'').replace(/[^A-Z0-9]/g,'');
@@ -1427,10 +1329,6 @@ function pct(v,dec){
   return (x>0?'+':'')+x.toFixed(dec===undefined?2:dec)+'%';
 }
 function normSymbol(raw){
-  // [FIX-OBJECTOBJECT] Same guard as normalizeSymbol(), applied to the
-  // fallback branch below in case CRYPTEX_NORMALIZE_SYMBOL hasn't been
-  // installed yet when this runs.
-  if(raw!==null && typeof raw==='object') return 'BTCUSDT';
   var s=(window.CRYPTEX_NORMALIZE_SYMBOL?window.CRYPTEX_NORMALIZE_SYMBOL(raw):String(raw||'').toUpperCase().replace(/[^A-Z0-9]/g,''));
   return s||'BTCUSDT';
 }
@@ -1459,8 +1357,13 @@ function buildPlan(p){
   var tp1=first(get(lock,'tp1'),get(lock,'TP1'),get(lock,'take_profit_1'),get(lock,'TakeProfit1'),targetFromArrays(lock,p,0),get(p,'tp1'),get(p,'TP1'));
   var tp2=first(get(lock,'tp2'),get(lock,'TP2'),get(lock,'take_profit_2'),get(lock,'TakeProfit2'),targetFromArrays(lock,p,1),get(p,'tp2'),get(p,'TP2'));
   var tp3=first(get(lock,'tp3'),get(lock,'TP3'),get(lock,'take_profit_3'),get(lock,'TakeProfit3'),targetFromArrays(lock,p,2),get(p,'tp3'),get(p,'TP3'));
-  var tp4=first(get(lock,'tp4'),get(lock,'TP4'),get(lock,'take_profit_4'),get(lock,'TakeProfit4'),targetFromArrays(lock,p,3),get(p,'tp4'),get(p,'TP4'));  // [GAP4]
-  var tp5=first(get(lock,'tp5'),get(lock,'TP5'),get(lock,'take_profit_5'),get(lock,'TakeProfit5'),targetFromArrays(lock,p,4),get(p,'tp5'),get(p,'TP5'));  // [GAP4]
+  // [CHART-EXT-TARGETS-v1] TP4/TP5 — extended targets OUTSIDE the macro PD
+  // range (bias_tf structural / macro weekly draw). Zero/absent when the
+  // engine's MTF alignment gate suppressed them (tp4_gate_passed=false).
+  var tp4=first(get(lock,'tp4'),get(lock,'TP4'),get(lock,'take_profit_4'),targetFromArrays(lock,p,3),get(p,'tp4'),get(p,'TP4'));
+  var tp5=first(get(lock,'tp5'),get(lock,'TP5'),get(lock,'take_profit_5'),targetFromArrays(lock,p,4),get(p,'tp5'),get(p,'TP5'));
+  var tp4Source=txt(first(get(lock,'tp4_source'),get(p,'cascade_tp4_source'),get(p,'tp4_source')),'');
+  var tp5Source=txt(first(get(lock,'tp5_source'),get(p,'cascade_tp5_source'),get(p,'tp5_source')),'');
   var rr=first(get(lock,'rr_to_tp3'),get(lock,'RR_TO_TP3'),get(lock,'rr'),get(lock,'RR'),get(lock,'risk_reward'),get(lock,'riskReward'),get(p,'final_rr'),get(p,'rr'),get(p,'RR'),get(p,'risk_reward'));
   if(!entry) entry=deriveEntry(sl,tp3||tp2||tp1,rr);
   var side=String(first(get(lock,'side'),get(lock,'direction'),get(lock,'bias'),get(p,'side'),get(p,'direction'),get(p,'bias'),get(p,'trade_direction'),(n(tp3||tp1)>n(entry)?'LONG':'SHORT'))||'').toUpperCase();
@@ -1468,21 +1371,68 @@ function buildPlan(p){
   else if(side.indexOf('LONG')>=0||side.indexOf('BUY')>=0||side.indexOf('BULL')>=0) side='LONG';
   else side=n(tp3||tp1)>n(entry)?'LONG':'SHORT';
   var route=txt(first(get(lock,'route'),get(lock,'final_route'),get(p,'route'),get(p,'trade_route'),get(p,'plan_route'),get(p,'final_plan_governor')),'Final Governor');
-  // [FIX-FAKE-ACTIVE] Previously defaulted to the literal string 'ACTIVE' when
-  // no state field was found anywhere in the payload — meaning a plan with
-  // no entry/SL/TP (deferred, blocked, or still resolving) would still show
-  // a green "ACTIVE" badge. That's misleading: the badge must reflect reality,
-  // not assume the best case. Default to NO_STATE_IN_PAYLOAD instead, which
-  // the render layer below treats as "not active" and displays honestly.
-  var state=String(first(get(lock,'state'),get(lock,'status'),get(p,'state'),get(p,'trade_state'),get(p,'locked_state'),'NO_STATE_IN_PAYLOAD')).toUpperCase();
-  var planReasons=first(get(lock,'reasons'),get(p,'reasons'),get(lock,'reason'),get(p,'reason'));
-  var planLiveDataStatus=first(get(lock,'live_data_status'),get(p,'live_data_status'));
-  var out={lock:lock,entry:n(entry),sl:n(sl),tp1:n(tp1),tp2:n(tp2),tp3:n(tp3),tp4:n(tp4),tp5:n(tp5),rr:n(rr),side:side,route:route,state:state,reasons:planReasons,liveDataStatus:planLiveDataStatus};
+  var state=String(first(get(lock,'state'),get(lock,'status'),get(p,'state'),get(p,'trade_state'),get(p,'locked_state'),'ACTIVE')).toUpperCase();
+  var out={lock:lock,entry:n(entry),sl:n(sl),tp1:n(tp1),tp2:n(tp2),tp3:n(tp3),tp4:n(tp4),tp5:n(tp5),tp4Source:tp4Source,tp5Source:tp5Source,rr:n(rr),side:side,route:route,state:state};
   if(isObj(p)){
     p.locked_trade_plan=Object.assign({},lock,{entry:out.entry,sl:out.sl,tp1:out.tp1,tp2:out.tp2,tp3:out.tp3,tp4:out.tp4,tp5:out.tp5,rr:out.rr,side:out.side,route:out.route,state:out.state});
     p.entry=out.entry;p.final_entry=out.entry;p.entry_mid=out.entry;p.sl=out.sl;p.tp1=out.tp1;p.tp2=out.tp2;p.tp3=out.tp3;p.tp4=out.tp4;p.tp5=out.tp5;p.rr=out.rr;p.post_governor_level_authority='locked_trade_plan';
   }
   return out;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EXTENDED TARGETS + LOCKED TRADE PLAN SUMMARY — Chart Tab
+   ────────────────────────────────────────────────────────────────────
+   Mirrors the intended mockup logic:
+     • TP1-3 stay on the candle chart itself (already handled by the
+       existing drawTvLevelLabels / sniper doctrine renderers).
+     • TP4/TP5 are "extended" targets OUTSIDE the macro PD range and are
+       shown in a dedicated card with their cascade source label, never
+       drawn on the price chart (keeps the chart's price scale tight to
+       the tradeable PD range instead of stretching it to a 1W target).
+     • A summary panel shows % move from entry for Entry/SL/TP1-5 plus
+       RR-to-TP3, matching the mockup's "Locked Trade Plan Summary".
+   Display-only — never mutates locked_trade_plan.
+   ═══════════════════════════════════════════════════════════════════ */
+function pctFromEntry(entry,level){
+  entry=n(entry,0); level=n(level,0);
+  if(!(entry>0) || !(level>0)) return null;
+  return (level-entry)/entry;
+}
+function renderExtendedTargetsAndSummary(pl){
+  pl=pl||{};
+  try{
+    var hasTp4=n(pl.tp4)>0, hasTp5=n(pl.tp5)>0;
+    var extCard=$('#extendedTargetsCard');
+    if(extCard) extCard.style.display=(hasTp4||hasTp5)?'':'none';
+    var tp4Cell=$('#tp4Cell'); if(tp4Cell) tp4Cell.style.display=hasTp4?'':'none';
+    var tp5Cell=$('#tp5Cell'); if(tp5Cell) tp5Cell.style.display=hasTp5?'':'none';
+    if(hasTp4){ setText('#cTP4',fmt(pl.tp4)); setText('#cTP4Source',pl.tp4Source||'bias_tf structural'); }
+    if(hasTp5){ setText('#cTP5',fmt(pl.tp5)); setText('#cTP5Source',pl.tp5Source||'macro weekly draw'); }
+
+    setText('#sumEntry',money(pl.entry));
+    setText('#sumSL',money(pl.sl)); setText('#sumSLPct',pctText(pctFromEntry(pl.entry,pl.sl)));
+    setText('#sumTP1',money(pl.tp1)); setText('#sumTP1Pct',pctText(pctFromEntry(pl.entry,pl.tp1)));
+    setText('#sumTP2',money(pl.tp2)); setText('#sumTP2Pct',pctText(pctFromEntry(pl.entry,pl.tp2)));
+    setText('#sumTP3',money(pl.tp3)); setText('#sumTP3Pct',pctText(pctFromEntry(pl.entry,pl.tp3)));
+
+    var tp4Row=$('#sumTP4Cell'), tp5Row=$('#sumTP5Cell');
+    if(tp4Row) tp4Row.style.display=hasTp4?'':'none';
+    if(tp5Row) tp5Row.style.display=hasTp5?'':'none';
+    if(hasTp4){ setText('#sumTP4',money(pl.tp4)); setText('#sumTP4Pct',pctText(pctFromEntry(pl.entry,pl.tp4))); }
+    if(hasTp5){ setText('#sumTP5',money(pl.tp5)); setText('#sumTP5Pct',pctText(pctFromEntry(pl.entry,pl.tp5))); }
+
+    setText('#sumRR',pl.rr?pl.rr.toFixed(2)+'x':'—');
+  }catch(e){}
+}
+function pctText(v){
+  // Deliberately does NOT reuse the shared pct(v,dec) helper: that helper
+  // guesses "ratio vs already-percent" from magnitude (multiplies only if
+  // abs(x)<=1), which mis-scales any TP move of 100%+ (common on wide
+  // TP5 targets). pctFromEntry always returns a ratio, so always *100 here.
+  if(v===null||v===undefined||!isFinite(v)) return '—';
+  var x=v*100;
+  return (x>0?'+':'')+x.toFixed(2)+'%';
 }
 
 function basePayloadFromLocation(){
@@ -2274,13 +2224,10 @@ function l33Obj(p){
     labelsText:valueText(labels,'—').replace(/_/g,' '),
     cls:cls,
     vsr:l33BoolObj(get(m,'vsr_confirmed')),
-    vsrKz:l33BoolObj(first(get(m,'vsr_in_killzone'),get(p,'vsr_in_killzone'))),
-    vsrKzName:valueText(first(get(m,'vsr_killzone_name'),get(p,'vsr_killzone_name')),'UNKNOWN'),
     cisd:l33BoolObj(get(m,'cisd_confirmed')),
     doubleSweep:l33BoolObj(get(m,'double_sweep_confirmed')),
     volumeDivergence:l33BoolObj(get(m,'volume_divergence_confirmed')),
-    volumeSpike:l33BoolObj(get(m,'volume_spike_rejection_confirmed')),
-    advisory:valueText(first(get(p,'second_layer_advisory'),get(m,'second_layer_advisory')),'')
+    volumeSpike:l33BoolObj(get(m,'volume_spike_rejection_confirmed'))
   };
 }
 function renderL33SecondLayer(p){
@@ -2295,20 +2242,11 @@ function renderL33SecondLayer(p){
   setText('#l33Quality',l33.quality,l33.cls);
   setText('#l33Decision',l33.decision,l33.cls);
   setText('#l33Vsr',l33.vsr.label,l33.vsr.cls);
-  // [Gap-6] VSR Kill Zone: show session name when in KZ, OFF_SESSION otherwise
-  var _kzLabel=l33.vsrKz.truth===null?'WAIT':(l33.vsrKz.truth?(l33.vsrKzName||'IN KZ'):'OFF_SESSION');
-  var _kzCls=l33.vsrKz.truth===true?'good':l33.vsrKz.truth===false?'warn':'blue';
-  setText('#l33VsrKz',_kzLabel,_kzCls);
   setText('#l33Cisd',l33.cisd.label,l33.cisd.cls);
   setText('#l33DoubleSweep',l33.doubleSweep.label,l33.doubleSweep.cls);
   setText('#l33VolSpike',l33.volumeSpike.label,l33.volumeSpike.cls);
   var labelsEl=$('#l33Labels'); if(labelsEl) labelsEl.innerHTML=l33LabelsHtml(l33.labels,l33.cls);
   setText('#l33Note',l33.note,l33.cls);
-  // [GAP-2] Advisory string
-  if(l33.advisory){
-    var _advCls=/WEAK|WAIT|✗|⚠/.test(l33.advisory)?'warn':/OK|✓|✅|met/.test(l33.advisory)?'good':'blue';
-    setText('#l33Advisory',l33.advisory,_advCls);
-  }
   setText('#cL33Status',l33.permission,l33.cls);
   setText('#cL33Score',l33.scoreText,l33.score===null?'blue':l33.score>=2?'good':l33.score===1?'warn':'bad');
   setText('#cL33Labels',l33.labelsText,l33.cls);
@@ -2331,11 +2269,6 @@ function renderFlags(p,pl){
     ['L33 Ready', l33.pass===null?'WAIT':l33.pass],
     ['L33 VSR/CISD', (l33.vsr.truth===true||l33.cisd.truth===true)?true:(l33.available?false:'WAIT')],
     ['L33 Double Sweep', l33.doubleSweep.truth===null?'WAIT':l33.doubleSweep.truth],
-    // [v9.6 MERGE] Gap-6 + SR-GAP flags
-    ['VSR Kill Zone', l33.vsrKz.truth===null?'WAIT':l33.vsrKz.truth],
-    ['SR Cascade', (function(){var g=get(p,'sr_cascade_gate')||{}; var q=String(get(g,'cascade_quality')||'').toUpperCase(); return q==='FULL'?true:q==='WEAK'?false:(q==='PARTIAL'?'WAIT':'WAIT');}())],
-    ['CHoCH Valid', (function(){var g=get(p,'sr_choch_validity')||{}; var lbl=String(get(g,'choch_label')||'').toUpperCase(); return lbl==='TRUE_REVERSAL_CHOCH'?true:lbl==='FALSE_CHOCH_INDUCEMENT'?false:'WAIT';}())],
-    ['LFX Aligned', (function(){var g=get(p,'sr_liq_fvg_session')||{}; return boolLike(get(g,'all_aligned'),false);}())],
     // v9.6 flags
     ['L5 Anchor Valid', (function(){var s=String(first(get(p,'l5_invalidation'),'VALID')).toUpperCase(); return s==='VALID'?true:s.indexOf('FAILURE')>=0?false:'WAIT';})()],
     ['4H Aligned', (function(){var s=String(first(get(p,'smc_governor_4h.state'),'WAIT')).toUpperCase(); return s==='ALIGNED'?true:s==='BLOCKED'?false:'WAIT';})()],
@@ -2742,47 +2675,6 @@ function renderHorizonGovernor(p){
   setText('#govSumNote',sumNote,'blue');
   setText('#govSumBadge',state4h==='BLOCKED'?'BLOCKED':regime,'blue');
 
-  // ── Governor Commitment Layer (v9.7 GAP-FIX-1) ────────────────────────────
-  var gc = first(get(p,'smc_governor_commitment'),{});
-  var gcCommitted = !!get(gc,'committed');
-  var gcEntry = n(get(gc,'entry'),0);
-  var gcSl    = n(get(gc,'sl'),0);
-  var gcTp1   = n(get(gc,'tp1'),0);
-  var gcTp2   = n(get(gc,'tp2'),0);
-  var gcTp3   = n(get(gc,'tp3'),0);
-  var gcEqBlk = !!get(gc,'eq_blocked');
-  var gcDolBlk= !!get(gc,'dol_blocked');
-  var gc4hBlk = !!get(gc,'4h_blocked');
-  var gcSlSrc  = txt(get(gc,'sl_source'),'—');
-  var gcTp2Src = txt(get(gc,'tp2_source'),'—');
-  var gcTp3Src = txt(get(gc,'tp3_source'),'—');
-  var gcReason = txt(get(gc,'reason'),'');
-  var gcExecReady = get(p,'smc_governor_execution_ready');
-  var gcLtfMss = get(p,'smc_governor_ltf_mss') || {};
-  var gcLtfState = txt(get(gcLtfMss,'ltf_state') || get(gcLtfMss,'state'), '—');
-  var gc15mSeq = txt(get(p,'smc_governor_15m_seq'),'—');
-
-  setText('#govCommitBadge', gcCommitted ? 'COMMITTED' : 'BLOCKED', gcCommitted ? 'good' : 'bad');
-  setText('#govCommitState',
-    gcCommitted ? '✅ COMMITTED' : (gcReason ? '❌ '+gcReason.slice(0,40) : '❌ BLOCKED'),
-    gcCommitted ? 'good' : 'bad');
-  setText('#govCommitEqBlk',  gcEqBlk  ? '🚫 YES' : '✅ CLEAR', gcEqBlk  ? 'bad' : 'good');
-  setText('#govCommitDolBlk', gcDolBlk ? '🚫 YES' : '✅ CLEAR', gcDolBlk ? 'bad' : 'good');
-  setText('#govCommit4hBlk',  gc4hBlk  ? '🚫 YES' : '✅ CLEAR', gc4hBlk  ? 'bad' : 'good');
-  setText('#govCommitEntry',  gcEntry > 0 ? fmt(gcEntry) : '—', 'good');
-  setText('#govCommitSl',     gcSl    > 0 ? fmt(gcSl)    : '—', 'bad');
-  setText('#govCommitSlSrc',  gcSlSrc, 'blue');
-  setText('#govCommitTp1',    gcTp1   > 0 ? fmt(gcTp1)   : '—', 'good');
-  setText('#govCommitTp2',    gcTp2   > 0 ? fmt(gcTp2)   : '—', 'good');
-  setText('#govCommitTp2Src', gcTp2Src, /frontrun/i.test(gcTp2Src) ? 'warn' : 'blue');
-  setText('#govCommitTp3',    gcTp3   > 0 ? fmt(gcTp3)   : '—', 'good');
-  setText('#govCommitTp3Src', gcTp3Src, /frontrun/i.test(gcTp3Src) ? 'warn' : 'blue');
-  setText('#govExecReady',
-    gcExecReady === true ? '✅ READY' : gcExecReady === false ? '⏳ PENDING LTF MSS' : '—',
-    gcExecReady === true ? 'good' : 'warn');
-  setText('#govLtfMss', gcLtfState, /CONFIRMED|ACTIVE/.test(gcLtfState) ? 'good' : /PENDING/.test(gcLtfState) ? 'warn' : 'blue');
-  setText('#gov15mSeq', gc15mSeq !== '—' ? gc15mSeq.slice(0,60) : '—', 'blue');
-
   // Cascade TP matrix card
   var scenario=txt(get(gtp,'scenario'),'—');
   var execTf=txt(get(gtp,'exec_tf_label'),'—');
@@ -2806,105 +2698,6 @@ function renderHorizonGovernor(p){
   } else {
     $('#cascadeTpList').textContent='Waiting for cascade TP matrix…';
   }
-
-  // ── [v9.6 MERGE] PD Cascade Alignment card ───────────────────────────
-  try {
-    var pdOk   = boolLike(get(p,'pd_cascade_ok'), true);
-    var pdT1   = boolLike(get(p,'pd_tier1_aligned'), true);
-    var pdT2   = boolLike(get(p,'pd_tier2_aligned'), true);
-    var pdBTf  = txt(get(p,'pd_bias_tf'), '—');
-    var pdRTf  = txt(get(p,'pd_ref_tf'), '—');
-    var pdSTf  = txt(get(p,'pd_sniper_tf'), '—');
-    var pdFvgCe= n(get(p,'pd_sniper_fvg_ce'), 0);
-    var pdTrend= boolLike(get(p,'pd_range_trending_down'), false);
-    var pdBtcM = boolLike(get(p,'btc_macro_bearish_suppression'), false);
-    var _okCls = function(b){ return b?'good':'bad'; };
-    setText('#pdCascadeBadge', pdOk?'OK':'MISALIGNED', pdOk?'good':'bad');
-    setText('#pdCascadeOk',    pdOk?'✅ ALIGNED':'❌ MISALIGNED', _okCls(pdOk));
-    setText('#pdTier1',        pdT1?'✅ OK':'❌ MISS', _okCls(pdT1));
-    setText('#pdTier2',        pdT2?'✅ OK':'❌ MISS', _okCls(pdT2));
-    setText('#pdBiasTf',       pdBTf, 'purple');
-    setText('#pdRefTf',        pdRTf, 'purple');
-    setText('#pdSniperTf',     pdSTf, 'purple');
-    setText('#pdSniperFvgCe',  pdFvgCe>0?fmt(pdFvgCe):'—', pdFvgCe>0?'good':'blue');
-    setText('#pdRangeTrending',pdTrend?'⚠ YES':'NO', pdTrend?'warn':'good');
-    setText('#pdBtcMacro',     pdBtcM?'⚠ SUPPRESSED':'CLEAR', pdBtcM?'warn':'good');
-    // [PD-GAP-6] ref_tf <-> main pd_zone discount/premium confluence
-    var pdRC    = get(p,'pd_ref_confluence_gate') || {};
-    var pdRCOk  = boolLike(get(p,'pd_ref_tf_confluence'), boolLike(get(pdRC,'ref_confluence'), true));
-    var pdRCNote= txt(get(pdRC,'confluence_note'), 'Waiting for PD-GAP-6 payload…');
-    setText('#pdRefConfluence',     pdRCOk?'✅ AGREE':'⚠ DIVERGE', pdRCOk?'good':'warn');
-    setText('#pdRefConfluenceNote', pdRCNote, pdRCOk?'good':'warn');
-  } catch(_pde){}
-
-  // ── [v9.6 MERGE] SR-GAP-3 Top-Down Cascade Gate ──────────────────────
-  try {
-    var g3 = get(p,'sr_cascade_gate') || {};
-    var g3Clear = boolLike(get(g3,'cascade_clear'), true);
-    var g3Q   = txt(get(g3,'cascade_quality'), '—').toUpperCase();
-    var g3Sc  = n(get(g3,'cascade_score'), 3);
-    var g3W   = txt(get(g3,'htf2_weekly'), '—');
-    var g3D   = txt(get(g3,'htf1_daily'), '—');
-    var g3H   = txt(get(g3,'htf0_4h'), '—');
-    var g3N   = txt(get(g3,'cascade_note'), 'Waiting for SR-GAP-3 payload…');
-    var _g3Cls= g3Q==='FULL'?'good':g3Q==='PARTIAL'?'warn':g3Q==='WEAK'?'bad':'blue';
-    setText('#srGap3Badge',  g3Q, _g3Cls);
-    setText('#srG3Clear',    g3Clear?'✅ CLEAR':'⚠ UNCLEAR', g3Clear?'good':'warn');
-    setText('#srG3Quality',  g3Q, _g3Cls);
-    setText('#srG3Score',    g3Sc+' / 3', g3Sc===3?'good':g3Sc===2?'warn':'bad');
-    setText('#srG3Weekly',   g3W, /BULL/.test(g3W)?'good':/BEAR/.test(g3W)?'bad':'warn');
-    setText('#srG3Daily',    g3D, /BULL/.test(g3D)?'good':/BEAR/.test(g3D)?'bad':'warn');
-    setText('#srG3H4',       g3H, /BULL/.test(g3H)?'good':/BEAR/.test(g3H)?'bad':'warn');
-    setText('#srG3Note',     g3N, _g3Cls);
-  } catch(_g3e){}
-
-  // ── [v9.6 MERGE] SR-GAP-4 False CHoCH Classifier ────────────────────
-  try {
-    var g4 = get(p,'sr_choch_validity') || {};
-    var g4Pres  = boolLike(get(g4,'choch_present'), false);
-    var g4Sweep = boolLike(get(g4,'prior_sweep_found'), false);
-    var g4Lbl   = txt(get(g4,'choch_label'), '—').toUpperCase();
-    var g4Src   = txt(get(g4,'sweep_source'), '—');
-    var g4Conf  = txt(get(g4,'confidence'), '—').toUpperCase();
-    var g4Note  = txt(get(g4,'note'), 'Waiting for SR-GAP-4 payload…');
-    var _g4Cls  = g4Lbl==='TRUE_REVERSAL_CHOCH'?'good':g4Lbl==='FALSE_CHOCH_INDUCEMENT'?'bad':g4Pres?'warn':'blue';
-    setText('#srGap4Badge',  g4Pres?(g4Lbl.replace(/_/g,' ').slice(0,14)):'NO CHOCH', _g4Cls);
-    setText('#srG4Present',  g4Pres?'YES':'NO', g4Pres?'warn':'blue');
-    setText('#srG4Sweep',    g4Sweep?'✅ FOUND':'❌ NONE', g4Sweep?'good':'bad');
-    setText('#srG4Label',    g4Lbl.replace(/_/g,' '), _g4Cls);
-    setText('#srG4Source',   g4Src, 'purple');
-    setText('#srG4Conf',     g4Conf, g4Conf==='HIGH'?'good':g4Conf==='LOW'?'bad':'blue');
-    setText('#srG4Note',     g4Note, _g4Cls);
-  } catch(_g4e){}
-
-  // ── [v9.6 MERGE] SR-GAP-5 Liq+FVG+Session Sequential Entry Model ────
-  try {
-    var g5 = get(p,'sr_liq_fvg_session') || {};
-    var g5State = txt(get(g5,'state'), 'WAIT').toUpperCase();
-    var g5Sw    = boolLike(get(g5,'sweep_ok'), false);
-    var g5Fvg   = boolLike(get(g5,'fvg_ok'), false);
-    var g5Sess  = boolLike(get(g5,'session_ok'), false);
-    var g5Kz    = txt(get(g5,'killzone_name'), '—');
-    var g5All   = boolLike(get(g5,'all_aligned'), false);
-    var g5Note  = txt(get(g5,'entry_note'), 'Waiting for SR-GAP-5 payload…');
-    var _g5Cls  = g5All?'good':g5State==='WAIT_FOR_SESSION'?'warn':g5State==='WAIT_FOR_FVG'||g5State==='WAIT_FOR_SWEEP'?'bad':'blue';
-    var _bool   = function(b){ return b?'✅':'⏳'; };
-    setText('#srGap5Badge',  g5All?'ALL ALIGNED':g5State.replace(/_/g,' ').slice(0,14), _g5Cls);
-    setText('#srG5State',    g5State.replace(/_/g,' '), _g5Cls);
-    setText('#srG5Sweep',    _bool(g5Sw)+' SWEEP', g5Sw?'good':'warn');
-    setText('#srG5Fvg',      _bool(g5Fvg)+' FVG', g5Fvg?'good':'warn');
-    setText('#srG5Session',  _bool(g5Sess)+' SESSION', g5Sess?'good':'warn');
-    setText('#srG5Kz',       g5Kz, g5Sess?'good':'purple');
-    setText('#srG5Aligned',  g5All?'✅ YES':'⏳ NO', g5All?'good':'warn');
-    setText('#srG5Note',     g5Note, _g5Cls);
-  } catch(_g5e){}
-
-  // ── [v9.6 MERGE] TTFM Extended Summary line ──────────────────────────
-  try {
-    var ttfmLine = txt(get(p,'ttfm_summary'), '');
-    var ttfmEl = $('#ttfmSummaryLine');
-    if(ttfmEl && ttfmLine) ttfmEl.textContent = ttfmLine;
-  } catch(_te){}
 }
 
 /* ======================================================================
@@ -3147,69 +2940,6 @@ function renderHTFSniper(p){
       }
     }
 
-    /* ── SMC Protocol Engine sub-keys (Gaps 1–6 from run_htf_sniper_engine) ── */
-    var sProto    = txt(get(sn,'sniper_protocol') || get(p,'sniper_protocol'),'—');
-    var sProtoRdy = !!(get(sn,'sniper_protocol_ready') || get(p,'sniper_protocol_ready'));
-    var sProtoPrio= n(get(sn,'sniper_protocol_prio') || get(p,'sniper_protocol_prio'), 0);
-    var sProtoNote= txt(get(sn,'sniper_protocol_note') || get(p,'sniper_protocol_note'),'—');
-
-    // IDM bypass (Gap 2)
-    var idmObj   = get(sn,'idm_bypass') || get(p,'idm_bypass') || {};
-    var idmState = txt(get(idmObj,'state') || get(idmObj,'idm_state'), '—');
-    // FVG validity (Gap 3)
-    var fvgVObj  = get(sn,'fvg_validity') || get(p,'fvg_validity') || {};
-    var fvgValid = !!get(fvgVObj,'tradeable');
-    var fvgNote  = txt(get(fvgVObj,'note'),'—');
-    // PO3 session sweep trigger (Gap 4)
-    var po3Obj   = get(sn,'po3_trigger') || get(p,'po3_trigger') || {};
-    var po3Fire  = !!get(po3Obj,'triggered');
-    var po3Dir   = txt(get(po3Obj,'direction'),'—');
-    // Rejection block (Gap 5)
-    var rbObj    = get(sn,'rejection_block') || get(p,'rejection_block') || {};
-    var rbFound  = !!get(rbObj,'found');
-    var rbEntry  = n(get(rbObj,'entry'),0);
-    var rbSl     = n(get(rbObj,'sl'),0);
-    // VPVR POC trap (Gap 6)
-    var vpvrObj  = get(sn,'vpvr_trap') || get(p,'vpvr_trap') || {};
-    var vpvrTrap = !!get(vpvrObj,'trapped');
-    var vpvrNote = txt(get(vpvrObj,'trap_note') || get(vpvrObj,'note'),'—');
-    // LTF cascade (Gap 1)
-    var ltfCasc  = get(sn,'ltf_cascade') || get(p,'ltf_cascade') || {};
-    var ltfValid = !!get(ltfCasc,'ltf_valid');
-    var ltfMeth  = txt(get(sn,'ltf_method') || get(p,'ltf_method') || get(ltfCasc,'ltf_method'),'—');
-    var ltfChoch = !!(get(sn,'ltf_choch_1m') || get(p,'ltf_choch_1m') || get(ltfCasc,'ltf_choch_found'));
-    var ltfEntry = n(get(sn,'ltf_entry_refined') || get(p,'ltf_entry_refined') || get(ltfCasc,'ltf_entry'), 0);
-    var ltfSl    = n(get(sn,'ltf_sl_refined')    || get(p,'ltf_sl_refined')    || get(ltfCasc,'ltf_sl'),    0);
-
-    // Render protocol
-    setText('#sniperProtocol', sProto !== '—' ? sProto.replace(/_/g,' ') : '—',
-      /A|B|C/.test(sProto) ? 'purple' : 'blue');
-    setText('#sniperProtocolReady', sProtoRdy ? '✅ READY' : '—',
-      sProtoRdy ? 'good' : 'blue');
-    setText('#sniperProtocolPrio', sProtoPrio > 0 ? 'P'+sProtoPrio : '—', 'blue');
-    var pnEl = $('#sniperProtocolNote');
-    if(pnEl) pnEl.textContent = sProtoNote !== '—' ? sProtoNote.slice(0,120) : '—';
-
-    // Render gap sub-keys
-    setText('#sniperIdmBypass', idmState !== '—' ? idmState.replace(/_/g,' ') : '—',
-      /BYPASS/.test(idmState) ? 'warn' : /NORMAL/.test(idmState) ? 'good' : 'blue');
-    setText('#sniperFvgValidity', fvgValid ? '✅ TRADEABLE' : (get(fvgVObj,'tradeable')===false ? '❌ INVALID' : '—'),
-      fvgValid ? 'good' : get(fvgVObj,'tradeable')===false ? 'bad' : 'blue');
-    setText('#sniperPo3Trigger', po3Fire ? '🔥 '+po3Dir : (get(po3Obj,'triggered')===false ? '—' : '—'),
-      po3Fire ? 'warn' : 'blue');
-    setText('#sniperRejBlock', rbFound ? '✅ Entry:'+fmt(rbEntry)+' SL:'+fmt(rbSl) : (get(rbObj,'found')===false ? 'NONE' : '—'),
-      rbFound ? 'good' : 'blue');
-    setText('#sniperVpvrTrap', vpvrTrap ? ('🪤 '+vpvrNote.slice(0,40)) : (get(vpvrObj,'trapped')===false ? 'CLEAR' : '—'),
-      vpvrTrap ? 'warn' : 'blue');
-
-    // Render LTF cascade
-    setText('#sniperLtfValid',  ltfValid ? '✅ VALID' : (get(ltfCasc,'ltf_valid')===false ? 'WAIT' : '—'),
-      ltfValid ? 'good' : 'blue');
-    setText('#sniperLtfMethod', ltfMeth !== '—' ? ltfMeth.replace(/_/g,' ') : '—', 'cyan');
-    setText('#sniperLtfChoch',  ltfChoch ? '✅ CONFIRMED' : '⏳ PENDING', ltfChoch ? 'good' : 'warn');
-    setText('#sniperLtfEntry',  ltfEntry > 0 ? fmt(ltfEntry) : '—', 'good');
-    setText('#sniperLtfSl',     ltfSl    > 0 ? fmt(ltfSl)    : '—', 'bad');
-
     /* Horizon tab compact summary */
     setText('#hzSniperState', state, isArmed ? 'good' : isPend ? 'warn' : isError ? 'bad' : 'blue');
     setText('#hzSniperDir',  direction, isLong ? 'good' : isShort ? 'bad' : 'blue');
@@ -3245,86 +2975,40 @@ function updateUI(){
   var ch=changePct(p);
   var g=gates(p), prob=probability(p), ms=marketState(p), ctx=context(p,pl), cls=clusters(p,pl), nt=nextTarget(cls,px), metrics=extractScoreMetrics(p);
   flashPayloadSource(hasPayload, hasPayload?'PAYLOAD LOADED · LOCKED PLAN AUTHORITY':'NO PAYLOAD · SAFE PREVIEW MODE');
-
-  // [FIX-CASCADE-1] Dashboard header + plan card (was unguarded — a throw here
-  // used to abort every renderer below it, taking out Chart/Liquidity/Horizon too).
-  try{
-    ['#dash-symbol','#chart-symbol'].forEach(function(s){setText(s,sym);}); updateCoinLogo(p,State.symbol);
-    setText('#dash-price',money(px)); setText('#chart-price',money(px));
-    setText('#dash-change',pct(ch)); setText('#chart-change',pct(ch));
-    setText('#dash-market',txt(first(get(p,'market_type'),get(p,'contract_type')),'Perpetual'));
-    var sideEl=$('#sideBig'); sideEl.textContent=pl.side; sideEl.classList.toggle('short',pl.side==='SHORT');
-    setText('#marketState',ms,ms.indexOf('BEAR')>=0?'bad':ms.indexOf('WAIT')>=0?'warn':'purple');
-    setText('#gradeVal',grade(p)); setText('#gatesVal',g.pass+' / '+g.total); setText('#probVal',prob.toFixed(0)+'%'); setText('#rrVal',pl.rr?pl.rr.toFixed(2)+'x':'—');
-    var _planHasLevels = n(pl.entry,0)>0 && n(pl.sl,0)>0;
-    var _planIsActive = pl.state==='ACTIVE' && _planHasLevels;
-    // [FIX-FAKE-ACTIVE] planState now shows the real state string (e.g.
-    // DEFERRED_NO_LIVE_PRICE / WAIT_FOR_VALID_STRUCTURAL_PLAN / BLOCKED /
-    // NO_STATE_IN_PAYLOAD) instead of always showing ACTIVE, and its color
-    // reflects whether there's actually a usable entry+SL, not just a string.
-    setText('#govRoute',pl.route);
-    setText('#planState', _planIsActive ? 'ACTIVE' : (pl.state==='NO_STATE_IN_PAYLOAD' ? 'NO PLAN' : pl.state), _planIsActive?'good':'warn');
-    setText('#entryVal',fmt(pl.entry)); setText('#slVal',fmt(pl.sl)); setText('#tp1Val',fmt(pl.tp1)); setText('#tp2Val',fmt(pl.tp2)); setText('#tp3Val',fmt(pl.tp3));
-    var _planDiag=$('#planDiagnostic');
-    if(_planDiag){
-      if(!_planIsActive){
-        var _diagBits=[];
-        if(pl.state && pl.state!=='NO_STATE_IN_PAYLOAD') _diagBits.push('State: '+pl.state.replace(/_/g,' '));
-        if(pl.liveDataStatus) _diagBits.push(String(pl.liveDataStatus).replace(/_/g,' '));
-        if(pl.reasons){ var _rz=Array.isArray(pl.reasons)?pl.reasons.join('; '):String(pl.reasons); if(_rz) _diagBits.push(_rz.replace(/_/g,' ')); }
-        _planDiag.textContent = _diagBits.length ? _diagBits.join(' · ') : 'No active locked trade plan for this payload — entry/SL/TP not yet resolved by the governor.';
-        _planDiag.style.display='';
-      } else {
-        _planDiag.style.display='none';
-      }
-    }
-    // [GAP4] Extended TP4/TP5 display
-    var _tp4v=n(pl.tp4,0), _tp5v=n(pl.tp5,0);
-    if(_tp4v>0){setText('#tp4Val',fmt(_tp4v),'good');setText('#tp5Val',_tp5v>0?fmt(_tp5v):'—',_tp5v>0?'good':'');var _eg=$('#extTpGrid');if(_eg)_eg.style.display='';}
-    else{var _eg=$('#extTpGrid');if(_eg)_eg.style.display='none';}
-    setText('#routeVal',pl.route); setText('#biasVal',pl.side==='LONG'?'Bullish':'Bearish',pl.side==='LONG'?'good':'bad'); setText('#confVal',prob>=75?'High':prob>=55?'Medium':'Low',prob>=75?'good':'warn');
-  }catch(_coreE){}
-
-  try{renderExecutionPolicy(p,pl);}catch(_epE){}
-  try{renderL33SecondLayer(p);}catch(_l33E){}
-
-  // [FIX-CASCADE-2] Chart context row + compact chart plan
-  try{
-    setText('#ctxStruct',ctx.structure); setText('#ctxFlow',ctx.flow); setText('#ctxLiq',ctx.liquidity); setText('#ctxVol',ctx.volatility);
-    setText('#cEntry',fmt(pl.entry)); setText('#cSL',fmt(pl.sl)); setText('#cTP1',fmt(pl.tp1)); setText('#cTP2',fmt(pl.tp2)); setText('#cTP3',fmt(pl.tp3));
-    // [GAP4] Extended TP4/TP5 display for compact chart
-    var _cTp4v=n(pl.tp4,0), _cTp5v=n(pl.tp5,0);
-    if(_cTp4v>0){setText('#cTP4',fmt(_cTp4v),'good');setText('#cTP5',_cTp5v>0?fmt(_cTp5v):'—',_cTp5v>0?'good':'');var _ceg=$('#cExtTpGrid');if(_ceg)_ceg.style.display='';}
-    else{var _ceg=$('#cExtTpGrid');if(_ceg)_ceg.style.display='none';}
-  }catch(_ctxE){}
-
-  // [FIX-CASCADE-3] Horizon tab core fields — previously a throw in bpeObj/
-  // horizonObj/bpeLive (or anything above) silently blocked this whole block
-  // AND everything after it, which is why Horizon looked "stuck" too.
-  var b={}, h={}, hzLive={score:0,status:'—',direction:'—',tfs:[],entry:0};
-  try{
-    b=bpeObj(p); h=horizonObj(p); hzLive=bpeLive(p,h,b,pl,prob);
-    setText('#hzClass',horizonClassText(p,h));
-    setText('#hzNote',horizonNoteText(p,h,b,pl));
-    setText('#bpeEntry',fmt(hzLive.entry));
-    setText('#bpeScore',hzLive.score.toFixed(0)+'%');
-    setText('#bpeStatus',hzLive.status);
-    setText('#expectedHold',expectedHoldText(p,h,b));
-    setText('#bpeDirection',hzLive.direction);
-    setText('#bpeTfs',hzLive.tfs.length?hzLive.tfs.slice(0,5).join(' / '):valueText(livePick(h,['primary_tf','timeframe','tf_cluster']),'WAIT TF PAYLOAD'));
-  }catch(_hzE){}
-
+  ['#dash-symbol','#chart-symbol'].forEach(function(s){setText(s,sym);}); updateCoinLogo(p,State.symbol);
+  setText('#dash-price',money(px)); setText('#chart-price',money(px));
+  setText('#dash-change',pct(ch)); setText('#chart-change',pct(ch));
+  setText('#dash-market',txt(first(get(p,'market_type'),get(p,'contract_type')),'Perpetual'));
+  var sideEl=$('#sideBig'); sideEl.textContent=pl.side; sideEl.classList.toggle('short',pl.side==='SHORT');
+  setText('#marketState',ms,ms.indexOf('BEAR')>=0?'bad':ms.indexOf('WAIT')>=0?'warn':'purple');
+  setText('#gradeVal',grade(p)); setText('#gatesVal',g.pass+' / '+g.total); setText('#probVal',prob.toFixed(0)+'%'); setText('#rrVal',pl.rr?pl.rr.toFixed(2)+'x':'—');
+  setText('#govRoute',pl.route); setText('#planState',pl.state); setText('#entryVal',fmt(pl.entry)); setText('#slVal',fmt(pl.sl)); setText('#tp1Val',fmt(pl.tp1)); setText('#tp2Val',fmt(pl.tp2)); setText('#tp3Val',fmt(pl.tp3));
+  setText('#routeVal',pl.route); setText('#biasVal',pl.side==='LONG'?'Bullish':'Bearish',pl.side==='LONG'?'good':'bad'); setText('#confVal',prob>=75?'High':prob>=55?'Medium':'Low',prob>=75?'good':'warn');
+  renderExecutionPolicy(p,pl);
+  renderL33SecondLayer(p);
+  setText('#ctxStruct',ctx.structure); setText('#ctxFlow',ctx.flow); setText('#ctxLiq',ctx.liquidity); setText('#ctxVol',ctx.volatility);
+  setText('#cEntry',fmt(pl.entry)); setText('#cSL',fmt(pl.sl)); setText('#cTP1',fmt(pl.tp1)); setText('#cTP2',fmt(pl.tp2)); setText('#cTP3',fmt(pl.tp3));
+  renderExtendedTargetsAndSummary(pl);
+  var b=bpeObj(p), h=horizonObj(p), hzLive=bpeLive(p,h,b,pl,prob);
+  setText('#hzClass',horizonClassText(p,h));
+  setText('#hzNote',horizonNoteText(p,h,b,pl));
+  setText('#bpeEntry',fmt(hzLive.entry));
+  setText('#bpeScore',hzLive.score.toFixed(0)+'%');
+  setText('#bpeStatus',hzLive.status);
+  setText('#expectedHold',expectedHoldText(p,h,b));
+  setText('#bpeDirection',hzLive.direction);
+  setText('#bpeTfs',hzLive.tfs.length?hzLive.tfs.slice(0,5).join(' / '):valueText(livePick(h,['primary_tf','timeframe','tf_cluster']),'WAIT TF PAYLOAD'));
   // MOP-HTML-SMART-RISK-L31-UPDATE-HOOK-v1: render advisory-only sr_* and exec_* payload fields
-  try{renderSmartRiskAndExecution(p);}catch(_srE){}
+  renderSmartRiskAndExecution(p);
   // v9.6: Structural Invalidation Gate, Unicorn Setup, 4H Alignment
   try{renderL5Invalidation(p);}catch(e){}
   try{renderUnicornSetup(p);}catch(e){}
   try{render4hAlignment(p);}catch(e){}
   // v9.6: Liquidity tab governor + Horizon tab governor + cascade TP
   try{renderLiqGovernor(p);}catch(e){}
-  try{renderHorizonGovernor(p);}catch(e){}  // includes PD Cascade + SR-GAP-3/4/5 + TTFM
-  try{renderDepth(p,pl,px);}catch(_depthE){}
-  try{$('#execConsole').textContent = buildConsoleReport(p,pl,g,ctx);}catch(_consoleE){}
+  try{renderHorizonGovernor(p);}catch(e){}
+  renderDepth(p,pl,px);
+  $('#execConsole').textContent = buildConsoleReport(p,pl,g,ctx);
   try{applyGovernorVisualLock(p,pl);updateReversalPatternPanel();}catch(e){}
   // [ROOT CAUSE B FIX] Wire renderL35Momentum and renderL22StructuralCandle into updateUI.
   // Previously these were only triggered via cryptex:payload events and DOMContentLoaded timers,
@@ -3334,50 +3018,31 @@ function updateUI(){
   try{if(typeof renderL22StructuralCandle==='function') renderL22StructuralCandle(p);}catch(_l22e){}
   try{renderHTFSniper(p);}catch(_snipE){}   /* HTF Sniper Engine v1.0 */
 
-  // [FIX-CASCADE-4] Liquidity tab core renderers — these sat AFTER renderDepth/
-  // execConsole above with no guard of their own, so a throw in either of those
-  // (or in any one of these four calls) used to take out the entire Liquidity
-  // tab and everything below it (target card, sentiment/funding meters,
-  // bull/bear gauges, chart badge). Each now fails in isolation.
-  try{renderLiqRows(cls,px);}catch(_lrE){}
-  try{renderWatch(p,pl);}catch(_wE){}
-  try{renderFlags(p,pl);}catch(_flE){}
-  try{renderReport(p,pl,g);}catch(_repE){}
-
-  try{
-    var targetCard=$('.liq-target');
-    if(targetCard) targetCard.classList.remove('short-target','long-target');
-    if(nt){
-      var dist=px?((nt.price-px)/px*100):0;
-      var ntShort=String(nt.side).toUpperCase()==='SHORT';
-      if(targetCard) targetCard.classList.add(ntShort?'short-target':'long-target');
-      setText('#targetSide',ntShort?'SHORT LIQ':'LONG LIQ',ntShort?'bad':'good');
-      setText('#targetKind',ntShort?'Short-side liquidity':'Long-side liquidity');
-      setText('#targetPrice',fmt(nt.price),ntShort?'bad':'good');
-      setText('#targetDist',(dist>=0?'+':'')+dist.toFixed(2)+'%',ntShort?'bad':'good');
-      setText('#targetStrength',nt.strength>=80?'High':nt.strength>=55?'Balanced':'Low',nt.strength>=80?'good':nt.strength>=55?'warn':'bad');
-      setText('#targetSource',txt(first(nt.tf,nt.source),'PAYLOAD').toUpperCase());
-    }else{
-      setText('#targetSide','CLEARED','warn'); setText('#targetKind','No active liquidity target'); setText('#targetPrice','—'); setText('#targetDist','—'); setText('#targetStrength','—'); setText('#targetSource','WAIT');
-    }
-  }catch(_tgtE){}
-
-  // [FIX-CASCADE-5] Dashboard sentiment/funding/liquidation meters + power gauges
-  try{
-    displayMetric('#sentVal',metrics.sentiment,'sentiment');
-    displayMetric('#fundVal',metrics.funding,'funding');
-    displayMetric('#liqRocVal',metrics.liqroc!==undefined?metrics.liqroc:metrics.liquidations,'liquidations');
-  }catch(_metE){}
-
-  try{
-    var pulse=extractMarketPulse(p,pl,prob,metrics), bull=pulse.bull, bear=pulse.bear, strength=Math.round(pulse.central);
-    setText('#bullPower',bull.toFixed(0)+'%','good'); setText('#bearPower',bear.toFixed(0)+'%','bad'); setText('#strengthVal',strength+' / 100',strength>=60?'good':strength>=35?'warn':'bad');
-    $('#strengthPin').style.setProperty('--strength',strength+'%');
-    updateGauge('#bullArc','#bullNeedle',bull,true); updateGauge('#bearArc','#bearNeedle',bear,false);
-  }catch(_pulseE){}
-
-  try{$('#chartBadge').textContent=sym+' · '+State.tf.toUpperCase()+' · CRYPTEX';}catch(_badgeE){}
-  try{drawChart();}catch(_drawE){}
+  renderLiqRows(cls,px); renderWatch(p,pl); renderFlags(p,pl); renderReport(p,pl,g);
+  var targetCard=$('.liq-target');
+  if(targetCard) targetCard.classList.remove('short-target','long-target');
+  if(nt){
+    var dist=px?((nt.price-px)/px*100):0;
+    var ntShort=String(nt.side).toUpperCase()==='SHORT';
+    if(targetCard) targetCard.classList.add(ntShort?'short-target':'long-target');
+    setText('#targetSide',ntShort?'SHORT LIQ':'LONG LIQ',ntShort?'bad':'good');
+    setText('#targetKind',ntShort?'Short-side liquidity':'Long-side liquidity');
+    setText('#targetPrice',fmt(nt.price),ntShort?'bad':'good');
+    setText('#targetDist',(dist>=0?'+':'')+dist.toFixed(2)+'%',ntShort?'bad':'good');
+    setText('#targetStrength',nt.strength>=80?'High':nt.strength>=55?'Balanced':'Low',nt.strength>=80?'good':nt.strength>=55?'warn':'bad');
+    setText('#targetSource',txt(first(nt.tf,nt.source),'PAYLOAD').toUpperCase());
+  }else{
+    setText('#targetSide','CLEARED','warn'); setText('#targetKind','No active liquidity target'); setText('#targetPrice','—'); setText('#targetDist','—'); setText('#targetStrength','—'); setText('#targetSource','WAIT');
+  }
+  displayMetric('#sentVal',metrics.sentiment,'sentiment');
+  displayMetric('#fundVal',metrics.funding,'funding');
+  displayMetric('#liqRocVal',metrics.liqroc!==undefined?metrics.liqroc:metrics.liquidations,'liquidations');
+  var pulse=extractMarketPulse(p,pl,prob,metrics), bull=pulse.bull, bear=pulse.bear, strength=Math.round(pulse.central);
+  setText('#bullPower',bull.toFixed(0)+'%','good'); setText('#bearPower',bear.toFixed(0)+'%','bad'); setText('#strengthVal',strength+' / 100',strength>=60?'good':strength>=35?'warn':'bad');
+  $('#strengthPin').style.setProperty('--strength',strength+'%');
+  updateGauge('#bullArc','#bullNeedle',bull,true); updateGauge('#bearArc','#bearNeedle',bear,false);
+  $('#chartBadge').textContent=sym+' · '+State.tf.toUpperCase()+' · CRYPTEX';
+  drawChart();
 }
 function updateGauge(arcSel,needleSel,val,bull){
   var arc=$(arcSel), nd=$(needleSel); if(!arc||!nd)return;
@@ -3808,9 +3473,6 @@ function drawChart(){
   var overlays=chartPayloadOverlays(p,pl,candles);
   updatePdChartBadge(overlays.pdRange);
   var levelValues=[pl.tp3,pl.tp2,pl.tp1,pl.entry,pl.sl].filter(function(x){return n(x)>0;});
-  // [GAP4] Include extended targets in price range calculation
-  if(n(pl.tp4)>0) levelValues.push(n(pl.tp4));
-  if(n(pl.tp5)>0) levelValues.push(n(pl.tp5));
   overlays.fvg.concat(overlays.ob,overlays.ifvg).forEach(function(z){levelValues.push(z.low,z.high);});
   overlays.liq.forEach(function(l){levelValues.push(l.price);}); overlays.fib.forEach(function(f){levelValues.push(f.price);});
   var lows=candles.map(function(c){return c.low;}), highs=candles.map(function(c){return c.high;});
@@ -4030,9 +3692,6 @@ function drawChart(){
       {value:pl.sl,label:'SL'+tpTagSuffix,color:'#ff4e64',dash:true},
       {value:State.lastPrice,label:'PRICE',color:'#edf6ff',dash:false}
     ];
-    // [GAP4] Extended TP4/TP5 lines — amber to distinguish from core targets
-    if(n(pl.tp4)>0) levelItems.unshift({value:pl.tp4,label:'TP4',color:'#f6c04e',dash:true});
-    if(n(pl.tp5)>0) levelItems.unshift({value:pl.tp5,label:'TP5',color:'#f6a800',dash:true});
     var ep=first(get(p,'execution_policy.estimated_liq_at_recommended_leverage'),get(p,'locked_trade_plan.execution_policy.estimated_liq_at_recommended_leverage'),get(p,'estimated_liq_at_recommended_leverage'));
     if(n(ep)>0) levelItems.push({value:n(ep),label:'LIQ GUARD',color:'#f6c04e',dash:true});
     // v9.6-L5-INV: 0.0 Fib anchor line (structural invalidation level)
@@ -4391,7 +4050,7 @@ async function liveTick(){
   try{ ok = (await refreshPayloadNow()) || ok; }catch(e){}
   try{ ok = (await fetchBinanceLiveNow()) || ok; }catch(e){}
   try{ await loadCandles(); ok=true; }catch(e){}
-  try{ updateUI(); }catch(e){}
+  updateUI();
   return ok;
 }
 
@@ -4420,11 +4079,11 @@ async function pollPrice(){
 }
 function boot(){
   try{ if(window.Telegram&&Telegram.WebApp){ Telegram.WebApp.ready(); Telegram.WebApp.expand(); Telegram.WebApp.setHeaderColor('#050b12'); Telegram.WebApp.setBackgroundColor('#050b12'); }}catch(e){}
-  bind(); try{updateUI();}catch(_bootE){} loadCandles();
-  setTimeout(function(){try{updateUI();}catch(e){}},150); setTimeout(function(){try{updateUI();}catch(e){}},650);
+  bind(); updateUI(); loadCandles();
+  setTimeout(updateUI,150); setTimeout(updateUI,650);
   // MOP-HTML-PHASE1-STABILITY-FIX-v1: named intervals prevent duplicated polling when boot() is called again.
   try{ if(window.cryptexUiInterval) clearInterval(window.cryptexUiInterval); }catch(e){}
-  window.cryptexUiInterval=setInterval(function(){ if(!document.hidden){ try{updateUI();}catch(e){} } },3000);
+  window.cryptexUiInterval=setInterval(function(){ if(!document.hidden) updateUI(); },3000);
   setTimeout(liveTick,650);
   try{ if(window.cryptexTickInterval) clearInterval(window.cryptexTickInterval); }catch(e){}
   window.cryptexTickInterval=setInterval(function(){ if(!document.hidden && !State.rateLimited) liveTick(); },12000);
